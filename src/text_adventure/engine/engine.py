@@ -192,6 +192,32 @@ class GameEngine:
             self.state.increment_turns()
             return TurnResult(message="Time passes.")
 
+        # Handle ENTER <object> - check for custom "enter" action before treating as movement
+        if command.verb == Verb.IN and command.direct_object:
+            resolved = self.resolver.resolve(command)
+            if resolved.success and resolved.resolved and resolved.resolved.direct_object_id:
+                obj = self.game.get_object(resolved.resolved.direct_object_id)
+                if obj and "enter" in obj.actions:
+                    from text_adventure.engine.actions import _execute_custom_action
+
+                    action_result = _execute_custom_action(
+                        obj, "enter", self.game, self.state
+                    )
+                    if action_result:
+                        self.state.increment_turns()
+                        # Check win condition after action (may have moved player)
+                        win_msg = self._check_win_condition()
+                        if win_msg:
+                            return TurnResult(
+                                message=action_result.message + "\n\n" + win_msg,
+                                game_over=True,
+                                won=True,
+                            )
+                        return TurnResult(
+                            message=action_result.message,
+                            error=not action_result.success,
+                        )
+
         # Handle movement
         if command.verb in (
             Verb.NORTH,
