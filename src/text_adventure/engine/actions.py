@@ -227,6 +227,12 @@ def handle_open(
     if not obj_state:
         return ActionResult(message="You can't see that here.", success=False)
 
+    # Check for custom open action first (e.g., puzzle-based doors)
+    result = _execute_custom_action(obj, "open", game, state)
+    if result:
+        return result
+
+    # Standard opening logic
     if not obj.openable:
         return ActionResult(
             message=f"You can't open the {obj.name}.",
@@ -417,20 +423,43 @@ def handle_unlock(
     game: Game,
     state: GameState,
 ) -> ActionResult:
-    """Handle UNLOCK X WITH Y commands."""
+    """Handle UNLOCK X [WITH Y] commands."""
     if not command.direct_object_id:
         return ActionResult(message="Unlock what?", success=False)
-    if not command.indirect_object_id:
-        return ActionResult(message="Unlock it with what?", success=False)
 
     obj = game.get_object(command.direct_object_id)
-    key = game.get_object(command.indirect_object_id)
-
-    if not obj or not key:
+    if not obj:
         return ActionResult(message="You can't see that here.", success=False)
 
     obj_state = state.objects.get(command.direct_object_id)
     if not obj_state:
+        return ActionResult(message="You can't see that here.", success=False)
+
+    # Check for custom unlock action first (e.g., code-based locks)
+    # This allows objects to override standard key-based unlocking
+    if command.indirect_object_id:
+        action_key = f"unlock:{command.indirect_object_id}"
+        result = _execute_custom_action(obj, action_key, game, state)
+        if result:
+            return result
+
+    # Try generic custom unlock action (for code-based or keyless unlocking)
+    result = _execute_custom_action(obj, "unlock", game, state)
+    if result:
+        return result
+
+    # Standard key-based unlocking requires a key
+    if not command.indirect_object_id:
+        # No key specified and no custom action worked
+        if obj.lockable and obj_state.locked:
+            return ActionResult(message="Unlock it with what?", success=False)
+        return ActionResult(
+            message=f"You can't unlock the {obj.name}.",
+            success=False,
+        )
+
+    key = game.get_object(command.indirect_object_id)
+    if not key:
         return ActionResult(message="You can't see that here.", success=False)
 
     if not obj.lockable:
