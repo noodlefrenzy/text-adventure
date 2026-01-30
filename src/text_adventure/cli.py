@@ -385,10 +385,14 @@ def ai_play(
 
     def on_turn(turn: int, command: str, result: TurnResult) -> None:
         """Display each turn."""
+        nonlocal session_result
+
         if delay > 0:
             time.sleep(delay)
 
-        console.print(f"[bold cyan]Turn {turn}:[/bold cyan] [yellow]{command}[/yellow]")
+        # Show turn with token count if available
+        turn_header = f"[bold cyan]Turn {turn}:[/bold cyan] [yellow]{command}[/yellow]"
+        console.print(turn_header)
 
         if result.error:
             console.print(f"[red]{result.message}[/red]")
@@ -403,8 +407,9 @@ def ai_play(
             console.print(result.message)
 
         if verbose:
-            # Verbose mode shows additional debug info
-            console.print(f"[dim]  (error={result.error}, game_over={result.game_over})[/dim]")
+            # Verbose mode shows token usage and debug info
+            debug_parts = [f"error={result.error}", f"game_over={result.game_over}"]
+            console.print(f"[dim]  ({', '.join(debug_parts)})[/dim]")
 
         console.print()
 
@@ -425,6 +430,16 @@ def ai_play(
     console.print(f"Turns taken: {session_result.turns}")
     console.print(f"Rooms visited: {len(session_result.rooms_visited)}")
     console.print(f"Items collected: {len(session_result.items_collected)}")
+    console.print()
+
+    # Token usage stats
+    console.print("[bold]─── Token Usage ───[/bold]")
+    console.print()
+    console.print(f"Input tokens:  {session_result.total_input_tokens:,}")
+    console.print(f"Output tokens: {session_result.total_output_tokens:,}")
+    console.print(f"Total tokens:  {session_result.total_tokens:,}")
+    if session_result.turns > 0:
+        console.print(f"Avg per turn:  {session_result.avg_tokens_per_turn:,.0f}")
     console.print()
 
     if session_result.won:

@@ -84,6 +84,22 @@ class PlaySession:
     gave_up: bool = False
     stuck_count: float = 0  # Consecutive turns without progress
     ai_knowledge: dict[str, Any] = field(default_factory=dict)  # AI's compressed game state
+    # Token usage tracking
+    total_input_tokens: int = 0
+    total_output_tokens: int = 0
+    tokens_per_turn: list[tuple[int, int]] = field(default_factory=list)  # (input, output) per turn
+
+    @property
+    def total_tokens(self) -> int:
+        """Total tokens used (input + output)."""
+        return self.total_input_tokens + self.total_output_tokens
+
+    @property
+    def avg_tokens_per_turn(self) -> float:
+        """Average tokens per turn."""
+        if self.turns == 0:
+            return 0
+        return self.total_tokens / self.turns
 
 
 class AIPlayer:
@@ -249,6 +265,15 @@ class AIPlayer:
 
         response = await self._client.complete(request)
         raw_response = response.content.strip()
+
+        # Track token usage
+        session.total_input_tokens += response.input_tokens
+        session.total_output_tokens += response.output_tokens
+        session.tokens_per_turn.append((response.input_tokens, response.output_tokens))
+        logger.debug(
+            f"Turn tokens: {response.input_tokens} in, {response.output_tokens} out "
+            f"(total: {session.total_tokens})"
+        )
 
         # Try to parse as JSON
         command = ""
