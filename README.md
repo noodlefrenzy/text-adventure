@@ -185,7 +185,6 @@ When playing, you can use these commands:
 | `PUT <obj> IN <container>` | `INSERT <obj> IN <container>` | Put object in container |
 | `TALK TO <obj>` | `SPEAK TO <obj>` | Talk to a character |
 | `SHOW <obj> TO <character>` | `GIVE <obj> TO <character>` | Show/give item to character |
-| `SING` | | Sing (context-dependent) |
 | `ENTER <obj>` | | Enter a door or portal |
 | `QUIT` | `Q`, `EXIT` | Exit the game |
 | `HELP` | `?` | Show help |
@@ -245,15 +244,16 @@ Adventure creators can define custom verbs and actions without modifying Python 
 ```json
 {
   "verbs": [
-    {"verb": "pray", "aliases": ["worship", "kneel"], "requires_object": false}
+    {"verb": "sing", "aliases": ["perform", "karaoke"], "requires_object": false}
   ],
   "objects": [
     {
-      "id": "altar",
+      "id": "salarymen",
       "actions": {
-        "pray": {
-          "message": "You feel a sense of peace.",
-          "state_changes": {"flags.blessed": true}
+        "sing": {
+          "message": "You belt out 'My Way' and they cheer!",
+          "condition": "flags.talked_to_salarymen",
+          "state_changes": {"flags.salarymen_distracted": true}
         }
       }
     }

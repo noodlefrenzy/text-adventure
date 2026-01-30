@@ -62,7 +62,6 @@ def execute_action(
         Verb.USE: handle_use,
         Verb.TALK: handle_talk,
         Verb.SHOW: handle_show,
-        Verb.SING: handle_sing,
         Verb.INSERT: handle_insert,
         Verb.CUSTOM: handle_custom,
     }
@@ -601,36 +600,6 @@ def handle_show(
     return ActionResult(
         message="You wave it around but nothing happens.",
         success=False,
-    )
-
-
-def handle_sing(
-    command: ResolvedCommand,
-    game: Game,
-    state: GameState,
-) -> ActionResult:
-    """Handle SING commands."""
-    # Check if there's an object that responds to singing
-    current_room = game.get_room(state.current_room)
-    if current_room:
-        for obj_id in current_room.objects:
-            obj = game.get_object(obj_id)
-            if obj:
-                result = _execute_custom_action(obj, "sing", game, state)
-                if result:
-                    return result
-
-    # If singing at a specific object
-    if command.direct_object_id:
-        obj = game.get_object(command.direct_object_id)
-        if obj:
-            result = _execute_custom_action(obj, "sing", game, state)
-            if result:
-                return result
-
-    return ActionResult(
-        message="You sing a little tune. Nothing happens.",
-        success=True,
     )
 
 

@@ -56,8 +56,7 @@ class Verb(Enum):
     # Interaction
     TALK = auto()  # TALK TO X
     SHOW = auto()  # SHOW X TO Y
-    SING = auto()  # SING
-    INSERT = auto()  # INSERT X (custom action)
+    INSERT = auto()  # INSERT X IN Y
 
     # Inventory
     INVENTORY = auto()  # aliases: I, INV
@@ -179,7 +178,6 @@ VERB_ALIASES: dict[str, Verb] = {
     "show": Verb.SHOW,
     "present": Verb.SHOW,
     "display": Verb.SHOW,
-    "sing": Verb.SING,
     "insert": Verb.INSERT,
     # Inventory
     "inventory": Verb.INVENTORY,

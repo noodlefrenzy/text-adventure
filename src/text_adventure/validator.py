@@ -71,7 +71,6 @@ class GameValidator:
         "give",
         "talk",
         "show",
-        "sing",
         "insert",
         "enter",
     }

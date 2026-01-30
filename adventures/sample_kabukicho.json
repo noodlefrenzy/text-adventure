@@ -988,6 +988,17 @@
       "requires_indirect": false,
       "prepositions": [],
       "default_message": "Nothing happens."
+    },
+    {
+      "verb": "sing",
+      "aliases": [
+        "perform",
+        "karaoke"
+      ],
+      "requires_object": false,
+      "requires_indirect": false,
+      "prepositions": [],
+      "default_message": "You hum a tune but nothing special happens."
     }
   ],
   "initial_state": {
