@@ -10,17 +10,21 @@ Supports:
 - Standard completions
 - Structured JSON output
 - Token counting for cost tracking
+- OpenTelemetry tracing (when enabled)
 """
 
 import json
 import logging
+import time
 from typing import Any
 
 import anthropic
 
 from text_adventure.llm.client import LLMClient, LLMRequest, LLMResponse
+from text_adventure.observability import get_tracer
 
 logger = logging.getLogger(__name__)
+tracer = get_tracer(__name__)
 
 
 class AnthropicClient(LLMClient):
@@ -60,47 +64,67 @@ class AnthropicClient(LLMClient):
         Returns:
             LLMResponse with the generated content
         """
-        # Convert messages to Anthropic format
-        messages = [
-            {"role": msg.role, "content": msg.content}
-            for msg in request.messages
-            if msg.role != "system"
-        ]
+        with tracer.start_as_current_span("llm.complete") as span:
+            span.set_attribute("llm.model", self._model)
+            span.set_attribute("llm.max_tokens", request.max_tokens)
+            span.set_attribute("llm.message_count", len(request.messages))
+            if request.temperature is not None:
+                span.set_attribute("llm.temperature", request.temperature)
 
-        kwargs: dict[str, Any] = {
-            "model": self._model,
-            "max_tokens": request.max_tokens,
-            "messages": messages,
-        }
+            start_time = time.perf_counter()
 
-        if request.temperature is not None:
-            kwargs["temperature"] = request.temperature
+            # Convert messages to Anthropic format
+            messages = [
+                {"role": msg.role, "content": msg.content}
+                for msg in request.messages
+                if msg.role != "system"
+            ]
 
-        if request.system:
-            kwargs["system"] = request.system
+            kwargs: dict[str, Any] = {
+                "model": self._model,
+                "max_tokens": request.max_tokens,
+                "messages": messages,
+            }
 
-        logger.debug(f"Sending request to {self._model}")
+            if request.temperature is not None:
+                kwargs["temperature"] = request.temperature
 
-        response = await self._client.messages.create(**kwargs)
+            if request.system:
+                kwargs["system"] = request.system
 
-        # Extract text content
-        content = ""
-        for block in response.content:
-            if block.type == "text":
-                content += block.text
+            logger.debug(f"Sending request to {self._model}")
 
-        logger.debug(
-            f"Response: {response.usage.input_tokens} in, {response.usage.output_tokens} out"
-        )
+            try:
+                response = await self._client.messages.create(**kwargs)
+            except Exception as e:
+                span.record_exception(e)
+                raise
 
-        return LLMResponse(
-            content=content,
-            model=response.model,
-            input_tokens=response.usage.input_tokens,
-            output_tokens=response.usage.output_tokens,
-            stop_reason=response.stop_reason,
-            raw_response=response,
-        )
+            elapsed_ms = (time.perf_counter() - start_time) * 1000
+
+            # Extract text content
+            content = ""
+            for block in response.content:
+                if block.type == "text":
+                    content += block.text
+
+            span.set_attribute("llm.input_tokens", response.usage.input_tokens)
+            span.set_attribute("llm.output_tokens", response.usage.output_tokens)
+            span.set_attribute("llm.latency_ms", elapsed_ms)
+            span.set_attribute("llm.stop_reason", response.stop_reason or "unknown")
+
+            logger.debug(
+                f"Response: {response.usage.input_tokens} in, {response.usage.output_tokens} out"
+            )
+
+            return LLMResponse(
+                content=content,
+                model=response.model,
+                input_tokens=response.usage.input_tokens,
+                output_tokens=response.usage.output_tokens,
+                stop_reason=response.stop_reason,
+                raw_response=response,
+            )
 
     async def complete_json(
         self,
@@ -122,60 +146,83 @@ class AnthropicClient(LLMClient):
         Raises:
             ValueError: If response cannot be parsed as valid JSON
         """
-        # Convert messages to Anthropic format
-        messages = [
-            {"role": msg.role, "content": msg.content}
-            for msg in request.messages
-            if msg.role != "system"
-        ]
+        with tracer.start_as_current_span("llm.complete_json") as span:
+            span.set_attribute("llm.model", self._model)
+            span.set_attribute("llm.max_tokens", request.max_tokens)
+            span.set_attribute("llm.message_count", len(request.messages))
+            span.set_attribute("llm.schema_name", schema.get("title", "unknown"))
+            if request.temperature is not None:
+                span.set_attribute("llm.temperature", request.temperature)
 
-        # Define a tool that returns the structured data
-        tool_name = "structured_response"
-        tools = [
-            {
-                "name": tool_name,
-                "description": "Return the structured response",
-                "input_schema": schema,
+            start_time = time.perf_counter()
+
+            # Convert messages to Anthropic format
+            messages = [
+                {"role": msg.role, "content": msg.content}
+                for msg in request.messages
+                if msg.role != "system"
+            ]
+
+            # Define a tool that returns the structured data
+            tool_name = "structured_response"
+            tools = [
+                {
+                    "name": tool_name,
+                    "description": "Return the structured response",
+                    "input_schema": schema,
+                }
+            ]
+
+            kwargs: dict[str, Any] = {
+                "model": self._model,
+                "max_tokens": request.max_tokens,
+                "messages": messages,
+                "tools": tools,
+                "tool_choice": {"type": "tool", "name": tool_name},
             }
-        ]
 
-        kwargs: dict[str, Any] = {
-            "model": self._model,
-            "max_tokens": request.max_tokens,
-            "messages": messages,
-            "tools": tools,
-            "tool_choice": {"type": "tool", "name": tool_name},
-        }
+            if request.temperature is not None:
+                kwargs["temperature"] = request.temperature
 
-        if request.temperature is not None:
-            kwargs["temperature"] = request.temperature
+            if request.system:
+                kwargs["system"] = request.system
 
-        if request.system:
-            kwargs["system"] = request.system
+            logger.debug(f"Sending JSON request to {self._model}")
 
-        logger.debug(f"Sending JSON request to {self._model}")
+            try:
+                response = await self._client.messages.create(**kwargs)
+            except Exception as e:
+                span.record_exception(e)
+                raise
 
-        response = await self._client.messages.create(**kwargs)
+            elapsed_ms = (time.perf_counter() - start_time) * 1000
 
-        # Extract tool use result
-        for block in response.content:
-            if block.type == "tool_use" and block.name == tool_name:
-                logger.debug(
-                    f"JSON response: {response.usage.input_tokens} in, "
-                    f"{response.usage.output_tokens} out"
-                )
-                return dict(block.input)
+            span.set_attribute("llm.input_tokens", response.usage.input_tokens)
+            span.set_attribute("llm.output_tokens", response.usage.output_tokens)
+            span.set_attribute("llm.latency_ms", elapsed_ms)
 
-        # Fallback: try to parse text content as JSON
-        for block in response.content:
-            if block.type == "text":
-                try:
-                    result: dict[str, Any] = json.loads(block.text)
-                    return result
-                except json.JSONDecodeError:
-                    pass
+            # Extract tool use result
+            for block in response.content:
+                if block.type == "tool_use" and block.name == tool_name:
+                    logger.debug(
+                        f"JSON response: {response.usage.input_tokens} in, "
+                        f"{response.usage.output_tokens} out"
+                    )
+                    span.set_attribute("llm.response_type", "tool_use")
+                    return dict(block.input)
 
-        raise ValueError("Failed to get structured JSON response from Claude")
+            # Fallback: try to parse text content as JSON
+            for block in response.content:
+                if block.type == "text":
+                    try:
+                        result: dict[str, Any] = json.loads(block.text)
+                        span.set_attribute("llm.response_type", "text_json")
+                        return result
+                    except json.JSONDecodeError:
+                        pass
+
+            span.set_attribute("llm.response_type", "failed")
+            raise ValueError("Failed to get structured JSON response from Claude")
 
 
 def create_anthropic_client(

@@ -29,6 +29,7 @@ from text_adventure.engine.engine import GameEngine
 from text_adventure.generator import GameGenerationError, GameGenerator
 from text_adventure.llm.anthropic import create_anthropic_client
 from text_adventure.models.game import Game
+from text_adventure.observability import init_telemetry
 from text_adventure.player import AIPlayer, PlaySession
 from text_adventure.ui import plain
 
@@ -228,6 +229,9 @@ def generate(
     """Generate a new text adventure game using AI."""
     settings = get_settings()
 
+    # Initialize telemetry
+    init_telemetry(settings.otel)
+
     # Check for API key
     if not settings.llm.anthropic_api_key:
         plain.print_error("ANTHROPIC_API_KEY environment variable not set.")
@@ -339,6 +343,9 @@ def ai_play(
 
     settings = get_settings()
 
+    # Initialize telemetry
+    init_telemetry(settings.otel)
+
     # Check for API key
     if not settings.llm.anthropic_api_key:
         plain.print_error("ANTHROPIC_API_KEY environment variable not set.")
@@ -448,6 +455,12 @@ def config_cmd(
         console.print(f"  Temperature: {settings.llm.temperature}")
         api_key_status = "set" if settings.llm.anthropic_api_key else "not set"
         console.print(f"  API Key: {api_key_status}")
+        console.print()
+        console.print("[bold]OpenTelemetry Settings:[/bold]")
+        console.print(f"  Enabled: {settings.otel.enabled}")
+        console.print(f"  Service name: {settings.otel.service_name}")
+        endpoint_status = settings.otel.endpoint if settings.otel.endpoint else "(console only)"
+        console.print(f"  Endpoint: {endpoint_status}")
 
 
 if __name__ == "__main__":

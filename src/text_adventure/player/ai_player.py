@@ -7,6 +7,7 @@ DEPENDENCIES: LLM client, game engine
 ARCHITECTURE NOTES:
 The AI player maintains a play history and uses the LLM to decide
 what commands to issue. It aims to explore and solve the game.
+Includes OpenTelemetry tracing for observability.
 """
 
 import logging
@@ -16,8 +17,10 @@ from typing import Any
 from text_adventure.engine.engine import GameEngine
 from text_adventure.llm.client import LLMClient, LLMMessage, LLMRequest
 from text_adventure.models.game import Game
+from text_adventure.observability import get_tracer
 
 logger = logging.getLogger(__name__)
+tracer = get_tracer(__name__)
 
 
 AI_PLAYER_SYSTEM_PROMPT = """You are an expert text adventure game player. You are playing a classic text adventure game in the style of Zork or similar Infocom games.
@@ -109,68 +112,94 @@ class AIPlayer:
         Returns:
             PlaySession with the results of the play-through.
         """
-        engine = GameEngine(game)
-        session = PlaySession()
+        with tracer.start_as_current_span("ai.play") as play_span:
+            play_span.set_attribute("ai.game_title", game.metadata.title)
+            play_span.set_attribute("ai.max_turns", max_turns)
+            play_span.set_attribute("ai.temperature", self._temperature)
+            play_span.add_event("session_started")
 
-        # Get initial room description
-        initial_description = engine.describe_current_room()
-        session.rooms_visited.add(engine.state.current_room)
-        session.responses_received.append(initial_description)
+            engine = GameEngine(game)
+            session = PlaySession()
 
-        logger.info(f"Starting AI play of '{game.metadata.title}'")
-
-        while session.turns < max_turns:
-            # Check if we're stuck
-            if session.stuck_count >= self._max_stuck_turns:
-                logger.warning("AI player is stuck, giving up")
-                session.gave_up = True
-                break
-
-            # Get the next command from the LLM
-            command = await self._get_next_command(game, session)
-            command = command.strip().upper()
-
-            logger.debug(f"Turn {session.turns + 1}: {command}")
-
-            # Execute the command
-            result = engine.process_input(command)
-
-            # Track the turn
-            session.turns += 1
-            session.commands_issued.append(command)
-            session.responses_received.append(result.message)
-
-            # Track progress
-            old_room_count = len(session.rooms_visited)
-            old_inventory_count = len(session.items_collected)
-
+            # Get initial room description
+            initial_description = engine.describe_current_room()
             session.rooms_visited.add(engine.state.current_room)
-            for item in engine.state.inventory:
-                if item not in session.items_collected:
-                    session.items_collected.append(item)
+            session.responses_received.append(initial_description)
 
-            # Check for progress
-            made_progress = (
-                len(session.rooms_visited) > old_room_count
-                or len(session.items_collected) > old_inventory_count
-            )
+            logger.info(f"Starting AI play of '{game.metadata.title}'")
 
-            if made_progress or not result.error:
-                session.stuck_count = 0
-            else:
-                session.stuck_count += 1
+            while session.turns < max_turns:
+                # Check if we're stuck
+                if session.stuck_count >= self._max_stuck_turns:
+                    logger.warning("AI player is stuck, giving up")
+                    session.gave_up = True
+                    play_span.add_event("player_stuck")
+                    break
 
-            # Callback
-            if on_turn:
-                on_turn(session.turns, command, result)
+                # Each turn gets its own span
+                with tracer.start_as_current_span("ai.turn") as turn_span:
+                    turn_span.set_attribute("ai.turn_number", session.turns + 1)
+                    turn_span.set_attribute("ai.current_room", engine.state.current_room)
 
-            # Check for game over
-            if result.game_over:
-                session.won = result.won
-                logger.info(f"Game over! Won: {result.won}")
-                break
+                    # Get the next command from the LLM (creates child span)
+                    command = await self._get_next_command(game, session)
+                    command = command.strip().upper()
 
-        return session
+                    turn_span.set_attribute("ai.command", command)
+                    logger.debug(f"Turn {session.turns + 1}: {command}")
+
+                    # Execute the command
+                    result = engine.process_input(command)
+
+                    # Track the turn
+                    session.turns += 1
+                    session.commands_issued.append(command)
+                    session.responses_received.append(result.message)
+
+                    # Track progress
+                    old_room_count = len(session.rooms_visited)
+                    old_inventory_count = len(session.items_collected)
+
+                    session.rooms_visited.add(engine.state.current_room)
+                    for item in engine.state.inventory:
+                        if item not in session.items_collected:
+                            session.items_collected.append(item)
+
+                    # Check for progress
+                    made_progress = (
+                        len(session.rooms_visited) > old_room_count
+                        or len(session.items_collected) > old_inventory_count
+                    )
+
+                    turn_span.set_attribute("ai.success", not result.error)
+                    turn_span.set_attribute("ai.made_progress", made_progress)
+
+                    if made_progress or not result.error:
+                        session.stuck_count = 0
+                    else:
+                        session.stuck_count += 1
+
+                    # Callback
+                    if on_turn:
+                        on_turn(session.turns, command, result)
+
+                    # Check for game over
+                    if result.game_over:
+                        session.won = result.won
+                        turn_span.set_attribute("ai.game_over", True)
+                        turn_span.set_attribute("ai.won", result.won)
+                        logger.info(f"Game over! Won: {result.won}")
+                        break
+
+            # Set final session attributes
+            outcome = "won" if session.won else ("stuck" if session.gave_up else "timeout")
+            play_span.set_attribute("ai.total_turns", session.turns)
+            play_span.set_attribute("ai.rooms_visited", len(session.rooms_visited))
+            play_span.set_attribute("ai.items_collected", len(session.items_collected))
+            play_span.set_attribute("ai.outcome", outcome)
+            play_span.add_event("session_ended", {"outcome": outcome})
+
+            return session
 
     async def _get_next_command(
         self,

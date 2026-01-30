@@ -20,6 +20,25 @@ from pydantic import Field
 from pydantic_settings import BaseSettings
 
 
+class OpenTelemetrySettings(BaseSettings):
+    """Settings for OpenTelemetry observability."""
+
+    enabled: bool = Field(
+        default=False,
+        description="Enable OpenTelemetry tracing",
+    )
+    service_name: str = Field(
+        default="text-adventure",
+        description="Service name for traces",
+    )
+    endpoint: str = Field(
+        default="",
+        description="OTLP endpoint (empty = console only)",
+    )
+
+    model_config = {"env_prefix": "TEXT_ADVENTURE_OTEL_"}
+
+
 class LLMSettings(BaseSettings):
     """Settings for LLM backends."""
 
@@ -76,6 +95,10 @@ class Settings(BaseSettings):
     llm: LLMSettings = Field(
         default_factory=LLMSettings,
         description="LLM settings",
+    )
+    otel: OpenTelemetrySettings = Field(
+        default_factory=OpenTelemetrySettings,
+        description="OpenTelemetry settings",
     )
 
     model_config = {"env_prefix": "TEXT_ADVENTURE_"}

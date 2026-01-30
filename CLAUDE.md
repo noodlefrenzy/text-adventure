@@ -134,6 +134,13 @@ mypy src/                     # Type checking
 - Separate "game definition" (static) from "game state" (mutable)
 - Use context managers for LLM client sessions
 - Log all LLM API calls with token counts for cost tracking
+
+**Observability:**
+- All external API calls must be traced (LLM, HTTP, database)
+- Traces should include: operation name, key parameters, latency, error status
+- Use structured span attributes, not string concatenation
+- Token counts are mandatory for LLM calls (cost visibility)
+- Keep tracing overhead minimal; batch exports, sample in production
 <!-- USER CONTENT END: code_style_additions -->
 
 ### File Operations Checklist
@@ -475,6 +482,7 @@ text-adventure/
 | Validation | Pydantic v2 | Game JSON validation, config |
 | UI | curses (stdlib) | Terminal UI (future) |
 | Testing | pytest | Test framework |
+| Observability | OpenTelemetry | Distributed tracing |
 
 ### Domain Concepts
 
@@ -692,6 +700,11 @@ ANTHROPIC_API_KEY=xxx         # For Claude
 OLLAMA_HOST=http://localhost:11434  # For local models
 TEXT_ADVENTURE_DATA_DIR=~/.text-adventure/
 LOG_LEVEL=INFO
+
+# OpenTelemetry (optional)
+TEXT_ADVENTURE_OTEL_ENABLED=true              # Enable tracing
+TEXT_ADVENTURE_OTEL_SERVICE_NAME=text-adventure  # Service name for traces
+TEXT_ADVENTURE_OTEL_ENDPOINT=http://localhost:4317  # OTLP endpoint (omit for console only)
 ```
 <!-- USER CONTENT END: workflows -->
 

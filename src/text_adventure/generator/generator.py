@@ -7,6 +7,7 @@ DEPENDENCIES: anthropic SDK, pydantic models
 ARCHITECTURE NOTES:
 The generator uses Claude's structured output feature to ensure
 valid JSON responses that match our game schema.
+Includes OpenTelemetry tracing for observability.
 """
 
 import logging
@@ -18,8 +19,10 @@ from text_adventure.generator.prompts import GENERATION_PROMPT_TEMPLATE, SYSTEM_
 from text_adventure.generator.schemas import GAME_SCHEMA
 from text_adventure.llm.client import LLMClient, LLMMessage, LLMRequest
 from text_adventure.models.game import Game
+from text_adventure.observability import get_tracer
 
 logger = logging.getLogger(__name__)
+tracer = get_tracer(__name__)
 
 
 class GameGenerationError(Exception):
@@ -66,37 +69,56 @@ class GameGenerator:
         Raises:
             GameGenerationError: If generation fails or produces invalid output.
         """
-        logger.info(f"Generating game with theme '{theme}', {num_rooms} rooms")
+        with tracer.start_as_current_span("game.generate") as span:
+            span.set_attribute("game.theme", theme)
+            span.set_attribute("game.num_rooms", num_rooms)
+            span.set_attribute("game.temperature", temperature)
+            span.add_event("generation_started")
 
-        # Build the prompt
-        user_prompt = GENERATION_PROMPT_TEMPLATE.format(
-            theme=theme,
-            num_rooms=num_rooms,
-        )
+            logger.info(f"Generating game with theme '{theme}', {num_rooms} rooms")
 
-        request = LLMRequest(
-            messages=[LLMMessage(role="user", content=user_prompt)],
-            system=SYSTEM_PROMPT,
-            max_tokens=max_tokens,
-            temperature=temperature,
-        )
+            # Build the prompt
+            user_prompt = GENERATION_PROMPT_TEMPLATE.format(
+                theme=theme,
+                num_rooms=num_rooms,
+            )
 
-        try:
-            # Get structured JSON response
-            game_data = await self._client.complete_json(request, GAME_SCHEMA)
-            logger.debug(f"Received game data with {len(game_data.get('rooms', []))} rooms")
+            request = LLMRequest(
+                messages=[LLMMessage(role="user", content=user_prompt)],
+                system=SYSTEM_PROMPT,
+                max_tokens=max_tokens,
+                temperature=temperature,
+            )
 
-            # Validate against our Pydantic model
-            game = self._validate_game(game_data)
-            logger.info(f"Successfully generated game: {game.metadata.title}")
+            try:
+                # Get structured JSON response (child span created by LLM client)
+                game_data = await self._client.complete_json(request, GAME_SCHEMA)
+                logger.debug(f"Received game data with {len(game_data.get('rooms', []))} rooms")
 
-            return game
+                # Validate against our Pydantic model
+                with tracer.start_as_current_span("game.validate") as validate_span:
+                    game = self._validate_game(game_data)
+                    validate_span.set_attribute("game.rooms_count", len(game.rooms))
+                    validate_span.set_attribute("game.objects_count", len(game.objects))
+                    validate_span.add_event("validation_complete")
 
-        except ValidationError as e:
-            # Catch ValidationError first since it inherits from ValueError
-            raise GameGenerationError(f"Generated game failed validation: {e}") from e
-        except ValueError as e:
-            raise GameGenerationError(f"LLM failed to generate valid JSON: {e}") from e
+                span.set_attribute("game.title", game.metadata.title)
+                span.set_attribute("game.rooms_count", len(game.rooms))
+                span.set_attribute("game.objects_count", len(game.objects))
+                span.add_event("game_generated")
+
+                logger.info(f"Successfully generated game: {game.metadata.title}")
+                return game
+
+            except ValidationError as e:
+                span.record_exception(e)
+                span.set_attribute("game.error", "validation_failed")
+                # Catch ValidationError first since it inherits from ValueError
+                raise GameGenerationError(f"Generated game failed validation: {e}") from e
+            except ValueError as e:
+                span.record_exception(e)
+                span.set_attribute("game.error", "json_failed")
+                raise GameGenerationError(f"LLM failed to generate valid JSON: {e}") from e
 
     def _validate_game(self, game_data: dict[str, Any]) -> Game:
         """
