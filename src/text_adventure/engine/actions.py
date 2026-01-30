@@ -851,11 +851,15 @@ def _execute_custom_action(
     # Apply state changes
     for key, value in action.state_changes.items():
         if "." in key:
-            # Object state change (e.g., "door.locked")
+            # Object state change (e.g., "door.locked") or flag (e.g., "flags.talked")
             obj_id, attr = key.split(".", 1)
-            obj_state = state.objects.get(obj_id)
-            if obj_state and hasattr(obj_state, attr):
-                setattr(obj_state, attr, value)
+            # Handle flags.flag_name syntax
+            if obj_id == "flags":
+                state.set_flag(attr, value)
+            else:
+                obj_state = state.objects.get(obj_id)
+                if obj_state and hasattr(obj_state, attr):
+                    setattr(obj_state, attr, value)
         else:
             # Flag change
             state.set_flag(key, value)
