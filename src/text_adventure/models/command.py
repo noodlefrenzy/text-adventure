@@ -53,6 +53,12 @@ class Verb(Enum):
     # Tool use
     USE = auto()  # USE X WITH Y
 
+    # Interaction
+    TALK = auto()  # TALK TO X
+    SHOW = auto()  # SHOW X TO Y
+    SING = auto()  # SING
+    INSERT = auto()  # INSERT X (custom action)
+
     # Inventory
     INVENTORY = auto()  # aliases: I, INV
 
@@ -160,6 +166,15 @@ VERB_ALIASES: dict[str, Verb] = {
     "unlock": Verb.UNLOCK,
     # Tool use
     "use": Verb.USE,
+    # Interaction
+    "talk": Verb.TALK,
+    "speak": Verb.TALK,
+    "say": Verb.TALK,
+    "show": Verb.SHOW,
+    "present": Verb.SHOW,
+    "display": Verb.SHOW,
+    "sing": Verb.SING,
+    "insert": Verb.INSERT,
     # Inventory
     "inventory": Verb.INVENTORY,
     "i": Verb.INVENTORY,
@@ -219,6 +234,9 @@ VERBS_REQUIRING_OBJECT: set[Verb] = {
     Verb.LOCK,
     Verb.UNLOCK,
     Verb.USE,
+    Verb.TALK,
+    Verb.SHOW,
+    Verb.INSERT,
 }
 
 # Verbs that can take a preposition and indirect object
@@ -228,4 +246,6 @@ VERBS_WITH_INDIRECT: set[Verb] = {
     Verb.UNLOCK,  # UNLOCK X WITH Y
     Verb.LOCK,  # LOCK X WITH Y
     Verb.USE,  # USE X WITH/ON Y
+    Verb.SHOW,  # SHOW X TO Y
+    Verb.INSERT,  # INSERT X IN/INTO Y
 }

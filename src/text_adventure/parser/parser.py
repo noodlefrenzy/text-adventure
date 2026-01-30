@@ -74,6 +74,9 @@ MULTI_WORD_VERBS: dict[tuple[str, str], Verb] = {
     ("turn", "off"): Verb.USE,
     ("switch", "on"): Verb.USE,
     ("switch", "off"): Verb.USE,
+    ("talk", "to"): Verb.TALK,  # TALK TO person -> talk person
+    ("speak", "to"): Verb.TALK,
+    ("speak", "with"): Verb.TALK,
 }
 
 # Direction words for GO command

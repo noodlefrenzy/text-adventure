@@ -60,6 +60,10 @@ def execute_action(
         Verb.LOCK: handle_lock,
         Verb.UNLOCK: handle_unlock,
         Verb.USE: handle_use,
+        Verb.TALK: handle_talk,
+        Verb.SHOW: handle_show,
+        Verb.SING: handle_sing,
+        Verb.INSERT: handle_insert,
     }
 
     handler = handlers.get(command.verb)
@@ -483,6 +487,182 @@ def handle_use(
 
     return ActionResult(
         message=f"You're not sure how to use the {obj.name}.",
+        success=False,
+    )
+
+
+def handle_talk(
+    command: ResolvedCommand,
+    game: Game,
+    state: GameState,
+) -> ActionResult:
+    """Handle TALK TO X commands."""
+    if not command.direct_object_id:
+        return ActionResult(message="Talk to whom?", success=False)
+
+    obj = game.get_object(command.direct_object_id)
+    if not obj:
+        return ActionResult(message="You can't see that here.", success=False)
+
+    # Check for custom talk action
+    result = _execute_custom_action(obj, "talk", game, state)
+    if result:
+        return result
+
+    return ActionResult(
+        message=f"The {obj.name} doesn't respond.",
+        success=False,
+    )
+
+
+def handle_show(
+    command: ResolvedCommand,
+    game: Game,
+    state: GameState,
+) -> ActionResult:
+    """Handle SHOW X TO Y commands."""
+    if not command.direct_object_id:
+        return ActionResult(message="Show what?", success=False)
+
+    obj = game.get_object(command.direct_object_id)
+    if not obj:
+        return ActionResult(message="You can't see that here.", success=False)
+
+    # Must be holding the object to show it
+    if not state.is_in_inventory(command.direct_object_id):
+        return ActionResult(
+            message=f"You're not holding the {obj.name}.",
+            success=False,
+        )
+
+    # If showing to someone specific
+    if command.indirect_object_id:
+        recipient = game.get_object(command.indirect_object_id)
+        if not recipient:
+            return ActionResult(message="You can't see that here.", success=False)
+
+        # Check for custom show action on the recipient
+        action_key = f"show:{command.direct_object_id}"
+        result = _execute_custom_action(recipient, action_key, game, state)
+        if result:
+            return result
+
+        # Also check for a generic "show" action on recipient
+        result = _execute_custom_action(recipient, "show", game, state)
+        if result:
+            return result
+
+        return ActionResult(
+            message=f"The {recipient.name} doesn't seem interested.",
+            success=False,
+        )
+
+    # Showing without a target - look for nearby objects with "show" action
+    # triggered by this object
+    current_room = game.get_room(state.current_room)
+    if current_room:
+        for obj_id in current_room.objects:
+            room_obj = game.get_object(obj_id)
+            if room_obj:
+                result = _execute_custom_action(room_obj, "show", game, state)
+                if result:
+                    return result
+
+    return ActionResult(
+        message="You wave it around but nothing happens.",
+        success=False,
+    )
+
+
+def handle_sing(
+    command: ResolvedCommand,
+    game: Game,
+    state: GameState,
+) -> ActionResult:
+    """Handle SING commands."""
+    # Check if there's an object that responds to singing
+    current_room = game.get_room(state.current_room)
+    if current_room:
+        for obj_id in current_room.objects:
+            obj = game.get_object(obj_id)
+            if obj:
+                result = _execute_custom_action(obj, "sing", game, state)
+                if result:
+                    return result
+
+    # If singing at a specific object
+    if command.direct_object_id:
+        obj = game.get_object(command.direct_object_id)
+        if obj:
+            result = _execute_custom_action(obj, "sing", game, state)
+            if result:
+                return result
+
+    return ActionResult(
+        message="You sing a little tune. Nothing happens.",
+        success=True,
+    )
+
+
+def handle_insert(
+    command: ResolvedCommand,
+    game: Game,
+    state: GameState,
+) -> ActionResult:
+    """Handle INSERT X [IN Y] commands."""
+    if not command.direct_object_id:
+        return ActionResult(message="Insert what?", success=False)
+
+    obj = game.get_object(command.direct_object_id)
+    if not obj:
+        return ActionResult(message="You can't see that here.", success=False)
+
+    # Must be holding the object to insert it
+    if not state.is_in_inventory(command.direct_object_id):
+        return ActionResult(
+            message=f"You're not holding the {obj.name}.",
+            success=False,
+        )
+
+    # If inserting into something specific
+    if command.indirect_object_id:
+        target = game.get_object(command.indirect_object_id)
+        if not target:
+            return ActionResult(message="You can't see that here.", success=False)
+
+        # Check for custom insert action on the target
+        action_key = f"insert:{command.direct_object_id}"
+        result = _execute_custom_action(target, action_key, game, state)
+        if result:
+            return result
+
+        # Check for generic insert action on target
+        result = _execute_custom_action(target, "insert", game, state)
+        if result:
+            return result
+
+        return ActionResult(
+            message=f"You can't insert the {obj.name} into the {target.name}.",
+            success=False,
+        )
+
+    # Inserting without explicit target - look for objects that accept insertion
+    current_room = game.get_room(state.current_room)
+    if current_room:
+        for target_id in current_room.objects:
+            target = game.get_object(target_id)
+            if target:
+                action_key = f"insert:{command.direct_object_id}"
+                result = _execute_custom_action(target, action_key, game, state)
+                if result:
+                    return result
+                # Also try generic insert
+                result = _execute_custom_action(target, "insert", game, state)
+                if result:
+                    return result
+
+    return ActionResult(
+        message=f"You're not sure where to insert the {obj.name}.",
         success=False,
     )
 
