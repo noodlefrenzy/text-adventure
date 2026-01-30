@@ -757,7 +757,45 @@ def _evaluate_condition(condition: str, state: GameState) -> bool:
     Supports:
     - "object.attribute" (e.g., "door.locked")
     - "flag_name" (checks if flag is truthy)
+    - "flags.flag_name" (explicit flag syntax)
+    - "inventory.includes('item_id')" (inventory check)
+    - "!condition" (negation)
+    - "condition1 && condition2" (logical AND)
+    - "condition1 || condition2" (logical OR)
     """
+    condition = condition.strip()
+
+    # Handle logical AND (&&)
+    if " && " in condition:
+        parts = condition.split(" && ")
+        return all(_evaluate_condition(part.strip(), state) for part in parts)
+
+    # Handle logical OR (||)
+    if " || " in condition:
+        parts = condition.split(" || ")
+        return any(_evaluate_condition(part.strip(), state) for part in parts)
+
+    # Handle negation (!)
+    if condition.startswith("!"):
+        return not _evaluate_condition(condition[1:].strip(), state)
+
+    # Handle inventory.includes('item_id')
+    if condition.startswith("inventory.includes("):
+        # Extract item_id from inventory.includes('item_id') or inventory.includes("item_id")
+        import re
+
+        match = re.match(r"inventory\.includes\(['\"]([^'\"]+)['\"]\)", condition)
+        if match:
+            item_id = match.group(1)
+            return state.is_in_inventory(item_id)
+        return False
+
+    # Handle flags.flag_name syntax
+    if condition.startswith("flags."):
+        flag_name = condition[6:]  # Remove "flags." prefix
+        return bool(state.get_flag(flag_name))
+
+    # Handle object.attribute (e.g., "door.locked")
     if "." in condition:
         obj_id, attr = condition.split(".", 1)
         obj_state = state.objects.get(obj_id)
@@ -765,6 +803,7 @@ def _evaluate_condition(condition: str, state: GameState) -> bool:
             return bool(getattr(obj_state, attr))
         return False
 
+    # Simple flag name
     return bool(state.get_flag(condition))
 
 
