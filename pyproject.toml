@@ -10,7 +10,7 @@ readme = "README.md"
 license = "MIT"
 requires-python = ">=3.11"
 authors = [
-    { name = "Your Name", email = "you@example.com" }
+    { name = "noodlefrenzy", email = "nospam@no.spam" }
 ]
 keywords = ["text-adventure", "llm", "game", "interactive-fiction"]
 classifiers = [
@@ -49,8 +49,8 @@ ollama = [
 text-adventure = "text_adventure.cli:app"
 
 [project.urls]
-Homepage = "https://github.com/yourusername/text-adventure"
-Repository = "https://github.com/yourusername/text-adventure"
+Homepage = "https://github.com/noodlefrenzy/text-adventure"
+Repository = "https://github.com/noodlefrenzy/text-adventure"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/text_adventure"]
