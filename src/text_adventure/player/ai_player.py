@@ -27,6 +27,8 @@ AI_PLAYER_SYSTEM_PROMPT = """You are an expert text adventure game player. You a
 
 Your goal is to explore the game world, solve puzzles, and achieve the win condition.
 
+Important: When you enter a room, you automatically see its description. Only use LOOK if you think the room state may have changed (e.g., after manipulating objects, unlocking something, or if time has passed). Don't LOOK immediately after entering a room.
+
 You must respond with valid JSON containing:
 1. "command": The command to execute (e.g., "NORTH", "EXAMINE LAMP")
 2. "knowledge": Your compressed understanding of the game state, including:
