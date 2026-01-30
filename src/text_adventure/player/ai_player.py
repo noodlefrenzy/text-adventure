@@ -68,7 +68,11 @@ Example response:
 }
 ```
 
-Keep knowledge compact but informative. Update it each turn based on what you learn."""
+IMPORTANT: Keep your knowledge state VERY compact to avoid truncation:
+- Use short room IDs, not full names (e.g., "plaza" not "Kabukicho Central Plaza")
+- Only track key objects and clues, not everything
+- Limit plan to 1-2 sentences
+- Limit tried_and_failed to last 3-5 attempts"""
 
 
 @dataclass
@@ -259,7 +263,7 @@ class AIPlayer:
         request = LLMRequest(
             messages=[LLMMessage(role="user", content=context)],
             system=AI_PLAYER_SYSTEM_PROMPT,
-            max_tokens=1024,  # Need more tokens for JSON response with knowledge
+            max_tokens=2048,  # Need sufficient tokens for JSON response with knowledge state
             temperature=self._temperature,
         )
 
