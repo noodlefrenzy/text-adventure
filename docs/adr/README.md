@@ -13,6 +13,7 @@ ADRs document significant architectural decisions, their context, and consequenc
 | [ADR-003](003-game-data-format.md) | Game Data Format | Accepted |
 | [ADR-004](004-state-management.md) | State Management Architecture | Accepted |
 | [ADR-005](005-cli-framework.md) | CLI Framework Selection | Accepted |
+| [ADR-006](006-custom-actions-architecture.md) | Custom Actions Architecture | Accepted |
 
 ## ADR Format
 
