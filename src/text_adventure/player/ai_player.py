@@ -23,27 +23,21 @@ logger = logging.getLogger(__name__)
 tracer = get_tracer(__name__)
 
 
-AI_PLAYER_SYSTEM_PROMPT = """You are an expert text adventure game player. You are playing a classic text adventure game in the style of Zork or similar Infocom games.
+AI_PLAYER_SYSTEM_PROMPT = """You are an expert text adventure game player. You are playing a classic text adventure game.
 
 Your goal is to explore the game world, solve puzzles, and achieve the win condition.
 
-CRITICAL RULES:
-- NEVER repeat the same command twice in a row
-- NEVER keep checking INVENTORY or using LOOK repeatedly - once is enough per room
-- If a command fails or does nothing useful, try something DIFFERENT
-- If you're stuck, explore a NEW direction or try a NEW object
-- EXAMINE objects you haven't examined yet for clues
-- Progress means: visiting new rooms, taking new items, or solving puzzles
-
-Strategy tips:
-- When entering a new room, LOOK once, then EXAMINE interesting objects
-- Pick up items that seem useful (TAKE/GET)
-- Check INVENTORY only when you need to remember what you have
-- Try all exits from a room before giving up
-- READ any books, notes, or signs for hints
-- If a door is locked, search other rooms for a key
-- Use items WITH other items when appropriate (UNLOCK DOOR WITH KEY)
-- TALK to characters you meet - they may give hints
+You must respond with valid JSON containing:
+1. "command": The command to execute (e.g., "NORTH", "EXAMINE LAMP")
+2. "knowledge": Your compressed understanding of the game state, including:
+   - "map": Rooms you've visited and their exits (e.g., {"entrance": {"north": "hall", "east": "?"}})
+   - "current_room": Where you are now
+   - "inventory": Items you're carrying
+   - "objects_seen": Notable objects and what you learned from them
+   - "locked_doors": Doors/containers that are locked and what might open them
+   - "clues": Important information you've discovered
+   - "plan": Your current strategy or next steps to try
+   - "tried_and_failed": Things you attempted that didn't work (to avoid repeating)
 
 Commands you can use:
 - Movement: NORTH, SOUTH, EAST, WEST, UP, DOWN (or N, S, E, W, U, D)
@@ -55,14 +49,24 @@ Commands you can use:
 - Interaction: TALK TO <character>, SHOW <object> TO <character>
 - Meta: INVENTORY (or I)
 
-Respond with ONLY a single command, nothing else. No explanation, no commentary, just the command.
+Example response:
+```json
+{
+  "command": "EXAMINE BRASS KEY",
+  "knowledge": {
+    "map": {"entrance": {"north": "library"}, "library": {"south": "entrance", "east": "locked"}},
+    "current_room": "library",
+    "inventory": ["brass key", "note"],
+    "objects_seen": {"note": "mentions a secret door behind bookshelf"},
+    "locked_doors": {"library east door": "need to find lever?"},
+    "clues": ["note mentions secret door", "brass key found in drawer"],
+    "plan": "examine the key to see if it has markings, then try the locked door",
+    "tried_and_failed": ["push bookshelf (doesn't move)"]
+  }
+}
+```
 
-Examples of valid responses:
-NORTH
-EXAMINE LAMP
-TAKE BRASS KEY
-UNLOCK DOOR WITH KEY
-TALK TO GUARD"""
+Keep knowledge compact but informative. Update it each turn based on what you learn."""
 
 
 @dataclass
@@ -76,20 +80,8 @@ class PlaySession:
     items_collected: list[str] = field(default_factory=list)
     won: bool = False
     gave_up: bool = False
-    stuck_count: float = 0  # Consecutive turns without progress (float for partial increments)
-    failed_commands: list[str] = field(default_factory=list)  # Commands that didn't work
-    examined_objects: set[str] = field(default_factory=set)  # Objects we've examined
-    recent_commands: list[str] = field(default_factory=list)  # Last N commands for loop detection
-
-    def is_repeating(self, command: str, window: int = 5) -> bool:
-        """Check if command was recently issued."""
-        recent = self.recent_commands[-window:] if self.recent_commands else []
-        return command.upper() in [c.upper() for c in recent]
-
-    def count_recent(self, command: str, window: int = 10) -> int:
-        """Count how many times a command appeared recently."""
-        recent = self.recent_commands[-window:] if self.recent_commands else []
-        return sum(1 for c in recent if c.upper() == command.upper())
+    stuck_count: float = 0  # Consecutive turns without progress
+    ai_knowledge: dict[str, Any] = field(default_factory=dict)  # AI's compressed game state
 
 
 class AIPlayer:
@@ -177,17 +169,6 @@ class AIPlayer:
                     session.turns += 1
                     session.commands_issued.append(command)
                     session.responses_received.append(result.message)
-                    session.recent_commands.append(command)
-
-                    # Track examined objects
-                    if command.startswith("EXAMINE ") or command.startswith("X "):
-                        obj_name = command.split(" ", 1)[1] if " " in command else ""
-                        if obj_name:
-                            session.examined_objects.add(obj_name.lower())
-
-                    # Track failed commands
-                    if result.error:
-                        session.failed_commands.append(command)
 
                     # Track progress
                     old_room_count = len(session.rooms_visited)
@@ -204,19 +185,15 @@ class AIPlayer:
                         or len(session.items_collected) > old_inventory_count
                     )
 
-                    # Detect repetitive behavior (even if commands "succeed")
-                    is_repetitive = session.count_recent(command, window=6) >= 3
-
                     turn_span.set_attribute("ai.success", not result.error)
                     turn_span.set_attribute("ai.made_progress", made_progress)
-                    turn_span.set_attribute("ai.is_repetitive", is_repetitive)
 
                     if made_progress:
                         session.stuck_count = 0
-                    elif result.error or is_repetitive:
+                    elif result.error:
                         session.stuck_count += 1
                     else:
-                        # Successful but no progress - slightly increment
+                        # Successful but no tangible progress
                         session.stuck_count += 0.5
 
                     # Callback
@@ -256,28 +233,53 @@ class AIPlayer:
         Returns:
             The command to execute.
         """
+        import json
+
         # Build context for the LLM
         context = self._build_context(game, session)
 
         request = LLMRequest(
             messages=[LLMMessage(role="user", content=context)],
             system=AI_PLAYER_SYSTEM_PROMPT,
-            max_tokens=50,  # Commands are short
+            max_tokens=1024,  # Need more tokens for JSON response with knowledge
             temperature=self._temperature,
         )
 
         response = await self._client.complete(request)
-        command = response.content.strip()
+        raw_response = response.content.strip()
 
-        # Clean up the response - sometimes LLMs add extra text
-        # Take only the first line
-        if "\n" in command:
-            command = command.split("\n")[0].strip()
+        # Try to parse as JSON
+        command = ""
+        try:
+            # Handle markdown code blocks
+            if "```json" in raw_response:
+                json_str = raw_response.split("```json")[1].split("```")[0].strip()
+            elif "```" in raw_response:
+                json_str = raw_response.split("```")[1].split("```")[0].strip()
+            else:
+                json_str = raw_response
 
-        # Remove quotes if present
-        command = command.strip("\"'")
+            data = json.loads(json_str)
 
-        return command
+            # Handle dict response with command and knowledge
+            if isinstance(data, dict):
+                command = data.get("command", "").strip()
+
+                # Store the AI's knowledge state
+                if "knowledge" in data:
+                    session.ai_knowledge = data["knowledge"]
+                    logger.debug(f"AI knowledge updated: {list(session.ai_knowledge.keys())}")
+            else:
+                # JSON parsed but wasn't a dict (e.g., just a string)
+                command = str(data).strip()
+
+        except (json.JSONDecodeError, IndexError):
+            # Fallback: treat as plain command
+            logger.debug(f"Response not JSON, using as plain command: {raw_response[:50]}")
+            command = raw_response.split("\n")[0].strip()
+            command = command.strip("\"'")
+
+        return command.upper() if command else "LOOK"
 
     def _build_context(self, game: Game, session: PlaySession) -> str:
         """
@@ -290,52 +292,43 @@ class AIPlayer:
         Returns:
             Context string describing the current situation.
         """
+        import json
+
         parts = [
             f"Game: {game.metadata.title}",
             f"Objective: {self._describe_objective(game)}",
-            f"Progress: {len(session.rooms_visited)} rooms visited, {len(session.items_collected)} items collected",
+            f"Turn: {session.turns + 1}",
             "",
         ]
 
-        # Warn about repetitive commands
-        if session.recent_commands:
-            recent_5 = session.recent_commands[-5:]
-            repeated = [c for c in set(recent_5) if recent_5.count(c) >= 2]
-            if repeated:
-                parts.append(f"WARNING: You've been repeating these commands: {', '.join(repeated)}")
-                parts.append("Try something DIFFERENT!")
+        # Include AI's previous knowledge state if available
+        if session.ai_knowledge:
+            parts.append("Your previous knowledge state:")
+            parts.append("```json")
+            parts.append(json.dumps(session.ai_knowledge, indent=2))
+            parts.append("```")
+            parts.append("")
+
+        # Show recent history (last 3 turns to save tokens)
+        if session.commands_issued:
+            parts.append("Recent actions:")
+            start_idx = max(0, len(session.commands_issued) - 3)
+            for i in range(start_idx, len(session.commands_issued)):
+                parts.append(f"> {session.commands_issued[i]}")
+                # Truncate long responses
+                response = session.responses_received[i + 1]
+                if len(response) > 300:
+                    response = response[:300] + "..."
+                parts.append(response)
                 parts.append("")
 
-        # Show what has failed recently
-        recent_failures = session.failed_commands[-3:] if session.failed_commands else []
-        if recent_failures:
-            parts.append(f"Commands that didn't work: {', '.join(recent_failures)}")
-            parts.append("")
-
-        parts.append("Recent history (last 5 turns):")
-
-        # Show recent history
-        start_idx = max(0, len(session.commands_issued) - 5)
-        for i in range(start_idx, len(session.commands_issued)):
-            parts.append(f"> {session.commands_issued[i]}")
-            parts.append(session.responses_received[i + 1])  # +1 because first response is initial
-            parts.append("")
-
-        # Show current situation (last response)
+        # Show current situation (last response in full)
         if session.responses_received:
             parts.append("Current situation:")
             parts.append(session.responses_received[-1])
             parts.append("")
 
-        # Suggest what to try
-        if session.stuck_count >= 3:
-            parts.append("HINT: You seem stuck. Try:")
-            parts.append("- Exploring a direction you haven't tried")
-            parts.append("- Examining an object you haven't looked at")
-            parts.append("- Using an item from your inventory")
-            parts.append("")
-
-        parts.append("What is your next command? (Remember: don't repeat recent commands)")
+        parts.append("Respond with JSON containing your command and updated knowledge state.")
 
         return "\n".join(parts)
 
