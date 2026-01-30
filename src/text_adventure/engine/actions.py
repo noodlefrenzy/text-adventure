@@ -17,7 +17,7 @@ returning results without side effects beyond state mutation.
 from dataclasses import dataclass
 
 from text_adventure.models.command import Preposition, Verb
-from text_adventure.models.game import Game, GameObject
+from text_adventure.models.game import Game, GameObject, ObjectAction
 from text_adventure.models.state import GameState
 from text_adventure.parser.resolver import ResolvedCommand
 
@@ -632,12 +632,9 @@ def handle_insert(
 
         # Check for custom insert action on the target
         action_key = f"insert:{command.direct_object_id}"
-        result = _execute_custom_action(target, action_key, game, state)
-        if result:
-            return result
-
-        # Check for generic insert action on target
-        result = _execute_custom_action(target, "insert", game, state)
+        result = _execute_custom_action_with_hint(
+            obj, target, action_key, "insert", game, state
+        )
         if result:
             return result
 
@@ -653,11 +650,9 @@ def handle_insert(
             target = game.get_object(target_id)
             if target:
                 action_key = f"insert:{command.direct_object_id}"
-                result = _execute_custom_action(target, action_key, game, state)
-                if result:
-                    return result
-                # Also try generic insert
-                result = _execute_custom_action(target, "insert", game, state)
+                result = _execute_custom_action_with_hint(
+                    obj, target, action_key, "insert", game, state
+                )
                 if result:
                     return result
 
@@ -665,6 +660,126 @@ def handle_insert(
         message=f"You're not sure where to insert the {obj.name}.",
         success=False,
     )
+
+
+def _execute_custom_action_with_hint(
+    item: GameObject,
+    target: GameObject,
+    action_key: str,
+    fallback_action_key: str,
+    _game: Game,
+    state: GameState,
+) -> ActionResult | None:
+    """
+    Execute a custom action with better error hints when conditions fail.
+
+    Tries action_key first, then fallback_action_key.
+    If a condition fails, provides hints about what might be missing.
+    """
+    # Try specific action key first
+    for key in [action_key, fallback_action_key]:
+        if key not in target.actions:
+            continue
+
+        action = target.actions[key]
+
+        # Simple string action - always succeeds
+        if isinstance(action, str):
+            return ActionResult(message=action)
+
+        # Complex action - check condition
+        if action.condition:
+            if _evaluate_condition(action.condition, state):
+                # Condition passed - execute the action
+                return _apply_action_effects(action, state)
+            else:
+                # Condition failed - provide a hint if no fail_message
+                if action.fail_message:
+                    return ActionResult(message=action.fail_message, success=False)
+                else:
+                    # Generate a helpful hint based on the condition
+                    hint = _generate_condition_hint(action.condition, item, target, state)
+                    return ActionResult(message=hint, success=False)
+        else:
+            # No condition - execute the action
+            return _apply_action_effects(action, state)
+
+    return None
+
+
+def _apply_action_effects(action: "ObjectAction", state: GameState) -> ActionResult:
+    """Apply the effects of an action and return the result."""
+    # Apply state changes
+    for key, value in action.state_changes.items():
+        if "." in key:
+            # Object state change (e.g., "door.locked")
+            obj_id, attr = key.split(".", 1)
+            # Handle flags.flag_name syntax
+            if obj_id == "flags":
+                state.set_flag(attr, value)
+            else:
+                obj_state = state.objects.get(obj_id)
+                if obj_state and hasattr(obj_state, attr):
+                    setattr(obj_state, attr, value)
+        else:
+            # Flag change
+            state.set_flag(key, value)
+
+    # Reveal object if specified
+    if action.reveals_object:
+        revealed_state = state.objects.get(action.reveals_object)
+        if revealed_state:
+            revealed_state.hidden = False
+
+    # Consume object if specified
+    if action.consumes_object:
+        # Find the object being consumed and remove it
+        pass  # TODO: implement if needed
+
+    # Move player if specified
+    if action.moves_player:
+        state.current_room = action.moves_player
+
+    return ActionResult(message=action.message)
+
+
+def _generate_condition_hint(
+    condition: str,
+    _item: GameObject,
+    target: GameObject,
+    state: GameState,
+) -> str:
+    """Generate a helpful hint when a condition fails."""
+    # Check for common condition patterns and provide specific hints
+    if "talked_to" in condition or "talk" in condition:
+        return f"Maybe you should try talking to the {target.name} first."
+
+    if "inventory.includes" in condition:
+        # Extract the item name from the condition
+        import re
+
+        match = re.search(r"inventory\.includes\(['\"]([^'\"]+)['\"]\)", condition)
+        if match:
+            required_item = match.group(1)
+            if not state.is_in_inventory(required_item):
+                return "You might need to find something first. Do you have the right item?"
+
+    if "&&" in condition:
+        # Multiple conditions - check which ones fail
+        parts = condition.split(" && ")
+        hints = []
+        for part in parts:
+            part = part.strip()
+            if not _evaluate_condition(part, state):
+                if "talked" in part or "talk" in part:
+                    hints.append(f"talk to the {target.name}")
+                elif "inventory" in part:
+                    hints.append("have the right item")
+        if hints:
+            return f"You might need to {' and '.join(hints)} first."
+
+    # Generic fallback
+    return f"The {target.name} doesn't respond. Maybe you're missing something."
 
 
 def _get_custom_action(
