@@ -91,9 +91,7 @@ class GameValidator:
         self.room_ids = {room.id for room in game.rooms}
         self.object_ids = {obj.id for obj in game.objects}
         self.custom_verbs = {v.verb.lower() for v in game.verbs}
-        self.custom_verb_aliases = {
-            alias.lower() for v in game.verbs for alias in v.aliases
-        }
+        self.custom_verb_aliases = {alias.lower() for v in game.verbs for alias in v.aliases}
 
     def validate(self) -> list[ValidationIssue]:
         """
@@ -127,9 +125,7 @@ class GameValidator:
         for obj in self.game.objects:
             self._validate_object(obj, revealed_objects)
 
-    def _validate_object(
-        self, obj: GameObject, revealed_objects: set[str]
-    ) -> None:
+    def _validate_object(self, obj: GameObject, revealed_objects: set[str]) -> None:
         """Validate a single game object."""
         location = f"object:{obj.id}"
 
@@ -315,13 +311,9 @@ class GameValidator:
 
     def _validate_win_condition(self) -> None:
         """Validate win condition."""
-        self._validate_win_condition_recursive(
-            self.game.win_condition, "win_condition"
-        )
+        self._validate_win_condition_recursive(self.game.win_condition, "win_condition")
 
-    def _validate_win_condition_recursive(
-        self, condition: WinCondition, location: str
-    ) -> None:
+    def _validate_win_condition_recursive(self, condition: WinCondition, location: str) -> None:
         """Recursively validate win conditions."""
         if condition.type == "reach_room" and condition.room:
             if condition.room not in self.room_ids:
@@ -343,9 +335,7 @@ class GameValidator:
                 )
         elif condition.type in ("all_of", "any_of") and condition.conditions:
             for i, sub in enumerate(condition.conditions):
-                self._validate_win_condition_recursive(
-                    sub, f"{location}/conditions[{i}]"
-                )
+                self._validate_win_condition_recursive(sub, f"{location}/conditions[{i}]")
 
     def _is_known_verb(self, verb: str) -> bool:
         """Check if a verb is recognized by the engine."""

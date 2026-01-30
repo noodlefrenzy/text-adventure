@@ -631,9 +631,7 @@ def handle_insert(
 
         # Check for custom insert action on the target
         action_key = f"insert:{command.direct_object_id}"
-        result = _execute_custom_action_with_hint(
-            obj, target, action_key, "insert", game, state
-        )
+        result = _execute_custom_action_with_hint(obj, target, action_key, "insert", game, state)
         if result:
             return result
 

@@ -27,101 +27,103 @@ from text_adventure.models.game import Game
 @pytest.fixture
 def game_with_custom_actions():
     """A minimal game with various custom action patterns."""
-    return Game.model_validate({
-        "metadata": {"title": "Custom Action Test", "description": "Testing"},
-        "rooms": [
-            {
-                "id": "start",
-                "name": "Start Room",
-                "description": "A test room.",
-                "exits": {},
-                "objects": ["code_door", "npc", "machine"],
-            },
-            {
-                "id": "secret_room",
-                "name": "Secret Room",
-                "description": "You made it!",
-                "exits": {"south": "start"},
-                "objects": [],
-            },
-        ],
-        "objects": [
-            {
-                "id": "code_door",
-                "name": "door",
-                "description": "A door with a keypad.",
-                "location": "start",
-                "takeable": False,
-                "lockable": True,
-                "locked": True,
-                "openable": False,  # Can't open normally
-                "key_object": None,  # No physical key
-                "actions": {
-                    "unlock": {
-                        "message": "You enter the code. Click!",
-                        "condition": "flags.has_code",
-                        "state_changes": {"code_door.locked": False},
-                    },
-                    "open": {
-                        "message": "The door swings open.",
-                        "condition": "!code_door.locked",
-                        "state_changes": {"code_door.is_open": True},
-                    },
-                    "enter": {
-                        "message": "You step through the door.",
-                        "condition": "code_door.is_open",
-                        "moves_player": "secret_room",
+    return Game.model_validate(
+        {
+            "metadata": {"title": "Custom Action Test", "description": "Testing"},
+            "rooms": [
+                {
+                    "id": "start",
+                    "name": "Start Room",
+                    "description": "A test room.",
+                    "exits": {},
+                    "objects": ["code_door", "npc", "machine"],
+                },
+                {
+                    "id": "secret_room",
+                    "name": "Secret Room",
+                    "description": "You made it!",
+                    "exits": {"south": "start"},
+                    "objects": [],
+                },
+            ],
+            "objects": [
+                {
+                    "id": "code_door",
+                    "name": "door",
+                    "description": "A door with a keypad.",
+                    "location": "start",
+                    "takeable": False,
+                    "lockable": True,
+                    "locked": True,
+                    "openable": False,  # Can't open normally
+                    "key_object": None,  # No physical key
+                    "actions": {
+                        "unlock": {
+                            "message": "You enter the code. Click!",
+                            "condition": "flags.has_code",
+                            "state_changes": {"code_door.locked": False},
+                        },
+                        "open": {
+                            "message": "The door swings open.",
+                            "condition": "!code_door.locked",
+                            "state_changes": {"code_door.is_open": True},
+                        },
+                        "enter": {
+                            "message": "You step through the door.",
+                            "condition": "code_door.is_open",
+                            "moves_player": "secret_room",
+                        },
                     },
                 },
-            },
-            {
-                "id": "npc",
-                "name": "guard",
-                "description": "A guard.",
-                "location": "start",
-                "takeable": False,
-                "actions": {
-                    "talk": {
-                        "message": "The guard whispers: 'The code is 1234.'",
-                        "state_changes": {"flags.has_code": True},
+                {
+                    "id": "npc",
+                    "name": "guard",
+                    "description": "A guard.",
+                    "location": "start",
+                    "takeable": False,
+                    "actions": {
+                        "talk": {
+                            "message": "The guard whispers: 'The code is 1234.'",
+                            "state_changes": {"flags.has_code": True},
+                        },
                     },
                 },
-            },
-            {
-                "id": "machine",
-                "name": "vending machine",
-                "description": "A machine.",
-                "location": "start",
-                "takeable": False,
-                "actions": {
-                    "use": {
-                        "message": "You use the machine.",
-                        "condition": "flags.has_code && inventory.includes('coin')",
-                        "state_changes": {"flags.used_machine": True},
-                        "reveals_object": "prize",
+                {
+                    "id": "machine",
+                    "name": "vending machine",
+                    "description": "A machine.",
+                    "location": "start",
+                    "takeable": False,
+                    "actions": {
+                        "use": {
+                            "message": "You use the machine.",
+                            "condition": "flags.has_code && inventory.includes('coin')",
+                            "state_changes": {"flags.used_machine": True},
+                            "reveals_object": "prize",
+                        },
                     },
                 },
-            },
-            {
-                "id": "coin",
-                "name": "coin",
-                "description": "A shiny coin.",
-                "location": "start",
-                "takeable": True,
-            },
-            {
-                "id": "prize",
-                "name": "prize",
-                "description": "A prize from the machine.",
-                "location": "start",
-                "takeable": True,
-                "hidden": True,  # Revealed by machine
-            },
-        ],
-        "verbs": [],
-        "initial_state": {"current_room": "start", "inventory": []},
-        "win_condition": {"type": "reach_room", "room": "secret_room"},
-    })
+                {
+                    "id": "coin",
+                    "name": "coin",
+                    "description": "A shiny coin.",
+                    "location": "start",
+                    "takeable": True,
+                },
+                {
+                    "id": "prize",
+                    "name": "prize",
+                    "description": "A prize from the machine.",
+                    "location": "start",
+                    "takeable": True,
+                    "hidden": True,  # Revealed by machine
+                },
+            ],
+            "verbs": [],
+            "initial_state": {"current_room": "start", "inventory": []},
+            "win_condition": {"type": "reach_room", "room": "secret_room"},
+        }
+    )
 
 
 class TestCustomUnlockAction:
@@ -148,7 +150,9 @@ class TestCustomUnlockAction:
         # Try to unlock without talking to guard first
         result = engine.process_input("unlock door")
         # Should get a hint about needing something
-        assert result.error or "need" in result.message.lower() or "missing" in result.message.lower()
+        assert (
+            result.error or "need" in result.message.lower() or "missing" in result.message.lower()
+        )
 
 
 class TestCustomOpenAction:
@@ -195,7 +199,7 @@ class TestCompoundConditions:
 
         # Get the code but don't have coin
         engine.process_input("talk to guard")
-        result = engine.process_input("use machine")
+        engine.process_input("use machine")
         assert engine.state.get_flag("used_machine") is not True
 
     def test_compound_condition_succeeds_when_all_met(self, game_with_custom_actions):
@@ -275,7 +279,7 @@ class TestHintGeneration:
 
         # Get code but don't take coin
         engine.process_input("talk to guard")
-        result = engine.process_input("use machine")
+        engine.process_input("use machine")
 
         # The action should not have executed
         assert engine.state.get_flag("used_machine") is not True

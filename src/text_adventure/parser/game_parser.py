@@ -151,9 +151,7 @@ class GameParser:
                 return ParseResult.fail("Go where?", raw_input)
             direction = remaining[0]
             if direction in DIRECTION_WORDS:
-                return ParseResult.ok(
-                    Command(verb=DIRECTION_WORDS[direction], raw_input=raw_input)
-                )
+                return ParseResult.ok(Command(verb=DIRECTION_WORDS[direction], raw_input=raw_input))
             return ParseResult.fail(
                 f'I don\'t know how to go "{direction}".',
                 raw_input,

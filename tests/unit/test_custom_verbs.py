@@ -16,64 +16,66 @@ import pytest
 from text_adventure.engine.engine import GameEngine
 from text_adventure.models.game import Game
 from text_adventure.parser.game_parser import GameParser
-from text_adventure.validator import validate_game, ValidationSeverity
+from text_adventure.validator import ValidationSeverity, validate_game
 
 
 @pytest.fixture
 def game_with_custom_verbs():
     """A game that defines custom verbs."""
-    return Game.model_validate({
-        "metadata": {"title": "Custom Verb Test", "description": "Testing"},
-        "rooms": [
-            {
-                "id": "temple",
-                "name": "Ancient Temple",
-                "description": "A dusty temple with an altar.",
-                "exits": {},
-                "objects": ["altar", "statue"],
-            }
-        ],
-        "objects": [
-            {
-                "id": "altar",
-                "name": "stone altar",
-                "description": "An ancient altar.",
-                "location": "temple",
-                "takeable": False,
-                "actions": {
-                    "pray": {
-                        "message": "You kneel and pray. A sense of peace fills you.",
-                        "state_changes": {"flags.blessed": True},
+    return Game.model_validate(
+        {
+            "metadata": {"title": "Custom Verb Test", "description": "Testing"},
+            "rooms": [
+                {
+                    "id": "temple",
+                    "name": "Ancient Temple",
+                    "description": "A dusty temple with an altar.",
+                    "exits": {},
+                    "objects": ["altar", "statue"],
+                }
+            ],
+            "objects": [
+                {
+                    "id": "altar",
+                    "name": "stone altar",
+                    "description": "An ancient altar.",
+                    "location": "temple",
+                    "takeable": False,
+                    "actions": {
+                        "pray": {
+                            "message": "You kneel and pray. A sense of peace fills you.",
+                            "state_changes": {"flags.blessed": True},
+                        },
+                        "worship": "You bow before the altar.",
                     },
-                    "worship": "You bow before the altar.",
                 },
-            },
-            {
-                "id": "statue",
-                "name": "golden statue",
-                "description": "A golden statue.",
-                "location": "temple",
-                "takeable": False,
-                "actions": {
-                    "dance": "You dance around the statue. Nothing happens.",
+                {
+                    "id": "statue",
+                    "name": "golden statue",
+                    "description": "A golden statue.",
+                    "location": "temple",
+                    "takeable": False,
+                    "actions": {
+                        "dance": "You dance around the statue. Nothing happens.",
+                    },
                 },
-            },
-        ],
-        "verbs": [
-            {
-                "verb": "pray",
-                "aliases": ["worship", "kneel"],
-                "requires_object": False,
-            },
-            {
-                "verb": "dance",
-                "aliases": ["boogie"],
-                "requires_object": False,
-            },
-        ],
-        "initial_state": {"current_room": "temple", "inventory": []},
-        "win_condition": {"type": "flag_set", "flag": "blessed"},
-    })
+            ],
+            "verbs": [
+                {
+                    "verb": "pray",
+                    "aliases": ["worship", "kneel"],
+                    "requires_object": False,
+                },
+                {
+                    "verb": "dance",
+                    "aliases": ["boogie"],
+                    "requires_object": False,
+                },
+            ],
+            "initial_state": {"current_room": "temple", "inventory": []},
+            "win_condition": {"type": "flag_set", "flag": "blessed"},
+        }
+    )
 
 
 class TestGameParser:
@@ -165,33 +167,35 @@ class TestValidator:
 
     def test_catches_unknown_verb(self):
         """Validator catches actions with unknown verbs."""
-        game = Game.model_validate({
-            "metadata": {"title": "Test", "description": "Test"},
-            "rooms": [
-                {
-                    "id": "room",
-                    "name": "Room",
-                    "description": "A room.",
-                    "exits": {},
-                    "objects": ["thing"],
-                }
-            ],
-            "objects": [
-                {
-                    "id": "thing",
-                    "name": "thing",
-                    "description": "A thing.",
-                    "location": "room",
-                    "takeable": False,
-                    "actions": {
-                        "frobnicate": "You frobnicate the thing.",  # Unknown verb
-                    },
-                }
-            ],
-            "verbs": [],  # No custom verbs defined
-            "initial_state": {"current_room": "room", "inventory": []},
-            "win_condition": {"type": "reach_room", "room": "room"},
-        })
+        game = Game.model_validate(
+            {
+                "metadata": {"title": "Test", "description": "Test"},
+                "rooms": [
+                    {
+                        "id": "room",
+                        "name": "Room",
+                        "description": "A room.",
+                        "exits": {},
+                        "objects": ["thing"],
+                    }
+                ],
+                "objects": [
+                    {
+                        "id": "thing",
+                        "name": "thing",
+                        "description": "A thing.",
+                        "location": "room",
+                        "takeable": False,
+                        "actions": {
+                            "frobnicate": "You frobnicate the thing.",  # Unknown verb
+                        },
+                    }
+                ],
+                "verbs": [],  # No custom verbs defined
+                "initial_state": {"current_room": "room", "inventory": []},
+                "win_condition": {"type": "reach_room", "room": "room"},
+            }
+        )
 
         issues = validate_game(game)
 
@@ -201,36 +205,38 @@ class TestValidator:
 
     def test_catches_missing_reveals_object(self):
         """Validator catches reveals_object pointing to non-existent object."""
-        game = Game.model_validate({
-            "metadata": {"title": "Test", "description": "Test"},
-            "rooms": [
-                {
-                    "id": "room",
-                    "name": "Room",
-                    "description": "A room.",
-                    "exits": {},
-                    "objects": ["thing"],
-                }
-            ],
-            "objects": [
-                {
-                    "id": "thing",
-                    "name": "thing",
-                    "description": "A thing.",
-                    "location": "room",
-                    "takeable": False,
-                    "actions": {
-                        "use": {
-                            "message": "You use it.",
-                            "reveals_object": "nonexistent",  # Doesn't exist
+        game = Game.model_validate(
+            {
+                "metadata": {"title": "Test", "description": "Test"},
+                "rooms": [
+                    {
+                        "id": "room",
+                        "name": "Room",
+                        "description": "A room.",
+                        "exits": {},
+                        "objects": ["thing"],
+                    }
+                ],
+                "objects": [
+                    {
+                        "id": "thing",
+                        "name": "thing",
+                        "description": "A thing.",
+                        "location": "room",
+                        "takeable": False,
+                        "actions": {
+                            "use": {
+                                "message": "You use it.",
+                                "reveals_object": "nonexistent",  # Doesn't exist
+                            },
                         },
-                    },
-                }
-            ],
-            "verbs": [],
-            "initial_state": {"current_room": "room", "inventory": []},
-            "win_condition": {"type": "reach_room", "room": "room"},
-        })
+                    }
+                ],
+                "verbs": [],
+                "initial_state": {"current_room": "room", "inventory": []},
+                "win_condition": {"type": "reach_room", "room": "room"},
+            }
+        )
 
         issues = validate_game(game)
 
@@ -238,46 +244,48 @@ class TestValidator:
         errors = [i for i in issues if i.severity == ValidationSeverity.ERROR]
         assert any("nonexistent" in e.message for e in errors)
 
-    def test_catches_unrevealed_hidden(self, game_with_custom_verbs):
+    def test_catches_unrevealed_hidden(self):
         """Validator warns about revealed objects that aren't hidden."""
-        game = Game.model_validate({
-            "metadata": {"title": "Test", "description": "Test"},
-            "rooms": [
-                {
-                    "id": "room",
-                    "name": "Room",
-                    "description": "A room.",
-                    "exits": {},
-                    "objects": ["box", "gem"],
-                }
-            ],
-            "objects": [
-                {
-                    "id": "box",
-                    "name": "box",
-                    "description": "A box.",
-                    "location": "room",
-                    "takeable": False,
-                    "actions": {
-                        "open": {
-                            "message": "You open the box.",
-                            "reveals_object": "gem",
+        game = Game.model_validate(
+            {
+                "metadata": {"title": "Test", "description": "Test"},
+                "rooms": [
+                    {
+                        "id": "room",
+                        "name": "Room",
+                        "description": "A room.",
+                        "exits": {},
+                        "objects": ["box", "gem"],
+                    }
+                ],
+                "objects": [
+                    {
+                        "id": "box",
+                        "name": "box",
+                        "description": "A box.",
+                        "location": "room",
+                        "takeable": False,
+                        "actions": {
+                            "open": {
+                                "message": "You open the box.",
+                                "reveals_object": "gem",
+                            },
                         },
                     },
-                },
-                {
-                    "id": "gem",
-                    "name": "gem",
-                    "description": "A gem.",
-                    "location": "room",
-                    "takeable": True,
-                    "hidden": False,  # Should be True!
-                },
-            ],
-            "verbs": [],
-            "initial_state": {"current_room": "room", "inventory": []},
-            "win_condition": {"type": "reach_room", "room": "room"},
-        })
+                    {
+                        "id": "gem",
+                        "name": "gem",
+                        "description": "A gem.",
+                        "location": "room",
+                        "takeable": True,
+                        "hidden": False,  # Should be True!
+                    },
+                ],
+                "verbs": [],
+                "initial_state": {"current_room": "room", "inventory": []},
+                "win_condition": {"type": "reach_room", "room": "room"},
+            }
+        )
 
         issues = validate_game(game)
 

@@ -202,9 +202,7 @@ class GameEngine:
                 if obj and "enter" in obj.actions:
                     from text_adventure.engine.actions import _execute_custom_action
 
-                    action_result = _execute_custom_action(
-                        obj, "enter", self.game, self.state
-                    )
+                    action_result = _execute_custom_action(obj, "enter", self.game, self.state)
                     if action_result:
                         self.state.increment_turns()
                         # Check win condition after action (may have moved player)
