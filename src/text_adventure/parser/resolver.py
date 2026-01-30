@@ -40,6 +40,7 @@ class ResolvedCommand:
     preposition: "Preposition | None" = None
     indirect_object_id: str | None = None
     raw_input: str = ""
+    custom_verb: str | None = None  # Canonical name for CUSTOM verbs
 
 
 @dataclass
@@ -279,6 +280,7 @@ class ObjectResolver:
                 preposition=command.preposition,
                 indirect_object_id=indirect_id,
                 raw_input=command.raw_input,
+                custom_verb=command.custom_verb,
             )
         )
 

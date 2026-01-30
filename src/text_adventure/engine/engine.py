@@ -21,7 +21,8 @@ from text_adventure.engine.actions import execute_action
 from text_adventure.models.command import Verb
 from text_adventure.models.game import Exit, Game, Room, WinCondition
 from text_adventure.models.state import GameState
-from text_adventure.parser.parser import ParseResult, parse
+from text_adventure.parser.game_parser import GameParser
+from text_adventure.parser.parser import ParseResult
 from text_adventure.parser.resolver import ObjectResolver
 
 
@@ -53,6 +54,7 @@ class GameEngine:
         self.game = game
         self.state = state or GameState.from_game(game)
         self.resolver = ObjectResolver(game, self.state)
+        self.parser = GameParser(game)  # Parser with custom verb support
 
     def describe_current_room(self, verbose: bool = False) -> str:  # noqa: ARG002
         """
@@ -150,8 +152,8 @@ class GameEngine:
                 won=False,
             )
 
-        # Parse the input
-        parse_result: ParseResult = parse(user_input)
+        # Parse the input (uses GameParser with custom verb support)
+        parse_result: ParseResult = self.parser.parse(user_input)
         if not parse_result.success:
             return TurnResult(
                 message=parse_result.error.message if parse_result.error else "I don't understand.",

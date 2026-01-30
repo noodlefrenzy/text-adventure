@@ -64,6 +64,7 @@ def execute_action(
         Verb.SHOW: handle_show,
         Verb.SING: handle_sing,
         Verb.INSERT: handle_insert,
+        Verb.CUSTOM: handle_custom,
     }
 
     handler = handlers.get(command.verb)
@@ -687,6 +688,83 @@ def handle_insert(
 
     return ActionResult(
         message=f"You're not sure where to insert the {obj.name}.",
+        success=False,
+    )
+
+
+def handle_custom(
+    command: ResolvedCommand,
+    game: Game,
+    state: GameState,
+) -> ActionResult:
+    """
+    Handle custom verbs defined in the game JSON.
+
+    This searches for matching actions on objects in the room or inventory.
+    Custom verbs allow adventure creators to define verbs like PRAY, BRIBE,
+    DANCE without modifying Python code.
+
+    The search order is:
+    1. If direct_object specified: look for action on that object
+    2. Search all objects in current room for matching action
+    3. Search inventory for matching action
+    """
+    # Get the custom verb name - prefer canonical name from parser, fallback to raw
+    # The parser sets custom_verb to the canonical name when an alias is used
+    if hasattr(command, "custom_verb") and command.custom_verb:
+        verb_name = command.custom_verb
+    else:
+        verb_name = command.raw_input.split()[0].lower() if command.raw_input else "unknown"
+
+    # If a direct object was specified, look for action on that object
+    if command.direct_object_id:
+        obj = game.get_object(command.direct_object_id)
+        if obj:
+            # Try verb:indirect_object action (e.g., "bribe:guard")
+            if command.indirect_object_id:
+                action_key = f"{verb_name}:{command.indirect_object_id}"
+                result = _execute_custom_action(obj, action_key, game, state)
+                if result:
+                    return result
+
+            # Try just the verb name (e.g., "pray" on altar)
+            result = _execute_custom_action(obj, verb_name, game, state)
+            if result:
+                return result
+
+            return ActionResult(
+                message=f"You can't {verb_name} the {obj.name}.",
+                success=False,
+            )
+
+    # No direct object - search room objects for matching action
+    current_room = game.get_room(state.current_room)
+    if current_room:
+        for obj_id in current_room.objects:
+            obj_state = state.objects.get(obj_id)
+            if obj_state and obj_state.hidden:
+                continue
+
+            obj = game.get_object(obj_id)
+            if obj and verb_name in obj.actions:
+                result = _execute_custom_action(obj, verb_name, game, state)
+                if result:
+                    return result
+
+    # Search inventory
+    for obj_id, obj_state in state.objects.items():
+        if obj_state.location != "inventory":
+            continue
+
+        obj = game.get_object(obj_id)
+        if obj and verb_name in obj.actions:
+            result = _execute_custom_action(obj, verb_name, game, state)
+            if result:
+                return result
+
+    # No matching action found
+    return ActionResult(
+        message=f"Nothing happens when you try to {verb_name}.",
         success=False,
     )
 

@@ -70,6 +70,9 @@ class Verb(Enum):
     LOAD = auto()
     WAIT = auto()  # aliases: Z
 
+    # Custom verbs defined in game JSON
+    CUSTOM = auto()  # Placeholder for game-defined verbs
+
 
 class Preposition(Enum):
     """Prepositions that connect direct and indirect objects."""
@@ -94,13 +97,15 @@ class Command:
         - PUT KEY IN BOX -> Command(verb=PUT, direct_object="key",
                                     preposition=IN, indirect_object="box")
         - EXAMINE THE BRASS KEY -> Command(verb=EXAMINE, direct_object="brass key")
+        - PRAY -> Command(verb=CUSTOM, custom_verb="pray")
 
     Attributes:
-        verb: The action to perform
+        verb: The action to perform (CUSTOM for game-defined verbs)
         direct_object: The primary object of the action (optional)
         preposition: Connects direct and indirect objects (optional)
         indirect_object: Secondary object, usually the target/container (optional)
         raw_input: The original player input string
+        custom_verb: The actual verb name when verb=CUSTOM (optional)
     """
 
     verb: Verb
@@ -108,6 +113,7 @@ class Command:
     preposition: Preposition | None = None
     indirect_object: str | None = None
     raw_input: str = ""
+    custom_verb: str | None = None  # Actual verb name when verb=CUSTOM
 
     def __post_init__(self) -> None:
         """Validate command structure."""
