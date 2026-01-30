@@ -750,33 +750,46 @@ def _generate_condition_hint(
     state: GameState,
 ) -> str:
     """Generate a helpful hint when a condition fails."""
-    # Check for common condition patterns and provide specific hints
-    if "talked_to" in condition or "talk" in condition:
+    import re
+
+    # For compound conditions, identify which parts actually fail
+    if "&&" in condition or "||" in condition:
+        # Split by && first (AND conditions)
+        if " && " in condition:
+            parts = condition.split(" && ")
+            failed_parts = [p.strip() for p in parts if not _evaluate_condition(p.strip(), state)]
+        else:
+            failed_parts = [condition]
+
+        hints = []
+        for part in failed_parts:
+            if "talked_to" in part or "talk" in part:
+                hints.append(f"talk to the {target.name}")
+            elif "inventory.includes" in part:
+                match = re.search(r"inventory\.includes\(['\"]([^'\"]+)['\"]\)", part)
+                if match:
+                    required_item = match.group(1)
+                    hints.append(f"have the {required_item.replace('_', ' ')}")
+                else:
+                    hints.append("have the right item")
+            else:
+                hints.append("do something else")
+
+        if hints:
+            return f"You might need to {' and '.join(hints)} first."
+
+    # Single condition checks
+    if ("talked_to" in condition or "talk" in condition) and not _evaluate_condition(
+        condition, state
+    ):
         return f"Maybe you should try talking to the {target.name} first."
 
     if "inventory.includes" in condition:
-        # Extract the item name from the condition
-        import re
-
         match = re.search(r"inventory\.includes\(['\"]([^'\"]+)['\"]\)", condition)
         if match:
             required_item = match.group(1)
             if not state.is_in_inventory(required_item):
-                return "You might need to find something first. Do you have the right item?"
-
-    if "&&" in condition:
-        # Multiple conditions - check which ones fail
-        parts = condition.split(" && ")
-        hints = []
-        for part in parts:
-            part = part.strip()
-            if not _evaluate_condition(part, state):
-                if "talked" in part or "talk" in part:
-                    hints.append(f"talk to the {target.name}")
-                elif "inventory" in part:
-                    hints.append("have the right item")
-        if hints:
-            return f"You might need to {' and '.join(hints)} first."
+                return f"You need the {required_item.replace('_', ' ')} first."
 
     # Generic fallback
     return f"The {target.name} doesn't respond. Maybe you're missing something."
