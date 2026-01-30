@@ -176,6 +176,8 @@ class GameGenerator:
             )
             # Fix malformed action objects
             result["objects"] = self._fix_object_actions(result["objects"])
+            # Ensure objects revealed by actions are initially hidden
+            result["objects"] = self._fix_revealed_objects_hidden(result["objects"])
 
         # Update room.objects to use sanitized object IDs
         if "rooms" in result and object_id_map:
@@ -355,6 +357,42 @@ class GameGenerator:
                     else:
                         fixed_actions[action_key] = action_value
                 obj["actions"] = fixed_actions
+            fixed_objects.append(obj)
+        return fixed_objects
+
+    def _fix_revealed_objects_hidden(
+        self,
+        objects: list[dict[str, Any]],
+    ) -> list[dict[str, Any]]:
+        """
+        Ensure objects that are revealed by actions are initially hidden.
+
+        LLMs sometimes create objects meant to be revealed but forget to set
+        hidden=True on them.
+
+        Args:
+            objects: List of object definitions.
+
+        Returns:
+            Objects with fixed hidden states.
+        """
+        # Collect all objects that are revealed by actions
+        revealed_object_ids: set[str] = set()
+        for obj in objects:
+            if "actions" in obj and isinstance(obj["actions"], dict):
+                for action_value in obj["actions"].values():
+                    if isinstance(action_value, dict) and action_value.get("reveals_object"):
+                        revealed_object_ids.add(action_value["reveals_object"])
+
+        # Ensure those objects are hidden
+        fixed_objects = []
+        for obj in objects:
+            obj = dict(obj)
+            if obj.get("id") in revealed_object_ids and not obj.get("hidden", False):
+                obj["hidden"] = True
+                logger.debug(
+                    f"Object '{obj.get('id')}' is revealed by an action, setting hidden=True"
+                )
             fixed_objects.append(obj)
         return fixed_objects
 

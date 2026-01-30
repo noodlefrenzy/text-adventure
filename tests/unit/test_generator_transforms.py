@@ -510,3 +510,95 @@ class TestTransformGameData:
         # Initial state and win condition updated
         assert result["initial_state"]["current_room"] == "room_1"
         assert result["win_condition"]["room"] == "room_2"
+
+
+class TestFixRevealedObjectsHidden:
+    """Test _fix_revealed_objects_hidden() method."""
+
+    def test_sets_hidden_on_revealed_objects(self, generator):
+        """Objects that are revealed by actions should be hidden initially."""
+        objects = [
+            {
+                "id": "machine",
+                "name": "vending machine",
+                "description": "...",
+                "location": "room1",
+                "actions": {
+                    "use": {
+                        "message": "A key drops out.",
+                        "reveals_object": "secret_key",
+                    },
+                },
+            },
+            {
+                "id": "secret_key",
+                "name": "secret key",
+                "description": "...",
+                "location": "room1",
+                "hidden": False,  # Incorrectly not hidden
+            },
+        ]
+        fixed_objects = generator._fix_revealed_objects_hidden(objects)
+
+        # secret_key should now be hidden
+        secret_key = next(o for o in fixed_objects if o["id"] == "secret_key")
+        assert secret_key["hidden"] is True
+
+    def test_preserves_already_hidden_objects(self, generator):
+        """Objects already hidden stay hidden."""
+        objects = [
+            {
+                "id": "machine",
+                "name": "machine",
+                "description": "...",
+                "location": "room1",
+                "actions": {
+                    "use": {"message": "Found it!", "reveals_object": "gem"},
+                },
+            },
+            {
+                "id": "gem",
+                "name": "gem",
+                "description": "...",
+                "location": "room1",
+                "hidden": True,  # Correctly hidden
+            },
+        ]
+        fixed_objects = generator._fix_revealed_objects_hidden(objects)
+
+        gem = next(o for o in fixed_objects if o["id"] == "gem")
+        assert gem["hidden"] is True
+
+    def test_ignores_non_revealed_objects(self, generator):
+        """Objects not revealed by any action keep their hidden state."""
+        objects = [
+            {
+                "id": "key",
+                "name": "key",
+                "description": "...",
+                "location": "room1",
+                "hidden": False,
+            },
+            {
+                "id": "lamp",
+                "name": "lamp",
+                "description": "...",
+                "location": "room1",
+            },
+        ]
+        fixed_objects = generator._fix_revealed_objects_hidden(objects)
+
+        key = next(o for o in fixed_objects if o["id"] == "key")
+        lamp = next(o for o in fixed_objects if o["id"] == "lamp")
+        assert key.get("hidden", False) is False
+        assert "hidden" not in lamp or lamp.get("hidden") is False
+
+    def test_handles_objects_without_actions(self, generator):
+        """Objects without actions field are handled gracefully."""
+        objects = [
+            {"id": "key", "name": "key", "description": "...", "location": "room1"},
+        ]
+        fixed_objects = generator._fix_revealed_objects_hidden(objects)
+
+        assert len(fixed_objects) == 1
+        assert fixed_objects[0]["id"] == "key"

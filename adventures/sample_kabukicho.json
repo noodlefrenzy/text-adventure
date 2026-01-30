@@ -577,7 +577,7 @@
       "worn": false,
       "actions": {},
       "scenery": false,
-      "hidden": false
+      "hidden": true
     },
     {
       "id": "wooden_door",
