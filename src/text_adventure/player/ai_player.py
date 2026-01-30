@@ -278,9 +278,13 @@ class AIPlayer:
         # Try to parse as JSON
         command = ""
         try:
-            # Handle markdown code blocks
-            if "```json" in raw_response:
-                json_str = raw_response.split("```json")[1].split("```")[0].strip()
+            # Handle markdown code blocks (case-insensitive)
+            raw_lower = raw_response.lower()
+            if "```json" in raw_lower:
+                # Find the actual position case-insensitively
+                start_idx = raw_lower.find("```json") + 7
+                end_idx = raw_response.find("```", start_idx)
+                json_str = raw_response[start_idx:end_idx].strip() if end_idx > start_idx else raw_response[start_idx:].strip()
             elif "```" in raw_response:
                 json_str = raw_response.split("```")[1].split("```")[0].strip()
             else:
