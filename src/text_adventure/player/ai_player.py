@@ -277,6 +277,7 @@ class AIPlayer:
 
         # Try to parse as JSON
         command = ""
+        json_str = ""
         try:
             # Handle markdown code blocks (case-insensitive)
             raw_lower = raw_response.lower()
@@ -284,11 +285,25 @@ class AIPlayer:
                 # Find the actual position case-insensitively
                 start_idx = raw_lower.find("```json") + 7
                 end_idx = raw_response.find("```", start_idx)
-                json_str = raw_response[start_idx:end_idx].strip() if end_idx > start_idx else raw_response[start_idx:].strip()
+                if end_idx > start_idx:
+                    json_str = raw_response[start_idx:end_idx].strip()
+                else:
+                    # No closing ```, take everything after ```json
+                    json_str = raw_response[start_idx:].strip()
+                logger.debug(f"Extracted JSON from ```json block: {json_str[:100]}...")
             elif "```" in raw_response:
-                json_str = raw_response.split("```")[1].split("```")[0].strip()
+                parts = raw_response.split("```")
+                if len(parts) >= 2:
+                    json_str = parts[1].strip()
+                    # Remove language identifier if present (e.g., "json\n{...")
+                    if json_str and not json_str.startswith("{"):
+                        newline_idx = json_str.find("\n")
+                        if newline_idx > 0:
+                            json_str = json_str[newline_idx:].strip()
+                logger.debug(f"Extracted JSON from ``` block: {json_str[:100]}...")
             else:
                 json_str = raw_response
+                logger.debug("No code block, trying raw response as JSON")
 
             data = json.loads(json_str)
 
@@ -304,11 +319,21 @@ class AIPlayer:
                 # JSON parsed but wasn't a dict (e.g., just a string)
                 command = str(data).strip()
 
-        except (json.JSONDecodeError, IndexError):
-            # Fallback: treat as plain command
-            logger.debug(f"Response not JSON, using as plain command: {raw_response[:50]}")
-            command = raw_response.split("\n")[0].strip()
-            command = command.strip("\"'")
+        except (json.JSONDecodeError, IndexError, ValueError) as e:
+            # Fallback: try to extract command from response
+            logger.warning(f"JSON parse failed ({e}), raw response: {raw_response[:200]}")
+
+            # Look for a command-like pattern (all caps word at start of line)
+            import re
+            command_match = re.search(r'^([A-Z][A-Z\s]+?)(?:\n|$)', raw_response, re.MULTILINE)
+            if command_match:
+                command = command_match.group(1).strip()
+                logger.debug(f"Extracted command via regex: {command}")
+            else:
+                # Last resort: first line, cleaned up
+                command = raw_response.split("\n")[0].strip()
+                command = command.strip("\"'`")
+                logger.debug(f"Using first line as command: {command}")
 
         return command.upper() if command else "LOOK"
 

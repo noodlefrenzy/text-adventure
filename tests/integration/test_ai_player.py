@@ -222,6 +222,108 @@ class TestAIPlayer:
         assert session.commands_issued[0] == "NORTH"
         assert session.won
 
+    @pytest.mark.asyncio
+    async def test_ai_player_handles_json_response(self, mock_anthropic, client, simple_game):
+        """AI player handles JSON responses with command and knowledge."""
+        json_response = '{"command": "NORTH", "knowledge": {"map": {"start": {"north": "?"}}}}'
+        mock_anthropic.post("/v1/messages").mock(
+            side_effect=[
+                make_llm_response(json_response),
+            ]
+        )
+
+        player = AIPlayer(client)
+        session = await player.play(simple_game, max_turns=1)
+
+        assert session.commands_issued[0] == "NORTH"
+        assert session.won
+        assert "map" in session.ai_knowledge
+
+    @pytest.mark.asyncio
+    async def test_ai_player_handles_json_with_lowercase_code_block(
+        self, mock_anthropic, client, simple_game
+    ):
+        """AI player handles JSON wrapped in lowercase ```json code blocks."""
+        json_response = '''```json
+{"command": "NORTH", "knowledge": {"map": {}}}
+```'''
+        mock_anthropic.post("/v1/messages").mock(
+            side_effect=[
+                make_llm_response(json_response),
+            ]
+        )
+
+        player = AIPlayer(client)
+        session = await player.play(simple_game, max_turns=1)
+
+        assert session.commands_issued[0] == "NORTH"
+        assert session.won
+
+    @pytest.mark.asyncio
+    async def test_ai_player_handles_json_with_uppercase_code_block(
+        self, mock_anthropic, client, simple_game
+    ):
+        """AI player handles JSON wrapped in uppercase ```JSON code blocks."""
+        json_response = '''```JSON
+{"command": "NORTH", "knowledge": {"map": {}}}
+```'''
+        mock_anthropic.post("/v1/messages").mock(
+            side_effect=[
+                make_llm_response(json_response),
+            ]
+        )
+
+        player = AIPlayer(client)
+        session = await player.play(simple_game, max_turns=1)
+
+        assert session.commands_issued[0] == "NORTH"
+        assert session.won
+
+    @pytest.mark.asyncio
+    async def test_ai_player_handles_json_with_preamble(
+        self, mock_anthropic, client, simple_game
+    ):
+        """AI player handles JSON with text before the code block."""
+        json_response = '''Here's my next move:
+
+```json
+{"command": "NORTH", "knowledge": {"map": {}}}
+```'''
+        mock_anthropic.post("/v1/messages").mock(
+            side_effect=[
+                make_llm_response(json_response),
+            ]
+        )
+
+        player = AIPlayer(client)
+        session = await player.play(simple_game, max_turns=1)
+
+        assert session.commands_issued[0] == "NORTH"
+        assert session.won
+
+    @pytest.mark.asyncio
+    async def test_ai_player_handles_json_with_trailing_text(
+        self, mock_anthropic, client, simple_game
+    ):
+        """AI player handles JSON with text after the code block."""
+        json_response = (
+            '```json\n'
+            '{"command": "NORTH", "knowledge": {"map": {}}}\n'
+            '```\n\n'
+            'Heading north to explore.'
+        )
+        mock_anthropic.post("/v1/messages").mock(
+            side_effect=[
+                make_llm_response(json_response),
+            ]
+        )
+
+        player = AIPlayer(client)
+        session = await player.play(simple_game, max_turns=1)
+
+        assert session.commands_issued[0] == "NORTH"
+        assert session.won
+
 
 class TestPlaySession:
     """Tests for the PlaySession dataclass."""
