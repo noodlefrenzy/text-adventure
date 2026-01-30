@@ -15,7 +15,8 @@ Generate rich, puzzle-filled adventures with AI, then play them yourself or watc
 - **Play Games**: Classic Zork-style parser for human gameplay
   - Full Infocom-style command parsing (PUT THE BRASS KEY IN THE WOODEN BOX)
   - Adjective-based disambiguation (TAKE BRASS KEY vs SILVER KEY)
-  - All standard verbs: TAKE, DROP, EXAMINE, OPEN, CLOSE, UNLOCK, READ, etc.
+  - All standard verbs: TAKE, DROP, EXAMINE, OPEN, CLOSE, UNLOCK, READ, TALK, etc.
+  - Custom verbs defined in game JSON (no Python changes needed)
 
 - **AI Player**: Watch an AI explore and solve your adventures
   - LLM-powered decision making
@@ -181,7 +182,11 @@ When playing, you can use these commands:
 | `READ <obj>` | | Read text on an object |
 | `UNLOCK <obj> WITH <key>` | | Unlock with a key |
 | `LOCK <obj> WITH <key>` | | Lock with a key |
-| `PUT <obj> IN <container>` | | Put object in container |
+| `PUT <obj> IN <container>` | `INSERT <obj> IN <container>` | Put object in container |
+| `TALK TO <obj>` | `SPEAK TO <obj>` | Talk to a character |
+| `SHOW <obj> TO <character>` | `GIVE <obj> TO <character>` | Show/give item to character |
+| `SING` | | Sing (context-dependent) |
+| `ENTER <obj>` | | Enter a door or portal |
 | `QUIT` | `Q`, `EXIT` | Exit the game |
 | `HELP` | `?` | Show help |
 
@@ -233,6 +238,31 @@ Games are stored as JSON files. Here's a minimal example:
 
 See [tests/fixtures/sample_game.json](tests/fixtures/sample_game.json) for a complete example with puzzles.
 
+### Custom Verbs and Actions
+
+Adventure creators can define custom verbs and actions without modifying Python code:
+
+```json
+{
+  "verbs": [
+    {"verb": "pray", "aliases": ["worship", "kneel"], "requires_object": false}
+  ],
+  "objects": [
+    {
+      "id": "altar",
+      "actions": {
+        "pray": {
+          "message": "You feel a sense of peace.",
+          "state_changes": {"flags.blessed": true}
+        }
+      }
+    }
+  ]
+}
+```
+
+See [docs/action-dsl-reference.md](docs/action-dsl-reference.md) for the complete Action DSL reference.
+
 ## Architecture
 
 The project follows a clean separation of concerns:
@@ -241,6 +271,7 @@ The project follows a clean separation of concerns:
 src/text_adventure/
 ├── cli.py              # Command-line interface
 ├── config.py           # Configuration management
+├── validator.py        # Game validation
 ├── models/             # Data models (Game, Command, State)
 ├── parser/             # Input parsing and object resolution
 ├── engine/             # Game logic and state management
