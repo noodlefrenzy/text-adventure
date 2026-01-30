@@ -1,0 +1,1006 @@
+{
+  "metadata": {
+    "title": "Last Train from Kabukicho",
+    "author": "Generated",
+    "version": "1.0",
+    "description": "You've had too much to drink in Tokyo's red-light district. The trains stop running soon, but first you need morning ramen to cure your hangover. Navigate the neon-lit streets, outsmart drunken salarymen, and solve the mysteries of sentient vending machines."
+  },
+  "rooms": [
+    {
+      "id": "kabukicho_entrance",
+      "name": "Kabukicho Main Gate",
+      "description": "You stand beneath the towering neon arch marking the entrance to Kabukicho. Red and blue lights reflect off wet pavement, and the sounds of karaoke drift from nearby buildings. The famous red-light district stretches north into a maze of narrow alleys.",
+      "exits": {
+        "north": "central_plaza",
+        "east": "convenience_store",
+        "south": "shinjuku_station"
+      },
+      "objects": [
+        "neon_sign",
+        "wet_pavement"
+      ],
+      "first_visit_description": null,
+      "dark": false
+    },
+    {
+      "id": "shinjuku_station",
+      "name": "Shinjuku Station South Exit",
+      "description": "The massive Shinjuku Station looms before you, but the gates are locked for the night. A digital clock shows 4:47 AM - you have just over an hour before the first train. You need to find that ramen shop before then.",
+      "exits": {
+        "north": "kabukicho_entrance"
+      },
+      "objects": [
+        "station_clock",
+        "locked_gates"
+      ],
+      "first_visit_description": null,
+      "dark": false
+    },
+    {
+      "id": "convenience_store",
+      "name": "24-Hour Convenience Store",
+      "description": "A brightly lit konbini with rows of instant noodles and energy drinks. The fluorescent lights hurt your hungover eyes. A tired clerk watches you suspiciously from behind bulletproof glass.",
+      "exits": {
+        "west": "kabukicho_entrance",
+        "north": "vending_machine_alley"
+      },
+      "objects": [],
+      "first_visit_description": null,
+      "dark": false
+    },
+    {
+      "id": "central_plaza",
+      "name": "Kabukicho Central Plaza",
+      "description": "The heart of Kabukicho pulses with activity even at this late hour. Neon signs advertise hostess bars and pachinko parlors in every direction. A group of drunken salarymen blocks the path west, singing off-key karaoke.",
+      "exits": {
+        "south": "kabukicho_entrance",
+        "east": "pachinko_parlor",
+        "west": "golden_gai_entrance",
+        "north": "love_hotel_district"
+      },
+      "objects": [
+        "drunken_salarymen",
+        "karaoke_machine"
+      ],
+      "first_visit_description": null,
+      "dark": false
+    },
+    {
+      "id": "vending_machine_alley",
+      "name": "Vending Machine Alley",
+      "description": "A narrow alley lined with dozens of vending machines selling everything from hot coffee to mysterious items you can't identify. One machine in particular seems to be humming with an unusual electronic melody.",
+      "exits": {
+        "south": "convenience_store",
+        "north": "back_alley",
+        "west": "pachinko_parlor"
+      },
+      "objects": [
+        "sentient_vending_machine"
+      ],
+      "first_visit_description": null,
+      "dark": false
+    },
+    {
+      "id": "pachinko_parlor",
+      "name": "Pachinko Parlor Entrance",
+      "description": "The deafening sound of thousands of steel balls cascades from within the pachinko parlor. Cigarette smoke drifts out the automatic doors. A security guard eyes you warily.",
+      "exits": {
+        "west": "central_plaza",
+        "east": "vending_machine_alley",
+        "north": "yakitori_stand"
+      },
+      "objects": [],
+      "first_visit_description": null,
+      "dark": false
+    },
+    {
+      "id": "golden_gai_entrance",
+      "name": "Golden Gai Entrance",
+      "description": "You stand at the entrance to the famous Golden Gai, a maze of tiny bars packed into narrow alleys. Each bar can barely fit five people. The path is blocked by a heavy wooden door with an electronic lock.",
+      "exits": {
+        "east": "central_plaza"
+      },
+      "objects": [
+        "wooden_door",
+        "electronic_lock"
+      ],
+      "first_visit_description": null,
+      "dark": false
+    },
+    {
+      "id": "golden_gai_alley_1",
+      "name": "Golden Gai Alley One",
+      "description": "The first of Golden Gai's narrow alleys is barely wide enough for two people to pass. Tiny bars with names like 'Champion' and 'Deathmatch' line both sides. Most are closed, but warm light spills from a few doorways.",
+      "exits": {
+        "south": "golden_gai_entrance",
+        "north": "golden_gai_alley_2",
+        "east": "tiny_bar"
+      },
+      "objects": [],
+      "first_visit_description": null,
+      "dark": false
+    },
+    {
+      "id": "golden_gai_alley_2",
+      "name": "Golden Gai Alley Two",
+      "description": "The second alley is even narrower than the first. Overhead, a tangle of power lines and neon signs creates a canopy of electric color. You can hear the distant sound of jazz music.",
+      "exits": {
+        "south": "golden_gai_alley_1",
+        "east": "jazz_bar",
+        "north": "golden_gai_exit"
+      },
+      "objects": [],
+      "first_visit_description": null,
+      "dark": false
+    },
+    {
+      "id": "tiny_bar",
+      "name": "Tiny Bar 'Champion'",
+      "description": "This bar has exactly four seats at a counter barely two meters long. The mama-san looks up from polishing glasses and nods at you. A business card sits on the counter.",
+      "exits": {
+        "west": "golden_gai_alley_1"
+      },
+      "objects": [
+        "business_card"
+      ],
+      "first_visit_description": null,
+      "dark": false
+    },
+    {
+      "id": "jazz_bar",
+      "name": "Jazz Bar 'Blue Note'",
+      "description": "Smooth jazz plays from hidden speakers in this sophisticated bar. The bartender, wearing a bow tie, is mixing cocktails with practiced precision. A notebook lies open on the bar.",
+      "exits": {
+        "west": "golden_gai_alley_2"
+      },
+      "objects": [
+        "notebook"
+      ],
+      "first_visit_description": null,
+      "dark": false
+    },
+    {
+      "id": "golden_gai_exit",
+      "name": "Golden Gai North Exit",
+      "description": "You emerge from the maze of Golden Gai into a slightly wider street. The neon glow fades behind you as you head toward the quieter residential areas of Shinjuku.",
+      "exits": {
+        "south": "golden_gai_alley_2",
+        "north": "residential_street",
+        "east": "love_hotel_district"
+      },
+      "objects": [],
+      "first_visit_description": null,
+      "dark": false
+    },
+    {
+      "id": "love_hotel_district",
+      "name": "Love Hotel District",
+      "description": "Gaudy love hotels with names like 'Hotel Passion' and 'Paradise Inn' line this street. Their neon signs flash invitingly, but you're focused on finding food, not romance.",
+      "exits": {
+        "south": "central_plaza",
+        "west": "golden_gai_exit",
+        "north": "back_alley"
+      },
+      "objects": [],
+      "first_visit_description": null,
+      "dark": false
+    },
+    {
+      "id": "back_alley",
+      "name": "Dark Back Alley",
+      "description": "A narrow, poorly lit alley runs behind the main entertainment district. Garbage bags are piled high, and you can hear rats scurrying. A metal door marked 'Staff Only' is set into one wall.",
+      "exits": {
+        "south": "love_hotel_district",
+        "west": "yakitori_stand"
+      },
+      "objects": [
+        "metal_door"
+      ],
+      "first_visit_description": null,
+      "dark": false
+    },
+    {
+      "id": "yakitori_stand",
+      "name": "Late Night Yakitori Stand",
+      "description": "A small yakitori stand with red paper lanterns serves grilled chicken to night owls. The chef, wearing a sweat-stained headband, tends to skewers over glowing charcoal. The smell makes your stomach growl.",
+      "exits": {
+        "south": "pachinko_parlor",
+        "east": "back_alley",
+        "north": "residential_street"
+      },
+      "objects": [],
+      "first_visit_description": null,
+      "dark": false
+    },
+    {
+      "id": "residential_street",
+      "name": "Quiet Residential Street",
+      "description": "The neon chaos of Kabukicho fades to a gentle glow as you enter a residential area. Small apartment buildings line the street, and vending machines hum quietly on corners. You can smell something delicious cooking nearby.",
+      "exits": {
+        "south": "yakitori_stand",
+        "east": "ramen_shop_alley",
+        "north": "train_tracks"
+      },
+      "objects": [],
+      "first_visit_description": null,
+      "dark": false
+    },
+    {
+      "id": "ramen_shop_alley",
+      "name": "Hidden Ramen Shop Alley",
+      "description": "A narrow alley leads to a small ramen shop with a simple wooden sign. Steam rises from the kitchen, and the rich aroma of tonkotsu broth fills the air. This must be the place!",
+      "exits": {
+        "west": "residential_street",
+        "north": "ramen_shop"
+      },
+      "objects": [],
+      "first_visit_description": null,
+      "dark": false
+    },
+    {
+      "id": "ramen_shop",
+      "name": "Ichiran Ramen Shop",
+      "description": "The small ramen shop has a counter with individual booths for privacy. The ramen master stands ready behind the counter, but he looks at you expectantly. A sign on the wall explains the ordering system.",
+      "exits": {
+        "south": "ramen_shop_alley"
+      },
+      "objects": [
+        "ramen_master",
+        "ordering_sign"
+      ],
+      "first_visit_description": null,
+      "dark": false
+    },
+    {
+      "id": "train_tracks",
+      "name": "Elevated Train Tracks",
+      "description": "You stand beneath the elevated JR Yamanote Line tracks. In the distance, you can see the first hints of dawn breaking over Tokyo. The tracks are silent now, but soon the morning trains will begin running.",
+      "exits": {
+        "south": "residential_street"
+      },
+      "objects": [],
+      "first_visit_description": null,
+      "dark": false
+    }
+  ],
+  "objects": [
+    {
+      "id": "neon_sign",
+      "name": "neon sign",
+      "adjectives": [
+        "neon",
+        "massive",
+        "bright"
+      ],
+      "description": "A massive neon arch proclaiming 'Welcome to Kabukicho' in both Japanese and English.",
+      "examine_text": "The sign flickers occasionally, and you notice some Japanese text that translates to 'The city that never sleeps.'",
+      "location": "kabukicho_entrance",
+      "takeable": false,
+      "droppable": true,
+      "readable": false,
+      "read_text": null,
+      "openable": false,
+      "is_open": false,
+      "container": false,
+      "contains": [],
+      "lockable": false,
+      "locked": false,
+      "key_object": null,
+      "light_source": false,
+      "is_lit": false,
+      "wearable": false,
+      "worn": false,
+      "actions": {},
+      "scenery": true,
+      "hidden": false
+    },
+    {
+      "id": "wet_pavement",
+      "name": "wet pavement",
+      "adjectives": [
+        "wet",
+        "glistening"
+      ],
+      "description": "The pavement glistens with moisture from the night air and reflects the neon lights above.",
+      "examine_text": null,
+      "location": "kabukicho_entrance",
+      "takeable": false,
+      "droppable": true,
+      "readable": false,
+      "read_text": null,
+      "openable": false,
+      "is_open": false,
+      "container": false,
+      "contains": [],
+      "lockable": false,
+      "locked": false,
+      "key_object": null,
+      "light_source": false,
+      "is_lit": false,
+      "wearable": false,
+      "worn": false,
+      "actions": {},
+      "scenery": true,
+      "hidden": false
+    },
+    {
+      "id": "station_clock",
+      "name": "digital clock",
+      "adjectives": [
+        "digital",
+        "large",
+        "electronic"
+      ],
+      "description": "A large digital display showing the current time: 4:47 AM. First train in 1 hour 13 minutes.",
+      "examine_text": "The clock also displays a message: 'Service resumes at 5:00 AM. Have a safe journey!'",
+      "location": "shinjuku_station",
+      "takeable": false,
+      "droppable": true,
+      "readable": false,
+      "read_text": null,
+      "openable": false,
+      "is_open": false,
+      "container": false,
+      "contains": [],
+      "lockable": false,
+      "locked": false,
+      "key_object": null,
+      "light_source": false,
+      "is_lit": false,
+      "wearable": false,
+      "worn": false,
+      "actions": {},
+      "scenery": true,
+      "hidden": false
+    },
+    {
+      "id": "locked_gates",
+      "name": "station gates",
+      "adjectives": [
+        "metal",
+        "security",
+        "heavy"
+      ],
+      "description": "Heavy metal security gates block access to the train platforms.",
+      "examine_text": null,
+      "location": "shinjuku_station",
+      "takeable": false,
+      "droppable": true,
+      "readable": false,
+      "read_text": null,
+      "openable": false,
+      "is_open": false,
+      "container": false,
+      "contains": [],
+      "lockable": true,
+      "locked": true,
+      "key_object": null,
+      "light_source": false,
+      "is_lit": false,
+      "wearable": false,
+      "worn": false,
+      "actions": {},
+      "scenery": true,
+      "hidden": false
+    },
+    {
+      "id": "drunken_salarymen",
+      "name": "drunken salarymen",
+      "adjectives": [
+        "drunken",
+        "loud",
+        "singing"
+      ],
+      "description": "Three businessmen in rumpled suits are singing karaoke loudly and blocking the path west.",
+      "examine_text": "They're completely drunk and seem fixated on their karaoke session. One keeps trying to hit a high note and failing spectacularly.",
+      "location": "central_plaza",
+      "takeable": false,
+      "droppable": true,
+      "readable": false,
+      "read_text": null,
+      "openable": false,
+      "is_open": false,
+      "container": false,
+      "contains": [],
+      "lockable": false,
+      "locked": false,
+      "key_object": null,
+      "light_source": false,
+      "is_lit": false,
+      "wearable": false,
+      "worn": false,
+      "actions": {
+        "talk": {
+          "message": "One salaryman hiccups and says, 'Hey buddy! You know any good karaoke songs? We can't remember the words to this one!' They seem to want help with their karaoke.",
+          "condition": "!flags.salarymen_distracted",
+          "fail_message": null,
+          "state_changes": {
+            "flags.talked_to_salarymen": true
+          },
+          "consumes_object": false,
+          "reveals_object": null,
+          "moves_player": null
+        },
+        "sing": {
+          "message": "You belt out a few lines of 'My Way' and the salarymen cheer! They stumble off to find another bar, clearing the path west.",
+          "condition": "flags.talked_to_salarymen && !flags.salarymen_distracted",
+          "fail_message": null,
+          "state_changes": {
+            "flags.salarymen_distracted": true
+          },
+          "consumes_object": false,
+          "reveals_object": null,
+          "moves_player": null
+        }
+      },
+      "scenery": true,
+      "hidden": false
+    },
+    {
+      "id": "karaoke_machine",
+      "name": "karaoke machine",
+      "adjectives": [
+        "portable",
+        "electronic"
+      ],
+      "description": "A portable karaoke machine with a microphone dangling from a cord.",
+      "examine_text": "The screen shows song titles scrolling by. The current song appears to be 'My Way' but the salarymen don't seem to know the words.",
+      "location": "central_plaza",
+      "takeable": false,
+      "droppable": true,
+      "readable": false,
+      "read_text": null,
+      "openable": false,
+      "is_open": false,
+      "container": false,
+      "contains": [],
+      "lockable": false,
+      "locked": false,
+      "key_object": null,
+      "light_source": false,
+      "is_lit": false,
+      "wearable": false,
+      "worn": false,
+      "actions": {},
+      "scenery": false,
+      "hidden": false
+    },
+    {
+      "id": "sentient_vending_machine",
+      "name": "vending machine",
+      "adjectives": [
+        "sentient",
+        "electronic",
+        "humming",
+        "strange"
+      ],
+      "description": "This vending machine hums with an electronic melody and its display shows swirling patterns instead of products.",
+      "examine_text": "Unlike normal vending machines, this one seems almost alive. Its lights pulse rhythmically and the display shows what looks like digital eyes watching you.",
+      "location": "vending_machine_alley",
+      "takeable": false,
+      "droppable": true,
+      "readable": false,
+      "read_text": null,
+      "openable": false,
+      "is_open": false,
+      "container": false,
+      "contains": [],
+      "lockable": false,
+      "locked": false,
+      "key_object": null,
+      "light_source": false,
+      "is_lit": false,
+      "wearable": false,
+      "worn": false,
+      "actions": {
+        "talk": {
+          "message": "The machine's display flickers and shows text: 'HELLO HUMAN. I REQUIRE PAYMENT OF 100 YEN FOR INFORMATION. INSERT COINS TO CONTINUE.'",
+          "condition": null,
+          "fail_message": null,
+          "state_changes": {
+            "flags.talked_to_machine": true
+          },
+          "consumes_object": false,
+          "reveals_object": null,
+          "moves_player": null
+        },
+        "insert": {
+          "message": "You insert the coins. The machine displays: 'GOLDEN GAI DOOR CODE: 2468. RAMEN SHOP REQUIRES BUSINESS CARD FOR ENTRY. HAVE PLEASANT EVENING, HUMAN.' A small item drops from the dispenser.",
+          "condition": "flags.talked_to_machine && inventory.includes('coins')",
+          "fail_message": null,
+          "state_changes": {
+            "flags.machine_paid": true
+          },
+          "consumes_object": false,
+          "reveals_object": "electronic_key",
+          "moves_player": null
+        }
+      },
+      "scenery": false,
+      "hidden": false
+    },
+    {
+      "id": "coins",
+      "name": "coins",
+      "adjectives": [
+        "metal",
+        "japanese",
+        "hundred-yen"
+      ],
+      "description": "A handful of 100-yen coins, enough for a vending machine purchase.",
+      "examine_text": "Five 100-yen coins. Perfect for vending machines or small purchases.",
+      "location": "convenience_store",
+      "takeable": true,
+      "droppable": true,
+      "readable": false,
+      "read_text": null,
+      "openable": false,
+      "is_open": false,
+      "container": false,
+      "contains": [],
+      "lockable": false,
+      "locked": false,
+      "key_object": null,
+      "light_source": false,
+      "is_lit": false,
+      "wearable": false,
+      "worn": false,
+      "actions": {},
+      "scenery": false,
+      "hidden": false
+    },
+    {
+      "id": "electronic_key",
+      "name": "electronic key",
+      "adjectives": [
+        "electronic",
+        "plastic",
+        "small"
+      ],
+      "description": "A small plastic card with an electronic chip, dispensed by the sentient vending machine.",
+      "examine_text": "The key has 'STAFF ACCESS' printed on it in small letters.",
+      "location": "vending_machine_alley",
+      "takeable": true,
+      "droppable": true,
+      "readable": false,
+      "read_text": null,
+      "openable": false,
+      "is_open": false,
+      "container": false,
+      "contains": [],
+      "lockable": false,
+      "locked": false,
+      "key_object": null,
+      "light_source": false,
+      "is_lit": false,
+      "wearable": false,
+      "worn": false,
+      "actions": {},
+      "scenery": false,
+      "hidden": false
+    },
+    {
+      "id": "wooden_door",
+      "name": "wooden door",
+      "adjectives": [
+        "wooden",
+        "heavy"
+      ],
+      "description": "A heavy wooden door blocks the entrance to Golden Gai. An electronic lock requires a 4-digit code.",
+      "examine_text": null,
+      "location": "golden_gai_entrance",
+      "takeable": false,
+      "droppable": true,
+      "readable": false,
+      "read_text": null,
+      "openable": false,
+      "is_open": false,
+      "container": false,
+      "contains": [],
+      "lockable": true,
+      "locked": true,
+      "key_object": null,
+      "light_source": false,
+      "is_lit": false,
+      "wearable": false,
+      "worn": false,
+      "actions": {
+        "enter": {
+          "message": "You enter the code 2468 on the electronic lock. The door clicks open, granting you access to Golden Gai!",
+          "condition": "flags.machine_paid",
+          "fail_message": null,
+          "state_changes": {
+            "flags.golden_gai_open": true
+          },
+          "consumes_object": false,
+          "reveals_object": null,
+          "moves_player": "golden_gai_alley_1"
+        },
+        "unlock": {
+          "message": "You enter the code 2468 on the electronic lock. The door clicks open!",
+          "condition": "flags.machine_paid",
+          "fail_message": null,
+          "state_changes": {
+            "flags.golden_gai_open": true
+          },
+          "consumes_object": false,
+          "reveals_object": null,
+          "moves_player": null
+        }
+      },
+      "scenery": false,
+      "hidden": false
+    },
+    {
+      "id": "electronic_lock",
+      "name": "electronic lock",
+      "adjectives": [
+        "electronic",
+        "digital"
+      ],
+      "description": "A digital keypad requiring a 4-digit code to unlock the door.",
+      "examine_text": "The lock has numbers 0-9 and a small screen that currently shows '----'. You need to enter the correct 4-digit code.",
+      "location": "golden_gai_entrance",
+      "takeable": false,
+      "droppable": true,
+      "readable": false,
+      "read_text": null,
+      "openable": false,
+      "is_open": false,
+      "container": false,
+      "contains": [],
+      "lockable": false,
+      "locked": false,
+      "key_object": null,
+      "light_source": false,
+      "is_lit": false,
+      "wearable": false,
+      "worn": false,
+      "actions": {},
+      "scenery": false,
+      "hidden": false
+    },
+    {
+      "id": "business_card",
+      "name": "business card",
+      "adjectives": [
+        "elegant",
+        "gold"
+      ],
+      "description": "A elegant business card from 'Champion Bar' with gold lettering.",
+      "examine_text": "The card feels expensive and has a small red stamp that looks official.",
+      "location": "tiny_bar",
+      "takeable": true,
+      "droppable": true,
+      "readable": true,
+      "read_text": "Champion Bar - Golden Gai. 'Present this card at Ichiran Ramen for late-night service.' There's a small stamp on the back.",
+      "openable": false,
+      "is_open": false,
+      "container": false,
+      "contains": [],
+      "lockable": false,
+      "locked": false,
+      "key_object": null,
+      "light_source": false,
+      "is_lit": false,
+      "wearable": false,
+      "worn": false,
+      "actions": {},
+      "scenery": false,
+      "hidden": false
+    },
+    {
+      "id": "notebook",
+      "name": "notebook",
+      "adjectives": [
+        "leather",
+        "bound"
+      ],
+      "description": "A leather-bound notebook left open on the bar counter.",
+      "examine_text": "The handwriting is neat and the pages are filled with musical notes and reminders.",
+      "location": "jazz_bar",
+      "takeable": true,
+      "droppable": true,
+      "readable": true,
+      "read_text": "The notebook contains jazz song titles and notes: 'Remember - the back door key is behind the staff entrance. Only use in emergencies. Code for Golden Gai: ask the vending machine.'",
+      "openable": false,
+      "is_open": false,
+      "container": false,
+      "contains": [],
+      "lockable": false,
+      "locked": false,
+      "key_object": null,
+      "light_source": false,
+      "is_lit": false,
+      "wearable": false,
+      "worn": false,
+      "actions": {},
+      "scenery": false,
+      "hidden": false
+    },
+    {
+      "id": "metal_door",
+      "name": "metal door",
+      "adjectives": [
+        "metal",
+        "heavy",
+        "staff"
+      ],
+      "description": "A heavy metal door marked 'STAFF ONLY' in both Japanese and English.",
+      "examine_text": null,
+      "location": "back_alley",
+      "takeable": false,
+      "droppable": true,
+      "readable": false,
+      "read_text": null,
+      "openable": false,
+      "is_open": false,
+      "container": false,
+      "contains": [],
+      "lockable": true,
+      "locked": true,
+      "key_object": "electronic_key",
+      "light_source": false,
+      "is_lit": false,
+      "wearable": false,
+      "worn": false,
+      "actions": {
+        "unlock": {
+          "message": "You swipe the electronic key and the door clicks open, revealing a shortcut back to the residential area!",
+          "condition": "inventory.includes('electronic_key')",
+          "fail_message": null,
+          "state_changes": {
+            "flags.staff_door_open": true
+          },
+          "consumes_object": false,
+          "reveals_object": null,
+          "moves_player": null
+        },
+        "open": {
+          "message": "The door is already unlocked. You can go through it.",
+          "condition": "flags.staff_door_open",
+          "fail_message": null,
+          "state_changes": {},
+          "consumes_object": false,
+          "reveals_object": null,
+          "moves_player": "residential_street"
+        }
+      },
+      "scenery": false,
+      "hidden": false
+    },
+    {
+      "id": "ramen_master",
+      "name": "ramen master",
+      "adjectives": [
+        "elderly",
+        "chef"
+      ],
+      "description": "An elderly man in white chef's clothing stands ready to serve ramen, but he's waiting for something.",
+      "examine_text": "He has the focused concentration of a true craftsman, but keeps glancing at you expectantly.",
+      "location": "ramen_shop",
+      "takeable": false,
+      "droppable": true,
+      "readable": false,
+      "read_text": null,
+      "openable": false,
+      "is_open": false,
+      "container": false,
+      "contains": [],
+      "lockable": false,
+      "locked": false,
+      "key_object": null,
+      "light_source": false,
+      "is_lit": false,
+      "wearable": false,
+      "worn": false,
+      "actions": {
+        "talk": {
+          "message": "The ramen master bows politely but says, 'I'm sorry, but we're closed to walk-ins at this hour. You need a business card from one of the Golden Gai establishments.'",
+          "condition": "!inventory.includes('business_card')",
+          "fail_message": null,
+          "state_changes": {},
+          "consumes_object": false,
+          "reveals_object": null,
+          "moves_player": null
+        },
+        "show": {
+          "message": "The ramen master examines the business card and smiles. 'Ah, Champion Bar! Please, sit down. I'll prepare your morning ramen right away.' He serves you a perfect bowl of tonkotsu ramen with extra chashu. You feel much better!",
+          "condition": "inventory.includes('business_card')",
+          "fail_message": null,
+          "state_changes": {
+            "flags.ramen_eaten": true
+          },
+          "consumes_object": false,
+          "reveals_object": null,
+          "moves_player": null
+        }
+      },
+      "scenery": false,
+      "hidden": false
+    },
+    {
+      "id": "ordering_sign",
+      "name": "ordering sign",
+      "adjectives": [
+        "informational"
+      ],
+      "description": "A sign explaining the ramen shop's late-night policy.",
+      "examine_text": "The sign is written in both Japanese and English, clearly explaining the shop's policy.",
+      "location": "ramen_shop",
+      "takeable": false,
+      "droppable": true,
+      "readable": true,
+      "read_text": "LATE NIGHT SERVICE: Between 4AM-6AM, service is available only to customers with business cards from Golden Gai establishments. This ensures our regular customers can always find a warm meal after a night out.",
+      "openable": false,
+      "is_open": false,
+      "container": false,
+      "contains": [],
+      "lockable": false,
+      "locked": false,
+      "key_object": null,
+      "light_source": false,
+      "is_lit": false,
+      "wearable": false,
+      "worn": false,
+      "actions": {},
+      "scenery": false,
+      "hidden": false
+    }
+  ],
+  "verbs": [
+    {
+      "verb": "take",
+      "aliases": [
+        "get",
+        "grab",
+        "pick up"
+      ],
+      "requires_object": true,
+      "requires_indirect": false,
+      "prepositions": [],
+      "default_message": "Nothing happens."
+    },
+    {
+      "verb": "drop",
+      "aliases": [
+        "put down",
+        "discard"
+      ],
+      "requires_object": true,
+      "requires_indirect": false,
+      "prepositions": [],
+      "default_message": "Nothing happens."
+    },
+    {
+      "verb": "examine",
+      "aliases": [
+        "look at",
+        "x",
+        "inspect"
+      ],
+      "requires_object": true,
+      "requires_indirect": false,
+      "prepositions": [],
+      "default_message": "Nothing happens."
+    },
+    {
+      "verb": "open",
+      "aliases": [],
+      "requires_object": true,
+      "requires_indirect": false,
+      "prepositions": [],
+      "default_message": "Nothing happens."
+    },
+    {
+      "verb": "close",
+      "aliases": [
+        "shut"
+      ],
+      "requires_object": true,
+      "requires_indirect": false,
+      "prepositions": [],
+      "default_message": "Nothing happens."
+    },
+    {
+      "verb": "read",
+      "aliases": [],
+      "requires_object": true,
+      "requires_indirect": false,
+      "prepositions": [],
+      "default_message": "Nothing happens."
+    },
+    {
+      "verb": "unlock",
+      "aliases": [],
+      "requires_object": true,
+      "requires_indirect": false,
+      "prepositions": [],
+      "default_message": "Nothing happens."
+    },
+    {
+      "verb": "lock",
+      "aliases": [],
+      "requires_object": true,
+      "requires_indirect": false,
+      "prepositions": [],
+      "default_message": "Nothing happens."
+    },
+    {
+      "verb": "put",
+      "aliases": [
+        "place",
+        "insert"
+      ],
+      "requires_object": true,
+      "requires_indirect": false,
+      "prepositions": [],
+      "default_message": "Nothing happens."
+    },
+    {
+      "verb": "inventory",
+      "aliases": [
+        "i"
+      ],
+      "requires_object": false,
+      "requires_indirect": false,
+      "prepositions": [],
+      "default_message": "Nothing happens."
+    },
+    {
+      "verb": "look",
+      "aliases": [
+        "l"
+      ],
+      "requires_object": false,
+      "requires_indirect": false,
+      "prepositions": [],
+      "default_message": "Nothing happens."
+    },
+    {
+      "verb": "go",
+      "aliases": [
+        "walk",
+        "move"
+      ],
+      "requires_object": true,
+      "requires_indirect": false,
+      "prepositions": [],
+      "default_message": "Nothing happens."
+    },
+    {
+      "verb": "quit",
+      "aliases": [
+        "exit",
+        "q"
+      ],
+      "requires_object": false,
+      "requires_indirect": false,
+      "prepositions": [],
+      "default_message": "Nothing happens."
+    },
+    {
+      "verb": "help",
+      "aliases": [
+        "?"
+      ],
+      "requires_object": false,
+      "requires_indirect": false,
+      "prepositions": [],
+      "default_message": "Nothing happens."
+    }
+  ],
+  "initial_state": {
+    "current_room": "kabukicho_entrance",
+    "inventory": [],
+    "flags": {}
+  },
+  "win_condition": {
+    "type": "flag_set",
+    "room": null,
+    "object": null,
+    "flag": "ramen_eaten",
+    "conditions": null,
+    "win_message": "Congratulations! You've successfully navigated the neon maze of Kabukicho and found the perfect bowl of morning ramen. The rich tonkotsu broth warms your soul and clears your hangover just as the first train of the day begins to rumble overhead. You're ready to face whatever Tokyo throws at you next. You have escaped Kabukicho victorious!"
+  }
+}

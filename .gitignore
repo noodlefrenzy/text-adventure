@@ -87,3 +87,4 @@ Thumbs.db
 # Project-specific
 *.json
 !tests/fixtures/**/*.json
+!adventures/sample_*.json
