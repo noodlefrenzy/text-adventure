@@ -47,33 +47,70 @@ class Tracer(Protocol):
 class NoOpSpan:
     """A no-op span for when telemetry is disabled."""
 
-    def __enter__(self) -> NoOpSpan:
+    def __enter__(self) -> Span:
         return self
 
     def __exit__(self, *args: object) -> None:
         pass
 
-    def set_attribute(self, _key: str, _value: object) -> None:
+    def set_attribute(self, key: str, value: object) -> None:  # noqa: ARG002
         pass
 
-    def set_status(self, _status: object) -> None:
+    def set_status(self, status: object) -> None:  # noqa: ARG002
         pass
 
-    def record_exception(self, _exception: BaseException) -> None:
+    def record_exception(self, exception: BaseException) -> None:  # noqa: ARG002
         pass
 
-    def add_event(self, _name: str, _attributes: dict[str, object] | None = None) -> None:
+    def add_event(  # noqa: ARG002
+        self, name: str, attributes: dict[str, object] | None = None
+    ) -> None:
         pass
 
 
 class NoOpTracer:
     """A no-op tracer for when telemetry is disabled or packages missing."""
 
-    def start_as_current_span(self, _name: str, **_kwargs: object) -> NoOpSpan:
+    def start_as_current_span(
+        self, name: str, **kwargs: object  # noqa: ARG002
+    ) -> Span:
         return NoOpSpan()
 
-    def start_span(self, _name: str, **_kwargs: object) -> NoOpSpan:
+    def start_span(
+        self, name: str, **kwargs: object  # noqa: ARG002
+    ) -> Span:
         return NoOpSpan()
+
+
+class LazyTracer:
+    """
+    A tracer that defers actual tracer lookup until span creation.
+
+    This allows modules to call get_tracer() at import time, before
+    init_telemetry() is called. The real tracer is resolved lazily
+    when spans are actually created.
+    """
+
+    def __init__(self, name: str) -> None:
+        self._name = name
+
+    def _get_real_tracer(self) -> Tracer:
+        """Get the real tracer, or NoOpTracer if not initialized."""
+        if not _initialized or _tracer_provider is None:
+            return NoOpTracer()
+
+        try:
+            from opentelemetry import trace
+
+            return trace.get_tracer(self._name)  # type: ignore[return-value]
+        except ImportError:
+            return NoOpTracer()
+
+    def start_as_current_span(self, name: str, **kwargs: object) -> Span:
+        return self._get_real_tracer().start_as_current_span(name, **kwargs)
+
+    def start_span(self, name: str, **kwargs: object) -> Span:
+        return self._get_real_tracer().start_span(name, **kwargs)
 
 
 def init_telemetry(settings: OpenTelemetrySettings) -> None:
@@ -143,25 +180,17 @@ def get_tracer(name: str) -> Tracer:
     """
     Get a tracer for the given module name.
 
-    Returns a no-op tracer if telemetry is disabled or not initialized.
+    Returns a lazy tracer that defers resolution until span creation.
+    This allows modules to call get_tracer() at import time, before
+    init_telemetry() is called.
 
     Args:
         name: Module name (typically __name__).
 
     Returns:
-        A tracer instance (either real or no-op).
+        A LazyTracer that resolves to real or no-op tracer when used.
     """
-    if not _initialized or _tracer_provider is None:
-        return NoOpTracer()
-
-    try:
-        from opentelemetry import trace
-
-        # The real tracer satisfies our Tracer protocol
-        real_tracer = trace.get_tracer(name)
-        return real_tracer  # type: ignore[return-value]
-    except ImportError:
-        return NoOpTracer()
+    return LazyTracer(name)
 
 
 def shutdown_telemetry() -> None:
