@@ -51,7 +51,7 @@ def version_callback(value: bool) -> None:
 
 @app.callback()
 def main(
-    version: Annotated[
+    _version: Annotated[
         bool,
         typer.Option(
             "--version",

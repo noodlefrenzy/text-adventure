@@ -72,7 +72,15 @@ def sample_generated_game():
                 "id": "rocky_shore",
                 "name": "Rocky Shore",
                 "description": "Waves crash against the rocks. A small cave opening is visible to the east.",
-                "exits": {"north": "lighthouse_base", "east": {"target": "hidden_cave", "locked": True, "lock_message": "The cave entrance is blocked by a rusty gate.", "unlock_object": "brass_key"}},
+                "exits": {
+                    "north": "lighthouse_base",
+                    "east": {
+                        "target": "hidden_cave",
+                        "locked": True,
+                        "lock_message": "The cave entrance is blocked by a rusty gate.",
+                        "unlock_object": "brass_key",
+                    },
+                },
                 "objects": ["driftwood", "seashells"],
             },
             {
@@ -386,7 +394,12 @@ class TestGameGenerator:
         game_data = {
             "metadata": {"title": "Test", "description": "Test"},
             "rooms": [
-                {"id": "room1", "name": "Room", "description": "A room.", "exits": {"north": "nonexistent"}}
+                {
+                    "id": "room1",
+                    "name": "Room",
+                    "description": "A room.",
+                    "exits": {"north": "nonexistent"},
+                }
             ],
             "objects": [],
             "initial_state": {"current_room": "room1"},

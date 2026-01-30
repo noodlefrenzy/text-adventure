@@ -41,47 +41,49 @@ def client():
 @pytest.fixture
 def simple_game():
     """A simple two-room game for testing."""
-    return Game.model_validate({
-        "metadata": {
-            "title": "Simple Test Game",
-            "description": "A simple two-room test game.",
-        },
-        "rooms": [
-            {
-                "id": "start",
-                "name": "Starting Room",
-                "description": "You are in a plain room. There is an exit to the north.",
-                "exits": {"north": "goal"},
-                "objects": ["key"],
+    return Game.model_validate(
+        {
+            "metadata": {
+                "title": "Simple Test Game",
+                "description": "A simple two-room test game.",
             },
-            {
-                "id": "goal",
-                "name": "Goal Room",
-                "description": "You made it! This is the goal room.",
-                "exits": {"south": "start"},
-                "objects": [],
+            "rooms": [
+                {
+                    "id": "start",
+                    "name": "Starting Room",
+                    "description": "You are in a plain room. There is an exit to the north.",
+                    "exits": {"north": "goal"},
+                    "objects": ["key"],
+                },
+                {
+                    "id": "goal",
+                    "name": "Goal Room",
+                    "description": "You made it! This is the goal room.",
+                    "exits": {"south": "start"},
+                    "objects": [],
+                },
+            ],
+            "objects": [
+                {
+                    "id": "key",
+                    "name": "brass key",
+                    "adjectives": ["brass", "small"],
+                    "description": "A small brass key.",
+                    "location": "start",
+                    "takeable": True,
+                },
+            ],
+            "initial_state": {
+                "current_room": "start",
+                "inventory": [],
             },
-        ],
-        "objects": [
-            {
-                "id": "key",
-                "name": "brass key",
-                "adjectives": ["brass", "small"],
-                "description": "A small brass key.",
-                "location": "start",
-                "takeable": True,
+            "win_condition": {
+                "type": "reach_room",
+                "room": "goal",
+                "win_message": "You win!",
             },
-        ],
-        "initial_state": {
-            "current_room": "start",
-            "inventory": [],
-        },
-        "win_condition": {
-            "type": "reach_room",
-            "room": "goal",
-            "win_message": "You win!",
-        },
-    })
+        }
+    )
 
 
 def make_llm_response(text: str) -> Response:

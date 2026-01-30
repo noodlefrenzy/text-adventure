@@ -1,0 +1,46 @@
+# Pre-commit hooks for text-adventure
+# Install: pre-commit install
+# Run manually: pre-commit run --all-files
+
+repos:
+  # Ruff - Fast Python linter and formatter
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.3.0
+    hooks:
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+      - id: ruff-format
+
+  # Standard pre-commit hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-json
+      - id: check-added-large-files
+        args: ['--maxkb=500']
+      - id: check-merge-conflict
+      - id: detect-private-key
+
+  # Local hooks using project's installed dependencies
+  - repo: local
+    hooks:
+      # Mypy - Static type checking (uses project dependencies)
+      - id: mypy
+        name: mypy
+        entry: mypy src/
+        language: system
+        pass_filenames: false
+        types: [python]
+        always_run: true
+
+      # Pytest - Run unit tests (fast subset)
+      - id: pytest-unit
+        name: pytest (unit tests)
+        entry: python -m pytest tests/unit/ -q --tb=short
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [pre-commit]

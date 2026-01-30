@@ -125,9 +125,7 @@ class TestSanitizeRoomIds:
                 "id": "room-1",
                 "name": "Room 1",
                 "description": "...",
-                "exits": {
-                    "north": {"target": "room-2", "locked": True, "lock_message": "Locked!"}
-                },
+                "exits": {"north": {"target": "room-2", "locked": True, "lock_message": "Locked!"}},
             },
             {"id": "room-2", "name": "Room 2", "description": "...", "exits": {}},
         ]
@@ -151,7 +149,12 @@ class TestSanitizeRoomIds:
     def test_preserves_valid_ids(self, generator):
         """Valid IDs pass through unchanged."""
         rooms = [
-            {"id": "entrance", "name": "Entrance", "description": "...", "exits": {"north": "exit"}},
+            {
+                "id": "entrance",
+                "name": "Entrance",
+                "description": "...",
+                "exits": {"north": "exit"},
+            },
             {"id": "exit", "name": "Exit", "description": "...", "exits": {"south": "entrance"}},
         ]
         fixed_rooms, id_map = generator._sanitize_room_ids(rooms)
@@ -238,7 +241,13 @@ class TestFixRoomObjectReferences:
     def test_removes_nonexistent_object_refs(self, generator):
         """References to non-existent objects are removed."""
         rooms = [
-            {"id": "room1", "name": "Room", "description": "...", "exits": {}, "objects": ["key", "ghost", "phantom"]},
+            {
+                "id": "room1",
+                "name": "Room",
+                "description": "...",
+                "exits": {},
+                "objects": ["key", "ghost", "phantom"],
+            },
         ]
         objects = [
             {"id": "key", "name": "key", "description": "...", "location": "room1"},
@@ -250,7 +259,13 @@ class TestFixRoomObjectReferences:
     def test_preserves_valid_object_refs(self, generator):
         """Valid object references are kept."""
         rooms = [
-            {"id": "room1", "name": "Room", "description": "...", "exits": {}, "objects": ["key", "lamp", "book"]},
+            {
+                "id": "room1",
+                "name": "Room",
+                "description": "...",
+                "exits": {},
+                "objects": ["key", "lamp", "book"],
+            },
         ]
         objects = [
             {"id": "key", "name": "key", "description": "...", "location": "room1"},
@@ -273,7 +288,13 @@ class TestFixRoomObjectReferences:
     def test_handles_all_invalid_refs(self, generator):
         """Room with only invalid refs ends up with empty list."""
         rooms = [
-            {"id": "room1", "name": "Room", "description": "...", "exits": {}, "objects": ["ghost1", "ghost2"]},
+            {
+                "id": "room1",
+                "name": "Room",
+                "description": "...",
+                "exits": {},
+                "objects": ["ghost1", "ghost2"],
+            },
         ]
         fixed_rooms = generator._fix_room_object_references(rooms, [])
 
@@ -405,7 +426,9 @@ class TestTransformGameData:
         """win_condition.room uses sanitized room ID."""
         data = {
             "metadata": {"title": "Test", "description": "Test"},
-            "rooms": [{"id": "treasure-room", "name": "Treasure", "description": "...", "exits": {}}],
+            "rooms": [
+                {"id": "treasure-room", "name": "Treasure", "description": "...", "exits": {}}
+            ],
             "objects": [],
             "initial_state": {"current_room": "treasure-room"},
             "win_condition": {"type": "reach_room", "room": "treasure-room"},
@@ -420,7 +443,12 @@ class TestTransformGameData:
             "metadata": {"title": "Test", "description": "Test"},
             "rooms": [{"id": "room1", "name": "Room", "description": "...", "exits": {}}],
             "objects": [
-                {"id": "golden-trophy", "name": "trophy", "description": "...", "location": "room1"},
+                {
+                    "id": "golden-trophy",
+                    "name": "trophy",
+                    "description": "...",
+                    "location": "room1",
+                },
             ],
             "initial_state": {"current_room": "room1"},
             "win_condition": {"type": "have_object", "object": "golden-trophy"},
@@ -441,7 +469,12 @@ class TestTransformGameData:
                     "exits": {"north": "room-2"},
                     "objects": ["brass-key", "ghost-object"],  # ghost-object doesn't exist
                 },
-                {"id": "room-2", "name": "Room 2", "description": "...", "exits": {"south": "room-1"}},
+                {
+                    "id": "room-2",
+                    "name": "Room 2",
+                    "description": "...",
+                    "exits": {"south": "room-1"},
+                },
             ],
             "objects": [
                 {

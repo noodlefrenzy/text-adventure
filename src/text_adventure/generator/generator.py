@@ -181,9 +181,7 @@ class GameGenerator:
         if "rooms" in result and object_id_map:
             for room in result["rooms"]:
                 if "objects" in room:
-                    room["objects"] = [
-                        object_id_map.get(oid, oid) for oid in room["objects"]
-                    ]
+                    room["objects"] = [object_id_map.get(oid, oid) for oid in room["objects"]]
 
         # Ensure objects have locations and rooms only reference existing objects
         if "objects" in result and "rooms" in result:
@@ -192,13 +190,17 @@ class GameGenerator:
                 result["rooms"],
             )
             # Clean up room object references to only include objects that exist
-            logger.debug(f"Before fix_room_object_references: {len(result['rooms'])} rooms, {len(result['objects'])} objects")
+            logger.debug(
+                f"Before fix_room_object_references: {len(result['rooms'])} rooms, {len(result['objects'])} objects"
+            )
             logger.debug(f"Object IDs: {[obj.get('id') for obj in result['objects']]}")
             result["rooms"] = self._fix_room_object_references(
                 result["rooms"],
                 result["objects"],
             )
-            logger.debug(f"After fix_room_object_references: {[r.get('objects', []) for r in result['rooms']]}")
+            logger.debug(
+                f"After fix_room_object_references: {[r.get('objects', []) for r in result['rooms']]}"
+            )
 
         # Ensure initial_state has required fields
         if "initial_state" not in result:
@@ -215,8 +217,7 @@ class GameGenerator:
         elif object_id_map:
             # Update inventory to sanitized object IDs
             result["initial_state"]["inventory"] = [
-                object_id_map.get(oid, oid)
-                for oid in result["initial_state"]["inventory"]
+                object_id_map.get(oid, oid) for oid in result["initial_state"]["inventory"]
             ]
 
         # Ensure win_condition has required fields
@@ -304,7 +305,9 @@ class GameGenerator:
                     elif isinstance(exit_value, dict):
                         exit_dict = dict(exit_value)
                         if "target" in exit_dict:
-                            exit_dict["target"] = id_map.get(exit_dict["target"], exit_dict["target"])
+                            exit_dict["target"] = id_map.get(
+                                exit_dict["target"], exit_dict["target"]
+                            )
                         new_exits[direction] = exit_dict
                     else:
                         new_exits[direction] = exit_value
@@ -393,9 +396,7 @@ class GameGenerator:
 
             # Update contains references
             if "contains" in obj:
-                obj["contains"] = [
-                    id_map.get(oid, oid) for oid in obj["contains"]
-                ]
+                obj["contains"] = [id_map.get(oid, oid) for oid in obj["contains"]]
 
             # Update location to use sanitized room ID
             if "location" in obj and obj["location"] in room_id_map:
@@ -477,14 +478,11 @@ class GameGenerator:
             if "objects" in room:
                 original_objects = room["objects"]
                 room["objects"] = [
-                    obj_id for obj_id in original_objects
-                    if obj_id in valid_object_ids
+                    obj_id for obj_id in original_objects if obj_id in valid_object_ids
                 ]
                 removed = set(original_objects) - set(room["objects"])
                 if removed:
-                    logger.warning(
-                        f"Room '{room_id}' referenced non-existent objects: {removed}"
-                    )
+                    logger.warning(f"Room '{room_id}' referenced non-existent objects: {removed}")
 
             fixed_rooms.append(room)
 

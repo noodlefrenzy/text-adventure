@@ -72,12 +72,16 @@ class NoOpTracer:
     """A no-op tracer for when telemetry is disabled or packages missing."""
 
     def start_as_current_span(
-        self, name: str, **kwargs: object  # noqa: ARG002
+        self,
+        name: str,  # noqa: ARG002
+        **kwargs: object,  # noqa: ARG002
     ) -> Span:
         return NoOpSpan()
 
     def start_span(
-        self, name: str, **kwargs: object  # noqa: ARG002
+        self,
+        name: str,  # noqa: ARG002
+        **kwargs: object,  # noqa: ARG002
     ) -> Span:
         return NoOpSpan()
 
