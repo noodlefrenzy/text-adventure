@@ -156,6 +156,26 @@ mypy src/                     # Type checking
 4. Update any documentation, imports, or links that reference changed files
 5. Verify links still work after changes
 
+### Project Setup Checklist
+
+**When starting a new project, ensure these files exist:**
+
+1. **`.gitignore`** - Critical for avoiding accidental commits of:
+   - `__pycache__/` and `*.pyc` (Python bytecode)
+   - `.env` files (secrets)
+   - IDE settings (`.idea/`, `.vscode/`)
+   - Build artifacts (`dist/`, `*.egg-info/`)
+   - Cache directories (`.mypy_cache/`, `.pytest_cache/`, `.ruff_cache/`)
+
+2. **`README.md`** - Basic project description and setup instructions
+
+3. **`pyproject.toml`** or equivalent - Project configuration
+
+**Before each commit, verify:**
+- [ ] `.gitignore` exists and covers common patterns for the language/framework
+- [ ] No sensitive files (`.env`, credentials) are staged
+- [ ] No large binary files or cache directories are staged
+
 ### Testing Philosophy
 
 <!-- CONDITIONAL: testing_philosophy != manual -->
@@ -754,6 +774,12 @@ Entry Format:
 
 - CLAUDE.md customized for text adventure domain
 - Architecture planned with LLM generation + traditional parser hybrid
+
+### 2026-01-30 - OpenTelemetry Observability
+
+- Added optional OpenTelemetry tracing support
+- Instrumented LLM client, generator, and AI player
+- Added Project Setup Checklist with .gitignore requirements
 <!-- USER CONTENT END: post_impl -->
 
 ---
