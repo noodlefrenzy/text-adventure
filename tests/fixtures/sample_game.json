@@ -1,0 +1,223 @@
+{
+  "metadata": {
+    "title": "The Brass Key",
+    "author": "Test Author",
+    "version": "1.0",
+    "description": "A small test adventure about finding and using a key."
+  },
+  "rooms": [
+    {
+      "id": "entrance",
+      "name": "Entrance Hall",
+      "description": "You stand in a grand entrance hall. Marble floors gleam beneath your feet, and a crystal chandelier hangs overhead. A wooden door leads north to the library, and a narrow passage leads east.",
+      "first_visit_description": "You push open the heavy oak doors and step into a grand entrance hall. The air smells faintly of old wood and polish.",
+      "exits": {
+        "north": {
+          "target": "library",
+          "locked": true,
+          "lock_message": "The library door is locked.",
+          "unlock_object": "brass_key"
+        },
+        "east": "kitchen"
+      },
+      "objects": ["coat_rack", "brass_key"]
+    },
+    {
+      "id": "library",
+      "name": "The Library",
+      "description": "Floor-to-ceiling bookshelves line every wall. A comfortable reading chair sits by the window, and an ancient globe stands in the corner.",
+      "exits": {
+        "south": "entrance"
+      },
+      "objects": ["old_book", "globe"]
+    },
+    {
+      "id": "kitchen",
+      "name": "Kitchen",
+      "description": "A modest kitchen with copper pots hanging from the ceiling. A wooden table occupies the center of the room.",
+      "exits": {
+        "west": "entrance",
+        "north": "pantry"
+      },
+      "objects": ["wooden_box", "apple"]
+    },
+    {
+      "id": "pantry",
+      "name": "Pantry",
+      "description": "A small storage room lined with shelves of preserved foods and dusty bottles.",
+      "exits": {
+        "south": "kitchen"
+      },
+      "objects": ["silver_key"]
+    },
+    {
+      "id": "treasure_room",
+      "name": "Secret Treasure Room",
+      "description": "You've found it! A hidden chamber filled with glittering treasures. Gold coins spill from overflowing chests, and jewels sparkle in the torchlight.",
+      "exits": {},
+      "objects": ["treasure_chest"]
+    }
+  ],
+  "objects": [
+    {
+      "id": "coat_rack",
+      "name": "coat rack",
+      "adjectives": ["wooden", "tall"],
+      "description": "A tall wooden coat rack stands by the door. An old dusty coat hangs from one of its hooks.",
+      "location": "entrance",
+      "takeable": false,
+      "scenery": true,
+      "actions": {
+        "examine": "Looking more closely at the coat rack, you notice something shiny in the coat pocket."
+      }
+    },
+    {
+      "id": "brass_key",
+      "name": "brass key",
+      "adjectives": ["brass", "small", "ornate"],
+      "description": "A small brass key with an ornate handle.",
+      "examine_text": "The key has tiny engravings of roses on its handle. It looks like it might fit an old-fashioned lock.",
+      "location": "entrance",
+      "takeable": true
+    },
+    {
+      "id": "old_book",
+      "name": "leather-bound book",
+      "adjectives": ["old", "leather-bound", "dusty"],
+      "description": "An old leather-bound book lies on the reading table.",
+      "examine_text": "The book is titled 'Secrets of the Manor'. Its pages are yellowed with age.",
+      "location": "library",
+      "takeable": true,
+      "readable": true,
+      "read_text": "The book describes a secret treasure room hidden somewhere in the manor. It mentions that 'the way opens when silver meets globe.'"
+    },
+    {
+      "id": "globe",
+      "name": "ancient globe",
+      "adjectives": ["ancient", "brass", "ornate"],
+      "description": "An ornate brass globe stands on a pedestal, showing the world as it was known centuries ago.",
+      "location": "library",
+      "takeable": false,
+      "scenery": false,
+      "actions": {
+        "examine": "The globe is covered in tiny engravings. There's a small keyhole on its base.",
+        "use_with:silver_key": {
+          "message": "You insert the silver key into the globe's base and turn it. With a click, a hidden panel slides open in the wall, revealing a passage!",
+          "state_changes": {"treasure_room_revealed": true},
+          "reveals_object": null
+        }
+      }
+    },
+    {
+      "id": "wooden_box",
+      "name": "wooden box",
+      "adjectives": ["wooden", "small"],
+      "description": "A small wooden box sits on the kitchen table.",
+      "location": "kitchen",
+      "takeable": true,
+      "openable": true,
+      "container": true,
+      "is_open": false,
+      "contains": ["rusty_coin"]
+    },
+    {
+      "id": "rusty_coin",
+      "name": "rusty coin",
+      "adjectives": ["rusty", "old"],
+      "description": "An old rusty coin.",
+      "location": "wooden_box",
+      "takeable": true
+    },
+    {
+      "id": "apple",
+      "name": "red apple",
+      "adjectives": ["red", "shiny"],
+      "description": "A shiny red apple sits on the table.",
+      "location": "kitchen",
+      "takeable": true
+    },
+    {
+      "id": "silver_key",
+      "name": "silver key",
+      "adjectives": ["silver", "small", "shiny"],
+      "description": "A small silver key with a peculiar round handle.",
+      "examine_text": "The key's handle is shaped like a tiny globe. Interesting.",
+      "location": "pantry",
+      "takeable": true
+    },
+    {
+      "id": "treasure_chest",
+      "name": "treasure chest",
+      "adjectives": ["golden", "ornate", "large"],
+      "description": "A large golden chest overflowing with riches.",
+      "location": "treasure_room",
+      "takeable": false,
+      "scenery": false
+    }
+  ],
+  "verbs": [
+    {
+      "verb": "take",
+      "aliases": ["get", "grab", "pick up"],
+      "requires_object": true
+    },
+    {
+      "verb": "drop",
+      "aliases": ["put down", "discard"],
+      "requires_object": true
+    },
+    {
+      "verb": "examine",
+      "aliases": ["look at", "x", "inspect"],
+      "requires_object": true
+    },
+    {
+      "verb": "open",
+      "aliases": [],
+      "requires_object": true
+    },
+    {
+      "verb": "close",
+      "aliases": ["shut"],
+      "requires_object": true
+    },
+    {
+      "verb": "read",
+      "aliases": [],
+      "requires_object": true
+    },
+    {
+      "verb": "use",
+      "aliases": [],
+      "requires_object": true,
+      "requires_indirect": true,
+      "prepositions": ["with", "on"]
+    },
+    {
+      "verb": "unlock",
+      "aliases": [],
+      "requires_object": true,
+      "requires_indirect": true,
+      "prepositions": ["with"]
+    },
+    {
+      "verb": "put",
+      "aliases": ["place"],
+      "requires_object": true,
+      "requires_indirect": true,
+      "prepositions": ["in", "on"]
+    }
+  ],
+  "initial_state": {
+    "current_room": "entrance",
+    "inventory": [],
+    "flags": {
+      "treasure_room_revealed": false
+    }
+  },
+  "win_condition": {
+    "type": "reach_room",
+    "room": "treasure_room",
+    "win_message": "Congratulations! You've found the secret treasure room and claimed the riches of the manor!"
+  }
+}
