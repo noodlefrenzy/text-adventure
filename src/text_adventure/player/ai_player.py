@@ -27,15 +27,23 @@ AI_PLAYER_SYSTEM_PROMPT = """You are an expert text adventure game player. You a
 
 Your goal is to explore the game world, solve puzzles, and achieve the win condition.
 
+CRITICAL RULES:
+- NEVER repeat the same command twice in a row
+- NEVER keep checking INVENTORY or using LOOK repeatedly - once is enough per room
+- If a command fails or does nothing useful, try something DIFFERENT
+- If you're stuck, explore a NEW direction or try a NEW object
+- EXAMINE objects you haven't examined yet for clues
+- Progress means: visiting new rooms, taking new items, or solving puzzles
+
 Strategy tips:
-- Use LOOK to understand your surroundings
-- EXAMINE interesting objects for clues
+- When entering a new room, LOOK once, then EXAMINE interesting objects
 - Pick up items that seem useful (TAKE/GET)
-- Check your INVENTORY regularly
-- Try obvious directions first (NORTH, SOUTH, EAST, WEST)
+- Check INVENTORY only when you need to remember what you have
+- Try all exits from a room before giving up
 - READ any books, notes, or signs for hints
-- If a door is locked, look for a key
+- If a door is locked, search other rooms for a key
 - Use items WITH other items when appropriate (UNLOCK DOOR WITH KEY)
+- TALK to characters you meet - they may give hints
 
 Commands you can use:
 - Movement: NORTH, SOUTH, EAST, WEST, UP, DOWN (or N, S, E, W, U, D)
@@ -44,7 +52,8 @@ Commands you can use:
 - Containers: OPEN <object>, CLOSE <object>
 - Reading: READ <object>
 - Locking: UNLOCK <object> WITH <key>, LOCK <object> WITH <key>
-- Meta: INVENTORY (or I), HELP
+- Interaction: TALK TO <character>, SHOW <object> TO <character>
+- Meta: INVENTORY (or I)
 
 Respond with ONLY a single command, nothing else. No explanation, no commentary, just the command.
 
@@ -53,7 +62,7 @@ NORTH
 EXAMINE LAMP
 TAKE BRASS KEY
 UNLOCK DOOR WITH KEY
-PUT GEM IN BOX"""
+TALK TO GUARD"""
 
 
 @dataclass
@@ -67,7 +76,20 @@ class PlaySession:
     items_collected: list[str] = field(default_factory=list)
     won: bool = False
     gave_up: bool = False
-    stuck_count: int = 0  # Consecutive turns without progress
+    stuck_count: float = 0  # Consecutive turns without progress (float for partial increments)
+    failed_commands: list[str] = field(default_factory=list)  # Commands that didn't work
+    examined_objects: set[str] = field(default_factory=set)  # Objects we've examined
+    recent_commands: list[str] = field(default_factory=list)  # Last N commands for loop detection
+
+    def is_repeating(self, command: str, window: int = 5) -> bool:
+        """Check if command was recently issued."""
+        recent = self.recent_commands[-window:] if self.recent_commands else []
+        return command.upper() in [c.upper() for c in recent]
+
+    def count_recent(self, command: str, window: int = 10) -> int:
+        """Count how many times a command appeared recently."""
+        recent = self.recent_commands[-window:] if self.recent_commands else []
+        return sum(1 for c in recent if c.upper() == command.upper())
 
 
 class AIPlayer:
@@ -155,6 +177,17 @@ class AIPlayer:
                     session.turns += 1
                     session.commands_issued.append(command)
                     session.responses_received.append(result.message)
+                    session.recent_commands.append(command)
+
+                    # Track examined objects
+                    if command.startswith("EXAMINE ") or command.startswith("X "):
+                        obj_name = command.split(" ", 1)[1] if " " in command else ""
+                        if obj_name:
+                            session.examined_objects.add(obj_name.lower())
+
+                    # Track failed commands
+                    if result.error:
+                        session.failed_commands.append(command)
 
                     # Track progress
                     old_room_count = len(session.rooms_visited)
@@ -171,13 +204,20 @@ class AIPlayer:
                         or len(session.items_collected) > old_inventory_count
                     )
 
+                    # Detect repetitive behavior (even if commands "succeed")
+                    is_repetitive = session.count_recent(command, window=6) >= 3
+
                     turn_span.set_attribute("ai.success", not result.error)
                     turn_span.set_attribute("ai.made_progress", made_progress)
+                    turn_span.set_attribute("ai.is_repetitive", is_repetitive)
 
-                    if made_progress or not result.error:
+                    if made_progress:
                         session.stuck_count = 0
-                    else:
+                    elif result.error or is_repetitive:
                         session.stuck_count += 1
+                    else:
+                        # Successful but no progress - slightly increment
+                        session.stuck_count += 0.5
 
                     # Callback
                     if on_turn:
@@ -253,9 +293,26 @@ class AIPlayer:
         parts = [
             f"Game: {game.metadata.title}",
             f"Objective: {self._describe_objective(game)}",
+            f"Progress: {len(session.rooms_visited)} rooms visited, {len(session.items_collected)} items collected",
             "",
-            "Recent history (last 5 turns):",
         ]
+
+        # Warn about repetitive commands
+        if session.recent_commands:
+            recent_5 = session.recent_commands[-5:]
+            repeated = [c for c in set(recent_5) if recent_5.count(c) >= 2]
+            if repeated:
+                parts.append(f"WARNING: You've been repeating these commands: {', '.join(repeated)}")
+                parts.append("Try something DIFFERENT!")
+                parts.append("")
+
+        # Show what has failed recently
+        recent_failures = session.failed_commands[-3:] if session.failed_commands else []
+        if recent_failures:
+            parts.append(f"Commands that didn't work: {', '.join(recent_failures)}")
+            parts.append("")
+
+        parts.append("Recent history (last 5 turns):")
 
         # Show recent history
         start_idx = max(0, len(session.commands_issued) - 5)
@@ -270,7 +327,15 @@ class AIPlayer:
             parts.append(session.responses_received[-1])
             parts.append("")
 
-        parts.append("What is your next command?")
+        # Suggest what to try
+        if session.stuck_count >= 3:
+            parts.append("HINT: You seem stuck. Try:")
+            parts.append("- Exploring a direction you haven't tried")
+            parts.append("- Examining an object you haven't looked at")
+            parts.append("- Using an item from your inventory")
+            parts.append("")
+
+        parts.append("What is your next command? (Remember: don't repeat recent commands)")
 
         return "\n".join(parts)
 

@@ -398,8 +398,13 @@ def ai_play(
                 console.print(f"[bold green]{result.message}[/bold green]")
             else:
                 console.print(f"[bold red]{result.message}[/bold red]")
-        elif verbose:
+        else:
+            # Always show game output so viewers can follow along
             console.print(result.message)
+
+        if verbose:
+            # Verbose mode shows additional debug info
+            console.print(f"[dim]  (error={result.error}, game_over={result.game_over})[/dim]")
 
         console.print()
 
