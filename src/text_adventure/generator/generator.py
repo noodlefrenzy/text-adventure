@@ -297,17 +297,17 @@ class GameGenerator:
 
             # Update exit targets
             if "exits" in room:
-                new_exits = {}
-                for direction, target in room["exits"].items():
-                    if isinstance(target, str):
-                        new_exits[direction] = id_map.get(target, target)
-                    elif isinstance(target, dict):
-                        target = dict(target)
-                        if "target" in target:
-                            target["target"] = id_map.get(target["target"], target["target"])
-                        new_exits[direction] = target
+                new_exits: dict[str, Any] = {}
+                for direction, exit_value in room["exits"].items():
+                    if isinstance(exit_value, str):
+                        new_exits[direction] = id_map.get(exit_value, exit_value)
+                    elif isinstance(exit_value, dict):
+                        exit_dict = dict(exit_value)
+                        if "target" in exit_dict:
+                            exit_dict["target"] = id_map.get(exit_dict["target"], exit_dict["target"])
+                        new_exits[direction] = exit_dict
                     else:
-                        new_exits[direction] = target
+                        new_exits[direction] = exit_value
                 room["exits"] = new_exits
 
             fixed_rooms.append(room)
@@ -333,22 +333,22 @@ class GameGenerator:
         for obj in objects:
             obj = dict(obj)
             if "actions" in obj and isinstance(obj["actions"], dict):
-                fixed_actions = {}
+                fixed_actions: dict[str, Any] = {}
                 for action_key, action_value in obj["actions"].items():
                     if isinstance(action_value, str):
                         # Simple string action is fine
                         fixed_actions[action_key] = action_value
                     elif isinstance(action_value, dict):
                         # Ensure message field exists
-                        if "message" not in action_value:
+                        action_dict = dict(action_value)
+                        if "message" not in action_dict:
                             # Try to generate a sensible default message
                             verb = action_key.split(":")[0] if ":" in action_key else action_key
-                            action_value = dict(action_value)
-                            action_value["message"] = f"You {verb} the {obj.get('name', 'object')}."
+                            action_dict["message"] = f"You {verb} the {obj.get('name', 'object')}."
                             logger.warning(
                                 f"Object '{obj.get('id')}' action '{action_key}' missing message, added default"
                             )
-                        fixed_actions[action_key] = action_value
+                        fixed_actions[action_key] = action_dict
                     else:
                         fixed_actions[action_key] = action_value
                 obj["actions"] = fixed_actions

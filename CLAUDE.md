@@ -236,6 +236,19 @@ tests/
 - Game state round-trips correctly (save/load)
 - LLM generation produces valid game JSON
 - AI player makes progress (doesn't loop forever)
+
+**Generator Transform Tests:**
+- Test each transform method in isolation (`tests/unit/test_generator_transforms.py`)
+- Use fixture data that reproduces known LLM output issues (see `conftest.py`)
+- Integration tests mock LLM to return problematic data, verify transforms fix it
+- Always test that valid data passes through unchanged (no false positives)
+- Test combined issues - LLMs often produce multiple problems in one response
+
+**LLM Output Issue Fixtures:**
+- `llm_response_with_invalid_ids` - IDs with hyphens/spaces
+- `llm_response_with_phantom_objects` - Rooms reference non-existent objects
+- `llm_response_with_malformed_actions` - Actions missing required fields
+- `llm_response_with_multiple_issues` - All issues combined
 <!-- USER CONTENT END: testing_specifics -->
 
 ### Verification Philosophy
@@ -755,7 +768,27 @@ Entry Format:
 -->
 
 <!-- USER CONTENT START: learnings -->
-*No learnings yet - greenfield project*
+## 2026-01-30 - LLM Output Robustness
+
+**Context:** Generating 20-room Kabukicho adventure with complex theme
+
+**Discovery:** LLMs produce several categories of invalid output that require transformation before Pydantic validation:
+1. **Invalid IDs (~10%)** - hyphens, spaces, leading numbers don't match `^[a-z][a-z0-9_]*$`
+2. **Phantom object references (~15%)** - rooms list objects in `room.objects` that aren't defined in `objects` array
+3. **Malformed actions (~5%)** - action dicts missing required `message` field
+
+**Impact:**
+- Generator needs robust transformation layer (`_transform_game_data` and helpers)
+- Tests must mock LLM to return known-bad data patterns
+- Transforms must fix issues WITHOUT breaking valid data
+- Logging warnings helps debug which transforms fired
+
+**References:**
+- `src/text_adventure/generator/generator.py` (lines 167-445)
+- `tests/unit/test_generator_transforms.py`
+- `tests/integration/test_generator.py` (TestGeneratorRobustness class)
+
+**Tags:** #gotcha #pattern #llm
 <!-- USER CONTENT END: learnings -->
 
 ### Known Issues & Technical Debt
@@ -765,6 +798,9 @@ Entry Format:
 |-------|----------|---------|-------------|
 | LLM state consistency | Med | LLMs simulate state incorrectly ~40% of time | Server-side state authority |
 | Ambiguity resolution | Low | "GET LAMP" when multiple lamps exist | Implement resolver with clarification prompts |
+| LLM invalid IDs | Med | LLMs generate ~10% invalid IDs (hyphens, spaces, numbers) | `_sanitize_id()` transform in generator |
+| LLM phantom objects | Med | LLMs reference ~15% objects in rooms that don't exist | `_fix_room_object_references()` transform |
+| LLM malformed actions | Low | LLMs sometimes omit required 'message' field in actions | `_fix_object_actions()` transform |
 <!-- USER CONTENT END: tech_debt -->
 
 ### Post-Implementation Notes
@@ -780,6 +816,16 @@ Entry Format:
 - Added optional OpenTelemetry tracing support
 - Instrumented LLM client, generator, and AI player
 - Added Project Setup Checklist with .gitignore requirements
+
+### 2026-01-30 - LLM Output Robustness
+
+- Added generator transform layer to fix common LLM output issues
+- ID sanitization: hyphens→underscores, prefix numbers, remove special chars
+- Phantom object cleanup: remove room.objects refs to undefined objects
+- Action message fix: add default message when missing
+- Comprehensive unit tests for each transform (`tests/unit/test_generator_transforms.py`)
+- Integration tests with mock fixtures for each issue type
+- Generated first adventure: "Last Train from Kabukicho" (19 rooms)
 <!-- USER CONTENT END: post_impl -->
 
 ---

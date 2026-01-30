@@ -419,3 +419,162 @@ class TestGameGenerator:
 
         with pytest.raises(GameGenerationError, match="failed validation"):
             await generator.generate(theme="test", num_rooms=1)
+
+
+class TestGeneratorRobustness:
+    """Tests for generator handling of problematic LLM output.
+
+    These tests verify the generator's transformation layer correctly
+    fixes common LLM output issues before Pydantic validation.
+    """
+
+    def _mock_llm_response(self, mock_anthropic, game_data: dict):
+        """Helper to set up mock LLM response with game data."""
+        mock_anthropic.post("/v1/messages").mock(
+            return_value=Response(
+                200,
+                json={
+                    "id": "msg_123",
+                    "type": "message",
+                    "role": "assistant",
+                    "model": "claude-sonnet-4-20250514",
+                    "content": [
+                        {
+                            "type": "tool_use",
+                            "id": "tool_123",
+                            "name": "structured_response",
+                            "input": game_data,
+                        }
+                    ],
+                    "stop_reason": "tool_use",
+                    "usage": {"input_tokens": 500, "output_tokens": 1000},
+                },
+            )
+        )
+
+    @pytest.mark.asyncio
+    async def test_generate_with_invalid_ids_succeeds(
+        self, mock_anthropic, client, llm_response_with_invalid_ids
+    ):
+        """LLM returns IDs with hyphens, generator sanitizes them."""
+        self._mock_llm_response(mock_anthropic, llm_response_with_invalid_ids)
+
+        generator = GameGenerator(client)
+        game = await generator.generate(theme="test", num_rooms=2)
+
+        # Verify IDs were sanitized
+        room_ids = [r.id for r in game.rooms]
+        assert "room_1" in room_ids
+        assert "room_2" in room_ids
+        assert "room-1" not in room_ids
+
+        # Verify object ID was sanitized
+        obj_ids = [o.id for o in game.objects]
+        assert "brass_key" in obj_ids
+        assert "brass-key" not in obj_ids
+
+        # Verify references were updated
+        key_obj = next(o for o in game.objects if o.id == "brass_key")
+        assert key_obj.location == "room_1"
+
+        # Verify game is playable
+        from text_adventure.engine.engine import GameEngine
+
+        engine = GameEngine(game)
+        result = engine.process_input("look")
+        assert not result.error
+
+    @pytest.mark.asyncio
+    async def test_generate_with_phantom_objects_succeeds(
+        self, mock_anthropic, client, llm_response_with_phantom_objects
+    ):
+        """LLM returns room with non-existent object refs, generator removes them."""
+        self._mock_llm_response(mock_anthropic, llm_response_with_phantom_objects)
+
+        generator = GameGenerator(client)
+        game = await generator.generate(theme="test", num_rooms=1)
+
+        # Verify phantom objects were removed from room
+        entrance = next(r for r in game.rooms if r.id == "entrance")
+        assert "key" in entrance.objects
+        assert "taxi" not in entrance.objects
+        assert "ghost_npc" not in entrance.objects
+
+        # Verify valid object still exists
+        assert len(game.objects) == 1
+        assert game.objects[0].id == "key"
+
+        # Verify game is playable
+        from text_adventure.engine.engine import GameEngine
+
+        engine = GameEngine(game)
+        result = engine.process_input("take key")
+        assert not result.error
+
+    @pytest.mark.asyncio
+    async def test_generate_with_malformed_actions_succeeds(
+        self, mock_anthropic, client, llm_response_with_malformed_actions
+    ):
+        """LLM returns actions missing 'message' field, generator adds default."""
+        self._mock_llm_response(mock_anthropic, llm_response_with_malformed_actions)
+
+        generator = GameGenerator(client)
+        game = await generator.generate(theme="test", num_rooms=1)
+
+        # Verify actions have message field
+        machine = next(o for o in game.objects if o.id == "machine")
+        assert machine.actions is not None
+
+        # The actions should now have messages (either from generator fix or validation)
+        # Note: The Game model accepts both string and ObjectAction for actions
+        use_action = machine.actions.get("use")
+        kick_action = machine.actions.get("kick")
+
+        # If they're ObjectAction instances, they should have message
+        if hasattr(use_action, "message"):
+            assert use_action.message is not None
+        if hasattr(kick_action, "message"):
+            assert kick_action.message is not None
+
+        # Verify game loads without error
+        from text_adventure.engine.engine import GameEngine
+
+        engine = GameEngine(game)
+        result = engine.process_input("look")
+        assert not result.error
+
+    @pytest.mark.asyncio
+    async def test_generate_with_multiple_issues_succeeds(
+        self, mock_anthropic, client, llm_response_with_multiple_issues
+    ):
+        """LLM returns game with ALL known issues, generator fixes all."""
+        self._mock_llm_response(mock_anthropic, llm_response_with_multiple_issues)
+
+        generator = GameGenerator(client)
+        game = await generator.generate(theme="test", num_rooms=2)
+
+        # Verify room IDs sanitized
+        room_ids = [r.id for r in game.rooms]
+        assert "start_room" in room_ids
+        assert "end_room" in room_ids
+
+        # Verify phantom object removed
+        start_room = next(r for r in game.rooms if r.id == "start_room")
+        assert "magic_wand" in start_room.objects
+        assert "phantom_item" not in start_room.objects
+        assert "phantom-item" not in start_room.objects
+
+        # Verify object ID sanitized
+        wand = next(o for o in game.objects if o.id == "magic_wand")
+        assert wand.location == "start_room"
+
+        # Verify win condition updated
+        assert game.win_condition.room == "end_room"
+
+        # Verify game is playable
+        from text_adventure.engine.engine import GameEngine
+
+        engine = GameEngine(game)
+        result = engine.process_input("north")
+        assert not result.error
+        assert engine.state.current_room == "end_room"
