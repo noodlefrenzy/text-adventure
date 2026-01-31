@@ -63,6 +63,10 @@ GAME_SCHEMA = {
                         "items": {"type": "string"},
                         "description": "Object IDs in this room",
                     },
+                    "ascii_art": {
+                        "type": "string",
+                        "description": "ASCII art representation (max 80 chars wide, 10-15 lines)",
+                    },
                 },
                 "required": ["id", "name", "description", "exits"],
             },

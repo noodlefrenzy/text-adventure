@@ -13,10 +13,11 @@ The CLI provides commands for:
 """
 
 import asyncio
+import curses
 import json
 import re
 from pathlib import Path
-from typing import Annotated
+from typing import TYPE_CHECKING, Annotated, Protocol
 
 import typer
 from pydantic import ValidationError
@@ -26,12 +27,32 @@ from rich.progress import Progress, SpinnerColumn, TextColumn
 from text_adventure import __version__
 from text_adventure.config import get_settings
 from text_adventure.engine.engine import GameEngine
-from text_adventure.generator import GameGenerationError, GameGenerator
+from text_adventure.generator import (
+    AsciiArtGenerator,
+    GameGenerationError,
+    GameGenerator,
+)
 from text_adventure.llm.anthropic import create_anthropic_client
 from text_adventure.models.game import Game
 from text_adventure.observability import init_telemetry
 from text_adventure.player import AIPlayer, PlaySession
 from text_adventure.ui import plain
+from text_adventure.ui.curses_ui import init_curses_ui
+
+if TYPE_CHECKING:
+    from curses import window as CursesWindow
+
+
+class UIProtocol(Protocol):
+    """Protocol for UI implementations."""
+
+    def print_room(self, text: str, ascii_art: str | None = None) -> None: ...
+    def print_message(self, text: str) -> None: ...
+    def print_error(self, text: str) -> None: ...
+    def print_prompt(self) -> str: ...
+    def print_title(self, title: str) -> None: ...
+    def print_game_over(self, won: bool, message: str) -> None: ...
+    def print_debug(self, data: dict[str, object] | str) -> None: ...
 
 app = typer.Typer(
     name="text-adventure",
@@ -66,6 +87,125 @@ def main(
     pass
 
 
+def _get_room_ascii_art(game: Game, room_id: str) -> str | None:
+    """Get ASCII art for a room if available."""
+    room = game.get_room(room_id)
+    return room.ascii_art if room else None
+
+
+def _run_game_loop(
+    game: Game,
+    engine: GameEngine,
+    ui: UIProtocol,
+    debug: bool = False,
+) -> None:
+    """Run the main game loop with the given UI."""
+    # Track last room to detect room changes
+    last_room = engine.state.current_room
+
+    # Show title
+    ui.print_title(game.metadata.title)
+
+    if game.metadata.description:
+        ui.print_message(game.metadata.description)
+
+    # Show initial room description with ASCII art
+    ascii_art = _get_room_ascii_art(game, engine.state.current_room)
+    ui.print_room(engine.describe_current_room(), ascii_art=ascii_art)
+
+    # Update turn count if UI supports it
+    if hasattr(ui, "set_turn_count"):
+        ui.set_turn_count(engine.state.turns)
+
+    # Main game loop
+    while True:
+        try:
+            user_input = ui.print_prompt()
+        except (EOFError, KeyboardInterrupt):
+            ui.print_message("Thanks for playing!")
+            break
+
+        if not user_input.strip():
+            continue
+
+        # Process the input
+        result = engine.process_input(user_input)
+
+        # Check for room change - show ASCII art on room entry
+        current_room = engine.state.current_room
+        if current_room != last_room:
+            # Player moved to a new room - show ASCII art
+            ascii_art = _get_room_ascii_art(game, current_room)
+            ui.print_room(result.message, ascii_art=ascii_art)
+            last_room = current_room
+        elif result.error:
+            ui.print_error(result.message)
+        elif result.game_over:
+            ui.print_game_over(result.won, result.message)
+            break
+        else:
+            ui.print_message(result.message)
+
+        # Update turn count if UI supports it
+        if hasattr(ui, "set_turn_count"):
+            ui.set_turn_count(engine.state.turns)
+
+        # Debug output
+        if debug:
+            ui.print_debug(
+                {
+                    "room": engine.state.current_room,
+                    "inventory": engine.state.inventory,
+                    "turns": engine.state.turns,
+                    "flags": engine.state.flags,
+                }
+            )
+
+
+def _play_with_curses(
+    stdscr: "CursesWindow",
+    game: Game,
+    debug: bool,
+) -> None:
+    """Play the game with curses UI."""
+    ui = init_curses_ui(stdscr)
+    engine = GameEngine(game)
+    _run_game_loop(game, engine, ui, debug=debug)
+
+
+class PlainUIAdapter:
+    """Adapter to make plain module conform to UIProtocol."""
+
+    def print_room(self, text: str, ascii_art: str | None = None) -> None:
+        if ascii_art:
+            console.print(ascii_art)
+            console.print()
+        plain.print_room(text)
+        console.print()
+
+    def print_message(self, text: str) -> None:
+        plain.print_message(text)
+        console.print()
+
+    def print_error(self, text: str) -> None:
+        plain.print_error(text)
+        console.print()
+
+    def print_prompt(self) -> str:
+        return plain.print_prompt()
+
+    def print_title(self, title: str) -> None:
+        plain.print_title(title)
+        console.print()
+
+    def print_game_over(self, won: bool, message: str) -> None:
+        plain.print_game_over(won, message)
+
+    def print_debug(self, data: dict[str, object] | str) -> None:
+        plain.print_debug(data)
+        console.print()
+
+
 @app.command()
 def play(
     game_file: Annotated[
@@ -84,6 +224,14 @@ def play(
             help="Show debug information after each turn",
         ),
     ] = False,
+    use_curses: Annotated[
+        bool,
+        typer.Option(
+            "--curses",
+            "-c",
+            help="Use full-screen curses UI with ASCII art display",
+        ),
+    ] = False,
 ) -> None:
     """Play a text adventure game interactively."""
     # Load and validate the game
@@ -98,58 +246,19 @@ def play(
         plain.print_error(f"Invalid game file: {e}")
         raise typer.Exit(1) from None
 
-    # Create the engine
-    engine = GameEngine(game)
-
-    # Show title and initial room
-    plain.print_title(game.metadata.title)
-    console.print()
-
-    if game.metadata.description:
-        console.print(f"[italic]{game.metadata.description}[/italic]")
-        console.print()
-
-    # Show initial room description
-    plain.print_room(engine.describe_current_room())
-    console.print()
-
-    # Main game loop
-    while True:
+    if use_curses:
+        # Run with curses UI
         try:
-            user_input = plain.print_prompt()
-        except (EOFError, KeyboardInterrupt):
-            console.print()
-            plain.print_message("Thanks for playing!")
-            break
-
-        if not user_input.strip():
-            continue
-
-        # Process the input
-        result = engine.process_input(user_input)
-
-        # Show the result
-        if result.error:
-            plain.print_error(result.message)
-        elif result.game_over:
-            plain.print_game_over(result.won, result.message)
-            break
-        else:
-            plain.print_message(result.message)
-
-        console.print()
-
-        # Debug output
-        if debug:
-            plain.print_debug(
-                {
-                    "room": engine.state.current_room,
-                    "inventory": engine.state.inventory,
-                    "turns": engine.state.turns,
-                    "flags": engine.state.flags,
-                }
-            )
-            console.print()
+            curses.wrapper(lambda stdscr: _play_with_curses(stdscr, game, debug))
+        except curses.error as e:
+            plain.print_error(f"Curses error: {e}")
+            plain.print_error("Try running without --curses flag.")
+            raise typer.Exit(1) from None
+    else:
+        # Run with plain UI
+        engine = GameEngine(game)
+        ui = PlainUIAdapter()
+        _run_game_loop(game, engine, ui, debug=debug)
 
 
 @app.command()
@@ -225,6 +334,14 @@ def generate(
             max=1.0,
         ),
     ] = 0.7,
+    ascii_art: Annotated[
+        bool,
+        typer.Option(
+            "--ascii-art",
+            "-a",
+            help="Generate ASCII art for each room",
+        ),
+    ] = False,
 ) -> None:
     """Generate a new text adventure game using AI."""
     settings = get_settings()
@@ -251,6 +368,7 @@ def generate(
     console.print(f"[bold]Generating game:[/bold] {theme}")
     console.print(f"  Rooms: {rooms}")
     console.print(f"  Temperature: {temperature}")
+    console.print(f"  ASCII art: {ascii_art}")
     console.print(f"  Output: {output}")
     console.print()
 
@@ -262,11 +380,18 @@ def generate(
 
     async def do_generate() -> Game:
         generator = GameGenerator(client)
-        return await generator.generate(
+        game = await generator.generate(
             theme=theme,
             num_rooms=rooms,
             temperature=temperature,
         )
+
+        # Add ASCII art if requested (two-pass generation)
+        if ascii_art:
+            art_generator = AsciiArtGenerator(client)
+            game = await art_generator.generate_for_game(game, temperature=temperature)
+
+        return game
 
     # Run generation with progress indicator
     try:
@@ -275,7 +400,10 @@ def generate(
             TextColumn("[progress.description]{task.description}"),
             console=console,
         ) as progress:
-            progress.add_task("Generating game...", total=None)
+            task_desc = "Generating game..."
+            if ascii_art:
+                task_desc = "Generating game with ASCII art..."
+            progress.add_task(task_desc, total=None)
             game = asyncio.run(do_generate())
     except GameGenerationError as e:
         plain.print_error(f"Generation failed: {e}")
@@ -293,6 +421,9 @@ def generate(
     console.print(f"  Rooms: {len(game.rooms)}")
     console.print(f"  Objects: {len(game.objects)}")
     console.print(f"  Win condition: {game.win_condition.type}")
+    if ascii_art:
+        rooms_with_art = sum(1 for r in game.rooms if r.ascii_art)
+        console.print(f"  Rooms with ASCII art: {rooms_with_art}")
     console.print()
     console.print(f"Play with: [bold]text-adventure play {output}[/bold]")
 
@@ -321,7 +452,6 @@ def ai_play(
         float,
         typer.Option(
             "--delay",
-            "-d",
             help="Delay between turns in seconds (for readability)",
             min=0.0,
             max=10.0,
@@ -333,6 +463,14 @@ def ai_play(
             "--verbose",
             "-v",
             help="Show detailed game output",
+        ),
+    ] = False,
+    use_curses: Annotated[
+        bool,
+        typer.Option(
+            "--curses",
+            "-c",
+            help="Use full-screen curses UI with ASCII art display",
         ),
     ] = False,
 ) -> None:
@@ -364,67 +502,138 @@ def ai_play(
         plain.print_error(f"Invalid game file: {e}")
         raise typer.Exit(1) from None
 
-    # Show game info
-    plain.print_title(f"AI Playing: {game.metadata.title}")
-    console.print()
-    if game.metadata.description:
-        console.print(f"[italic]{game.metadata.description}[/italic]")
+    def _run_ai_play_plain() -> PlaySession:
+        """Run AI play with plain text UI."""
+        # Show game info
+        plain.print_title(f"AI Playing: {game.metadata.title}")
         console.print()
-    console.print(f"Max turns: {max_turns}")
-    console.print()
-
-    # Create client and player
-    client = create_anthropic_client(
-        api_key=settings.llm.anthropic_api_key,
-        model=settings.llm.model,
-    )
-    player = AIPlayer(client)
-
-    # Track session for callback
-    session_result: PlaySession | None = None
-
-    def on_turn(turn: int, command: str, result: TurnResult) -> None:
-        """Display each turn."""
-        nonlocal session_result
-
-        if delay > 0:
-            time.sleep(delay)
-
-        # Show turn with token count if available
-        turn_header = f"[bold cyan]Turn {turn}:[/bold cyan] [yellow]{command}[/yellow]"
-        console.print(turn_header)
-
-        if result.error:
-            console.print(f"[red]{result.message}[/red]")
-        elif result.game_over:
+        if game.metadata.description:
+            console.print(f"[italic]{game.metadata.description}[/italic]")
             console.print()
-            if result.won:
-                console.print(f"[bold green]{result.message}[/bold green]")
-            else:
-                console.print(f"[bold red]{result.message}[/bold red]")
-        else:
-            # Always show game output so viewers can follow along
-            console.print(result.message)
-
-        if verbose:
-            # Verbose mode shows token usage and debug info
-            debug_parts = [f"error={result.error}", f"game_over={result.game_over}"]
-            console.print(f"[dim]  ({', '.join(debug_parts)})[/dim]")
-
+        console.print(f"Max turns: {max_turns}")
         console.print()
 
-    async def do_play() -> PlaySession:
-        return await player.play(game, max_turns=max_turns, on_turn=on_turn)
+        # Create client and player
+        client = create_anthropic_client(
+            api_key=settings.llm.anthropic_api_key,
+            model=settings.llm.model,
+        )
+        player = AIPlayer(client)
+
+        # Track last room to detect room changes
+        last_room: str | None = None
+
+        def on_turn(turn: int, command: str, result: TurnResult) -> None:
+            """Display each turn."""
+            nonlocal last_room
+
+            if delay > 0:
+                time.sleep(delay)
+
+            # Show turn with token count if available
+            turn_header = f"[bold cyan]Turn {turn}:[/bold cyan] [yellow]{command}[/yellow]"
+            console.print(turn_header)
+
+            # Detect room change and show ASCII art
+            if result.new_room and result.new_room != last_room:
+                ascii_art = _get_room_ascii_art(game, result.new_room)
+                if ascii_art:
+                    console.print()
+                    console.print(ascii_art)
+                last_room = result.new_room
+
+            if result.error:
+                console.print(f"[red]{result.message}[/red]")
+            elif result.game_over:
+                console.print()
+                if result.won:
+                    console.print(f"[bold green]{result.message}[/bold green]")
+                else:
+                    console.print(f"[bold red]{result.message}[/bold red]")
+            else:
+                # Always show game output so viewers can follow along
+                console.print(result.message)
+
+            if verbose:
+                # Verbose mode shows token usage and debug info
+                debug_parts = [f"error={result.error}", f"game_over={result.game_over}"]
+                console.print(f"[dim]  ({', '.join(debug_parts)})[/dim]")
+
+            console.print()
+
+        async def do_play() -> PlaySession:
+            return await player.play(game, max_turns=max_turns, on_turn=on_turn)
+
+        return asyncio.run(do_play())
+
+    def _run_ai_play_curses(stdscr: "CursesWindow") -> PlaySession:
+        """Run AI play with curses UI."""
+        ui = init_curses_ui(stdscr)
+
+        # Show game info
+        ui.print_title(f"AI Playing: {game.metadata.title}")
+        if game.metadata.description:
+            ui.print_message(game.metadata.description)
+        ui.print_message(f"Max turns: {max_turns}")
+
+        # Create client and player
+        client = create_anthropic_client(
+            api_key=settings.llm.anthropic_api_key,
+            model=settings.llm.model,
+        )
+        player = AIPlayer(client)
+
+        # Track last room to detect room changes
+        last_room: str | None = None
+
+        def on_turn(turn: int, command: str, result: TurnResult) -> None:
+            """Display each turn."""
+            nonlocal last_room
+
+            if delay > 0:
+                time.sleep(delay)
+
+            # Update status
+            ui.set_turn_count(turn)
+            ui.print_message(f"Turn {turn}: {command}")
+
+            # Detect room change and show ASCII art
+            if result.new_room and result.new_room != last_room:
+                ascii_art = _get_room_ascii_art(game, result.new_room)
+                ui.print_room(result.message, ascii_art=ascii_art)
+                last_room = result.new_room
+            elif result.error:
+                ui.print_error(result.message)
+            elif result.game_over:
+                ui.print_game_over(result.won, result.message)
+            else:
+                ui.print_message(result.message)
+
+            if verbose:
+                debug_parts = [f"error={result.error}", f"game_over={result.game_over}"]
+                ui.print_message(f"  ({', '.join(debug_parts)})")
+
+        async def do_play() -> PlaySession:
+            return await player.play(game, max_turns=max_turns, on_turn=on_turn)
+
+        return asyncio.run(do_play())
 
     # Run the AI player
     try:
-        session_result = asyncio.run(do_play())
+        if use_curses:  # noqa: SIM108 - clarity over ternary for different function signatures
+            session_result = curses.wrapper(_run_ai_play_curses)
+        else:
+            session_result = _run_ai_play_plain()
     except KeyboardInterrupt:
         console.print()
         plain.print_message("AI play interrupted.")
         raise typer.Exit(0) from None
+    except curses.error as e:
+        plain.print_error(f"Curses error: {e}")
+        plain.print_error("Try running without --curses flag.")
+        raise typer.Exit(1) from None
 
-    # Show final results
+    # Show final results (always in plain text after curses exits)
     console.print("[bold]─── Results ───[/bold]")
     console.print()
     console.print(f"Turns taken: {session_result.turns}")

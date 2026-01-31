@@ -14,6 +14,7 @@ ADRs document significant architectural decisions, their context, and consequenc
 | [ADR-004](004-state-management.md) | State Management Architecture | Accepted |
 | [ADR-005](005-cli-framework.md) | CLI Framework Selection | Accepted |
 | [ADR-006](006-custom-actions-architecture.md) | Custom Actions Architecture | Accepted |
+| [ADR-007](007-curses-ui-and-ascii-art.md) | Curses UI and ASCII Art Generation | Accepted |
 
 ## ADR Format
 

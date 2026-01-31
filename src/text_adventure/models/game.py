@@ -77,6 +77,10 @@ class Room(BaseModel):
         default=False,
         description="Whether this room requires a light source",
     )
+    ascii_art: str | None = Field(
+        default=None,
+        description="ASCII art representation of the room (max 80 chars wide, 10-15 lines)",
+    )
 
     @field_validator("exits", mode="before")
     @classmethod

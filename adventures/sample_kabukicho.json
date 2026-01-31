@@ -1,266 +1,283 @@
 {
   "metadata": {
-    "title": "Last Train from Kabukicho",
+    "title": "Neon Ramen Quest",
     "author": "Generated",
     "version": "1.0",
-    "description": "You've had too much to drink in Tokyo's red-light district. The trains stop running soon, but first you need morning ramen to cure your hangover. Navigate the neon-lit streets, outsmart drunken salarymen, and solve the mysteries of sentient vending machines."
+    "description": "You're drunk in Tokyo's Kabukicho district with trains stopping soon. Find morning ramen to cure your hangover while navigating neon-lit streets and solving the mysteries of sentient vending machines."
   },
   "rooms": [
     {
-      "id": "kabukicho_entrance",
-      "name": "Kabukicho Main Gate",
-      "description": "You stand beneath the towering neon arch marking the entrance to Kabukicho. Red and blue lights reflect off wet pavement, and the sounds of karaoke drift from nearby buildings. The famous red-light district stretches north into a maze of narrow alleys.",
+      "id": "kabukicho_main",
+      "name": "Kabukicho Main Street",
+      "description": "You stumble along the neon-drenched main drag of Kabukicho, Tokyo's infamous red-light district. Bright signs flash overhead in Japanese and broken English, advertising everything from karaoke to questionable entertainment. The street buzzes with late-night energy despite the approaching last train. A narrow alley leads east, while the street continues north and south.",
       "exits": {
-        "north": "central_plaza",
-        "east": "convenience_store",
-        "south": "shinjuku_station"
+        "north": "pachinko_plaza",
+        "south": "station_entrance",
+        "east": "narrow_alley"
       },
       "objects": [
         "neon_sign",
-        "wet_pavement"
+        "drunk_salaryman"
       ],
       "first_visit_description": null,
-      "dark": false
+      "dark": false,
+      "ascii_art": "\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n\u2551  \u2591\u2592\u2593\u2588 KARAOKE \u2588\u2593\u2592\u2591    \u2591\u2592\u2593 BAR \u2593\u2592\u2591    \u2591\u2592\u2593\u2588 CLUB \u2588\u2593\u2592\u2591    \u2591\u2592\u2593 HOTEL \u2593\u2592\u2591  \u2551\n\u2551 \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557 \u2554\u2550\u2550\u2550\u2550\u2550\u2557 \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557 \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557 \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557 \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557 \u2551\n\u2551 \u2551 \u25a1 \u25a1 \u25a1 \u25a1  \u2551 \u2551 \u25aa \u25aa \u2551 \u2551 \u25a1 \u25a1 \u25a1 \u25a1  \u2551 \u2551 \u25aa \u25aa \u25aa \u2551 \u2551 \u25a1 \u25a1 \u25a1 \u25a1 \u2551 \u2551 \u25aa \u25aa \u25aa \u25aa  \u2551 \u2551\n\u2551 \u2551 \u25a1 \u25a1 \u25a1 \u25a1  \u2551 \u2551 \u25aa \u25aa \u2551 \u2551 \u25a1 \u25a1 \u25a1 \u25a1  \u2551 \u2551 \u25aa \u25aa \u25aa \u2551 \u2551 \u25a1 \u25a1 \u25a1 \u25a1 \u2551 \u2551 \u25aa \u25aa \u25aa \u25aa  \u2551 \u2551\n\u2551 \u2551 \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2557 \u2551 \u2551 \u2502 \u2502 \u2551 \u2551 \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2557 \u2551 \u2551 \u2502 \u2502 \u2502 \u2551 \u2551 \u2554\u2550\u2550\u2550\u2550\u2550\u2557 \u2551 \u2551 \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2557 \u2551 \u2551\n\u2551 \u2551 \u2551\u2591\u2591\u2591\u2591\u2591\u2591\u2551 \u2551 \u2551\u2592\u2502\u2591\u2502\u2592\u2551 \u2551 \u2551\u2593\u2593\u2593\u2593\u2593\u2593\u2551 \u2551 \u2551\u2592\u2502\u2592\u2502\u2592\u2551 \u2551 \u2551\u2593\u2593\u2593\u2593\u2593\u2551 \u2551 \u2551 \u2551\u2591\u2591\u2591\u2591\u2591\u2591\u2551 \u2551 \u2551\n\u2551 \u255a\u2550\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u255d\u2550\u255d \u255a\u2550\u255a\u2550\u255d\u2550\u255d \u255a\u2550\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u255d\u2550\u255d \u255a\u2550\u255a\u2550\u255d\u2550\u255d\u2550\u255d \u255a\u2550\u255a\u2550\u2550\u2550\u2550\u2550\u255d\u2550\u255d \u255a\u2550\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u255d\u2550\u255d \u2551\n\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d\n    \u2219 \u00b7 \u2219 \u00b7 \u2219 \u00b7 \u2219 \u00b7 \u2219 \u00b7 \u2219 \u00b7 \u2219 \u00b7 \u2219 \u00b7 \u2219 \u00b7 \u2219 \u00b7 \u2219 \u00b7 \u2219 \u00b7 \u2219 \u00b7 \u2219 \u00b7 \u2219 \u00b7 \u2219 \u00b7 \u2219\n  \u2591\u2592\u2593\u2588 NEON GLOW \u2588\u2593\u2592\u2591     \u2591\u2592\u2593\u2588 FLASHING SIGNS \u2588\u2593\u2592\u2591     \u2591\u2592\u2593\u2588 LIGHTS \u2588\u2593\u2592\u2591\n    \u2571\u2572   \u2571\u2572   \u2571\u2572   \u2571\u2572   \u2571\u2572   \u2571\u2572   \u2571\u2572   \u2571\u2572   \u2571\u2572   \u2571\u2572   \u2571\u2572   \u2571\u2572\n   \u2502  \u2502 \u2502  \u2502 \u2502  \u2502 \u2502  \u2502 \u2502  \u2502 \u2502  \u2502 \u2502  \u2502 \u2502  \u2502 \u2502  \u2502 \u2502  \u2502 \u2502  \u2502 \u2502  \u2502\n   \u2584\u2588\u2588\u2584 \u2584\u2588\u2588\u2584 \u2584\u2588\u2588\u2584 \u2584\u2588\u2588\u2584 \u2584\u2588\u2588\u2584 \u2584\u2588\u2588\u2584 \u2584\u2588\u2588\u2584 \u2584\u2588\u2588\u2584 \u2584\u2588\u2588\u2584 \u2584\u2588\u2588\u2584 \u2584\u2588\u2588\u2584 \u2584\u2588\u2588\u2584"
     },
     {
-      "id": "shinjuku_station",
-      "name": "Shinjuku Station South Exit",
-      "description": "The massive Shinjuku Station looms before you, but the gates are locked for the night. A digital clock shows 4:47 AM - you have just over an hour before the first train. You need to find that ramen shop before then.",
+      "id": "station_entrance",
+      "name": "Shinjuku Station Entrance",
+      "description": "The massive Shinjuku Station looms before you, its entrances still bustling with late-night commuters. A digital clock displays the ominous countdown to the last train. You can hear the rumble of trains below, but more importantly, you catch a whiff of something delicious from the north.",
       "exits": {
-        "north": "kabukicho_entrance"
+        "north": "kabukicho_main",
+        "west": "convenience_store",
+        "down": "station_platform"
       },
       "objects": [
-        "station_clock",
-        "locked_gates"
+        "digital_clock"
       ],
       "first_visit_description": null,
-      "dark": false
+      "dark": false,
+      "ascii_art": "\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n\u2551                    \u2591\u2591\u2592\u2592\u2593\u2593\u2588 SHINJUKU STATION \u2588\u2593\u2593\u2592\u2592\u2591\u2591                    \u2551\n\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d\n                    \u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\n                \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n                \u2551 \u2588\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2588 \u2551\n                \u2551 \u2588 \u25aa\u25aa\u25aa ENTRANCE \u25aa\u25aa\u25aa [23:47] \u25aa\u25aa\u25aa LAST \u25aa\u25aa\u25aa \u2588 \u2551\n                \u2551 \u2588\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2588 \u2551\n                \u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d\n                    \u2502 \u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591 \u2502\n                    \u2502 \u25cf \u25cf \u25cf \u25cf \u25cf \u25cf \u25cf \u25cf \u25cf \u25cf \u25cf \u25cf \u25cf \u25cf \u25cf \u2502\n                    \u2502 \u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591 \u2502\n           \u2219\u2219\u2219\u2219\u2219\u2219\u2219\u2219\u2219\u2502                                 \u2502\u2219\u2219\u2219\u2219\u2219\u2219\u2219\u2219\u2219\n         \u2591\u2591\u2592\u2592      \u2502 \u25c6 \u25c7 \u25c6 LATE COMMUTERS \u25c6 \u25c7 \u25c6      \u2502      \u2592\u2592\u2591\u2591"
+    },
+    {
+      "id": "station_platform",
+      "name": "Station Platform",
+      "description": "The underground platform is crowded with tired salarymen and party-goers heading home. The last train won't leave for another hour, giving you time for your ramen quest. A vending machine hums mysteriously in the corner.",
+      "exits": {
+        "up": "station_entrance"
+      },
+      "objects": [
+        "mysterious_vending_machine"
+      ],
+      "first_visit_description": null,
+      "dark": false,
+      "ascii_art": "\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n\u2551 \u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591 \u2551\n\u2551 \u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592 \u2551\n\u2551 \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 \u2551\n\u2551 \u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591 \u2551\n\u2551                                                                          \u2551\n\u2551    \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557     \u25c9 \u25c9     \u2554\u2550\u2550\u2550\u2557     \u25c9        \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557       \u2551\n\u2551    \u2551 LAST TRAIN\u2551     \u2502 \u2502     \u2551\u2588\u2588\u2588\u2551     \u2502        \u2551 VENDING MACHINE\u2551       \u2551\n\u2551    \u2551  22:45    \u2551     \u2514\u2500\u2518     \u2551\u2593\u2593\u2593\u2551     \u2514\u2500\u2510      \u2551 \u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2551       \u2551\n\u2551    \u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d             \u2551\u2592\u2592\u2592\u2551       \u2502      \u2551 \u25a1 \u25a1 \u25a1 \u25a1 \u25a1 \u25a1 \u25a1 \u2551       \u2551\n\u2551           \u2219                  \u255a\u2550\u2550\u2550\u255d       \u2502      \u2551 \u25a1 \u25a1 \u25a1 \u25a1 \u25a1 \u25a1 \u25a1 \u2551       \u2551\n\u2551  \u25c9   \u2219     \u25c9      \u2219    \u25c9         \u2219      \u2502      \u2551 \u25a1 \u25a1 \u25a1 \u25a1 \u25a1 \u25a1 \u25a1 \u2551       \u2551\n\u2551  \u2502   \u2502     \u2502      \u2502    \u2502         \u2502      \u2502      \u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d       \u2551\n\u2551\u2550\u2550\u256a\u2550\u2550\u2550\u256a\u2550\u2550\u2550\u2550\u2550\u256a\u2550\u2550\u2550\u2550\u2550\u2550\u256a\u2550\u2550\u2550\u2550\u256a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u256a\u2550\u2550\u2550\u2550\u2550\u2550\u256a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2551"
     },
     {
       "id": "convenience_store",
-      "name": "24-Hour Convenience Store",
-      "description": "A brightly lit konbini with rows of instant noodles and energy drinks. The fluorescent lights hurt your hungover eyes. A tired clerk watches you suspiciously from behind bulletproof glass.",
+      "name": "24-Hour Konbini",
+      "description": "A typical Japanese convenience store blazes with fluorescent light. Rows of onigiri, instant ramen, and strange drinks line the shelves. The bored clerk barely glances up from his manga. This isn't the ramen you're looking for, but there might be useful supplies here.",
       "exits": {
-        "west": "kabukicho_entrance",
-        "north": "vending_machine_alley"
-      },
-      "objects": [],
-      "first_visit_description": null,
-      "dark": false
-    },
-    {
-      "id": "central_plaza",
-      "name": "Kabukicho Central Plaza",
-      "description": "The heart of Kabukicho pulses with activity even at this late hour. Neon signs advertise hostess bars and pachinko parlors in every direction. A group of drunken salarymen blocks the path west, singing off-key karaoke.",
-      "exits": {
-        "south": "kabukicho_entrance",
-        "east": "pachinko_parlor",
-        "west": "golden_gai_entrance",
-        "north": "love_hotel_district"
-      },
-      "objects": [
-        "drunken_salarymen",
-        "karaoke_machine"
-      ],
-      "first_visit_description": null,
-      "dark": false
-    },
-    {
-      "id": "vending_machine_alley",
-      "name": "Vending Machine Alley",
-      "description": "A narrow alley lined with dozens of vending machines selling everything from hot coffee to mysterious items you can't identify. One machine in particular seems to be humming with an unusual electronic melody.",
-      "exits": {
-        "south": "convenience_store",
-        "north": "back_alley",
-        "west": "pachinko_parlor"
-      },
-      "objects": [
-        "sentient_vending_machine"
-      ],
-      "first_visit_description": null,
-      "dark": false
-    },
-    {
-      "id": "pachinko_parlor",
-      "name": "Pachinko Parlor Entrance",
-      "description": "The deafening sound of thousands of steel balls cascades from within the pachinko parlor. Cigarette smoke drifts out the automatic doors. A security guard eyes you warily.",
-      "exits": {
-        "west": "central_plaza",
-        "east": "vending_machine_alley",
-        "north": "yakitori_stand"
-      },
-      "objects": [],
-      "first_visit_description": null,
-      "dark": false
-    },
-    {
-      "id": "golden_gai_entrance",
-      "name": "Golden Gai Entrance",
-      "description": "You stand at the entrance to the famous Golden Gai, a maze of tiny bars packed into narrow alleys. Each bar can barely fit five people. The path is blocked by a heavy wooden door with an electronic lock.",
-      "exits": {
-        "east": "central_plaza"
-      },
-      "objects": [
-        "wooden_door",
-        "electronic_lock"
-      ],
-      "first_visit_description": null,
-      "dark": false
-    },
-    {
-      "id": "golden_gai_alley_1",
-      "name": "Golden Gai Alley One",
-      "description": "The first of Golden Gai's narrow alleys is barely wide enough for two people to pass. Tiny bars with names like 'Champion' and 'Deathmatch' line both sides. Most are closed, but warm light spills from a few doorways.",
-      "exits": {
-        "south": "golden_gai_entrance",
-        "north": "golden_gai_alley_2",
-        "east": "tiny_bar"
-      },
-      "objects": [],
-      "first_visit_description": null,
-      "dark": false
-    },
-    {
-      "id": "golden_gai_alley_2",
-      "name": "Golden Gai Alley Two",
-      "description": "The second alley is even narrower than the first. Overhead, a tangle of power lines and neon signs creates a canopy of electric color. You can hear the distant sound of jazz music.",
-      "exits": {
-        "south": "golden_gai_alley_1",
-        "east": "jazz_bar",
-        "north": "golden_gai_exit"
-      },
-      "objects": [],
-      "first_visit_description": null,
-      "dark": false
-    },
-    {
-      "id": "tiny_bar",
-      "name": "Tiny Bar 'Champion'",
-      "description": "This bar has exactly four seats at a counter barely two meters long. The mama-san looks up from polishing glasses and nods at you. A business card sits on the counter.",
-      "exits": {
-        "west": "golden_gai_alley_1"
-      },
-      "objects": [
-        "business_card"
-      ],
-      "first_visit_description": null,
-      "dark": false
-    },
-    {
-      "id": "jazz_bar",
-      "name": "Jazz Bar 'Blue Note'",
-      "description": "Smooth jazz plays from hidden speakers in this sophisticated bar. The bartender, wearing a bow tie, is mixing cocktails with practiced precision. A notebook lies open on the bar.",
-      "exits": {
-        "west": "golden_gai_alley_2"
-      },
-      "objects": [
-        "notebook"
-      ],
-      "first_visit_description": null,
-      "dark": false
-    },
-    {
-      "id": "golden_gai_exit",
-      "name": "Golden Gai North Exit",
-      "description": "You emerge from the maze of Golden Gai into a slightly wider street. The neon glow fades behind you as you head toward the quieter residential areas of Shinjuku.",
-      "exits": {
-        "south": "golden_gai_alley_2",
-        "north": "residential_street",
-        "east": "love_hotel_district"
-      },
-      "objects": [],
-      "first_visit_description": null,
-      "dark": false
-    },
-    {
-      "id": "love_hotel_district",
-      "name": "Love Hotel District",
-      "description": "Gaudy love hotels with names like 'Hotel Passion' and 'Paradise Inn' line this street. Their neon signs flash invitingly, but you're focused on finding food, not romance.",
-      "exits": {
-        "south": "central_plaza",
-        "west": "golden_gai_exit",
+        "east": "station_entrance",
         "north": "back_alley"
       },
-      "objects": [],
+      "objects": [
+        "instant_ramen",
+        "energy_drink"
+      ],
       "first_visit_description": null,
-      "dark": false
+      "dark": false,
+      "ascii_art": "\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n\u2551\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591 24-HOUR KONBINI \u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2551\n\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d\n\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\n\u2588 \u2554\u2550\u2550\u2550\u2557 \u2554\u2550\u2550\u2550\u2557 \u2554\u2550\u2550\u2550\u2557 \u2554\u2550\u2550\u2550\u2557 \u2554\u2550\u2550\u2550\u2557 \u2554\u2550\u2550\u2550\u2557 \u2554\u2550\u2550\u2550\u2557 \u2554\u2550\u2550\u2550\u2557 \u2554\u2550\u2550\u2550\u2557 \u2554\u2550\u2550\u2550\u2557 \u2554\u2550\u2550\u2550\u2557 \u2588\n\u2588 \u2551\u25cb\u25cb\u25cb\u2551 \u2551\u25cf\u25cf\u25cf\u2551 \u2551\u25c6\u25c6\u25c6\u2551 \u2551\u25a0\u25a0\u25a0\u2551 \u2551\u25b2\u25b2\u25b2\u2551 \u2551\u25c7\u25c7\u25c7\u2551 \u2551\u2605\u2605\u2605\u2551 \u2551\u25a1\u25a1\u25a1\u2551 \u2551\u2666\u2666\u2666\u2551 \u2551\u25cf\u25cf\u25cf\u2551 \u2551\u25cb\u25cb\u25cb\u2551 \u2588\n\u2588 \u2551\u25cb\u25cb\u25cb\u2551 \u2551\u25cf\u25cf\u25cf\u2551 \u2551\u25c6\u25c6\u25c6\u2551 \u2551\u25a0\u25a0\u25a0\u2551 \u2551\u25b2\u25b2\u25b2\u2551 \u2551\u25c7\u25c7\u25c7\u2551 \u2551\u2605\u2605\u2605\u2551 \u2551\u25a1\u25a1\u25a1\u2551 \u2551\u2666\u2666\u2666\u2551 \u2551\u25cf\u25cf\u25cf\u2551 \u2551\u25cb\u25cb\u25cb\u2551 \u2588\n\u2588 \u255a\u2550\u2550\u2550\u255d \u255a\u2550\u2550\u2550\u255d \u255a\u2550\u2550\u2550\u255d \u255a\u2550\u2550\u2550\u255d \u255a\u2550\u2550\u2550\u255d \u255a\u2550\u2550\u2550\u255d \u255a\u2550\u2550\u2550\u255d \u255a\u2550\u2550\u2550\u255d \u255a\u2550\u2550\u2550\u255d \u255a\u2550\u2550\u2550\u255d \u255a\u2550\u2550\u2550\u255d \u2588\n\u2588 \u250c\u2500\u2500\u2500\u2510 \u250c\u2500\u2500\u2500\u2510 \u250c\u2500\u2500\u2500\u2510 \u250c\u2500\u2500\u2500\u2510 \u250c\u2500\u2500\u2500\u2510 \u250c\u2500\u2500\u2500\u2510 \u250c\u2500\u2500\u2500\u2510 \u250c\u2500\u2500\u2500\u2510 \u250c\u2500\u2500\u2500\u2510 \u250c\u2500\u2500\u2500\u2510 \u250c\u2500\u2500\u2500\u2510 \u2588\n\u2588 \u2502\u25c9\u25c9\u25c9\u2502 \u2502\u2593\u2593\u2593\u2502 \u2502\u2591\u2591\u2591\u2502 \u2502\u2592\u2592\u2592\u2502 \u2502\u25c8\u25c8\u25c8\u2502 \u2502\u2606\u2606\u2606\u2502 \u2502\u25bc\u25bc\u25bc\u2502 \u2502\u25ce\u25ce\u25ce\u2502 \u2502\u2660\u2660\u2660\u2502 \u2502\u2663\u2663\u2663\u2502 \u2502\u2665\u2665\u2665\u2502 \u2588\n\u2588 \u2502\u25c9\u25c9\u25c9\u2502 \u2502\u2593\u2593\u2593\u2502 \u2502\u2591\u2591\u2591\u2502 \u2502\u2592\u2592\u2592\u2502 \u2502\u25c8\u25c8\u25c8\u2502 \u2502\u2606\u2606\u2606\u2502 \u2502\u25bc\u25bc\u25bc\u2502 \u2502\u25ce\u25ce\u25ce\u2502 \u2502\u2660\u2660\u2660\u2502 \u2502\u2663\u2663\u2663\u2502 \u2502\u2665\u2665\u2665\u2502 \u2588\n\u2588 \u2514\u2500\u2500\u2500\u2518 \u2514\u2500\u2500\u2500\u2518 \u2514\u2500\u2500\u2500\u2518 \u2514\u2500\u2500\u2500\u2518 \u2514\u2500\u2500\u2500\u2518 \u2514\u2500\u2500\u2500\u2518 \u2514\u2500\u2500\u2500\u2518 \u2514\u2500\u2500\u2500\u2518 \u2514\u2500\u2500\u2500\u2518 \u2514\u2500\u2500\u2500\u2518 \u2514\u2500\u2500\u2500\u2518 \u2588\n\u2588                                                                     \u2588\n\u2588 \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557  \u2588"
     },
     {
       "id": "back_alley",
-      "name": "Dark Back Alley",
-      "description": "A narrow, poorly lit alley runs behind the main entertainment district. Garbage bags are piled high, and you can hear rats scurrying. A metal door marked 'Staff Only' is set into one wall.",
+      "name": "Back Alley",
+      "description": "A dimly lit alley behind the convenience store, filled with the smell of garbage and mystery. A rusty door marked 'Staff Only' is set into the wall. Strange sounds echo from deeper in the alley to the west.",
       "exits": {
-        "south": "love_hotel_district",
-        "west": "yakitori_stand"
+        "south": "convenience_store",
+        "west": "hidden_courtyard",
+        "east": "delivery_area"
       },
       "objects": [
-        "metal_door"
+        "rusty_door"
       ],
       "first_visit_description": null,
-      "dark": false
+      "dark": false,
+      "ascii_art": "\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n\u2551                                                                            \u2551\n\u2551    \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588       \u2551\n\u2551    \u2588\u2593\u2592\u2591                                                        \u2591\u2592\u2593\u2588       \u2551\n\u2551    \u2588\u2593\u2592\u2591  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510    \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557              \u2591\u2592\u2593\u2588       \u2551\n\u2551    \u2588\u2593\u2592\u2591  \u2502  STAFF ONLY     \u2502    \u2551 CONVENIENCE  \u2551   \u2591\u2591\u2592\u2592\u2593\u2593\u2588\u2588   \u2591\u2592\u2593\u2588       \u2551\n\u2551    \u2588\u2593\u2592\u2591  \u2502   \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588      \u2502    \u2551    STORE     \u2551   \u2591\u2591\u2592\u2592\u2593\u2593\u2588\u2588   \u2591\u2592\u2593\u2588       \u2551\n\u2551    \u2588\u2593\u2592\u2591  \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518    \u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d   \u2591\u2591\u2592\u2592\u2593\u2593\u2588\u2588   \u2591\u2592\u2593\u2588       \u2551\n\u2551    \u2588\u2593\u2592\u2591                                             \u2591\u2591\u2592\u2592\u2593\u2593\u2588\u2588   \u2591\u2592\u2593\u2588       \u2551\n\u2551    \u2588\u2593\u2592\u2591     \u2219\u2219\u2219     \u25c6\u25c7\u25c6     \u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2592\u2592\u2593\u2593\u2588\u2588   \u2591\u2592\u2593\u2588       \u2551\n\u2551    \u2588\u2593\u2592\u2591   \u25aa\u25aa\u25aa\u25aa\u25aa   \u25a0\u25a0\u25a0\u25a0\u25a0     \u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2592\u2592\u2593\u2593\u2588\u2588   \u2591\u2592\u2593\u2588       \u2551\n\u2551    \u2588\u2593\u2592\u2591 \u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2592\u2592\u2593\u2593\u2588\u2588   \u2591\u2592\u2593\u2588       \u2551\n\u2551    \u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\n\u2551                                                                            \u2551"
     },
     {
-      "id": "yakitori_stand",
-      "name": "Late Night Yakitori Stand",
-      "description": "A small yakitori stand with red paper lanterns serves grilled chicken to night owls. The chef, wearing a sweat-stained headband, tends to skewers over glowing charcoal. The smell makes your stomach growl.",
+      "id": "delivery_area",
+      "name": "Delivery Area",
+      "description": "A small loading dock where trucks deliver supplies to the nearby businesses. Empty boxes and crates are stacked everywhere. A metal ladder leads up to a fire escape.",
       "exits": {
-        "south": "pachinko_parlor",
-        "east": "back_alley",
-        "north": "residential_street"
+        "west": "back_alley",
+        "up": "fire_escape"
       },
       "objects": [],
       "first_visit_description": null,
-      "dark": false
+      "dark": false,
+      "ascii_art": "\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n\u2551                    \u2591\u2591\u2592\u2592\u2593\u2593\u2588\u2588 DELIVERY AREA \u2588\u2588\u2593\u2593\u2592\u2592\u2591\u2591                    \u2551\n\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d\n\n    \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\n    \u2588\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2588\n    \u2588 \u25a1 \u25a1 \u25a1    WAREHOUSE    \u25a1 \u25a1 \u25a1         \u2551 \u2551 \u2551 FIRE ESCAPE \u2551 \u2551 \u2551 \u2588\n    \u2588                                    \u2560\u2550\u256c\u2550\u256c\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u256c\u2550\u256c\u2550\u2563     \u2588\n    \u2588 \u2591\u2591\u2592\u2592\u2593\u2593                            \u2551 \u2551 \u2551             \u2551 \u2551 \u2551     \u2588\n    \u2588\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2588\n        \u2554\u2550\u2550\u2557  \u2554\u2550\u2550\u2550\u2557      \u2554\u2550\u2550\u2557         \u2551 \u2551 \u2551             \u2551 \u2551 \u2551\n        \u2551  \u2551  \u2551\u2593\u2593\u2593\u2551      \u2551\u2591\u2591\u2551         \u2560\u2550\u256c\u2550\u256c\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u256c\u2550\u256c\u2550\u2563\n        \u255a\u2550\u2550\u255d  \u2551\u2593\u2593\u2593\u2551      \u255a\u2550\u2550\u255d         \u2551 \u2551 \u2551             \u2551 \u2551 \u2551\n     \u2554\u2550\u2550\u2550\u2557    \u2551\u2593\u2593\u2593\u2551  \u2554\u2550\u2550\u2550\u2550\u2550\u2557          \u2560\u2550\u256c\u2550\u256c\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u256c\u2550\u256c\u2550\u2563"
     },
     {
-      "id": "residential_street",
-      "name": "Quiet Residential Street",
-      "description": "The neon chaos of Kabukicho fades to a gentle glow as you enter a residential area. Small apartment buildings line the street, and vending machines hum quietly on corners. You can smell something delicious cooking nearby.",
+      "id": "fire_escape",
+      "name": "Fire Escape",
+      "description": "You're on a narrow metal fire escape overlooking the neon chaos below. From here you can see across the rooftops of Kabukicho. A window leads into what looks like an office building.",
       "exits": {
-        "south": "yakitori_stand",
-        "east": "ramen_shop_alley",
-        "north": "train_tracks"
+        "down": "delivery_area",
+        "west": "office_window"
       },
       "objects": [],
       "first_visit_description": null,
-      "dark": false
+      "dark": false,
+      "ascii_art": "\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n                    \u2551            OFFICE BLDG            \u2551\n                    \u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2564\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d\n                                    \u2502\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2502\n                    \u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2502\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2502\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\n             \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n             \u2551 \u2593\u2593 NEON \u2593\u2593 BAR \u2593\u2593   \u2502           \u2502   \u2591\u2591 CLUB \u2591\u2591 \u2551\n             \u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d\n    \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\n    \u2588\u2592\u2592\u2588\u2591\u2591\u2588\u2592\u2592\u2588\u2591\u2591\u2588\u2592\u2592\u2588\u2591\u2591\u2588\u2592\u2592\u2588\u2591\u2591\u2588\u2592\u2592\u2588\u2591\u2591\u2588\u2592\u2592\u2588\u2591\u2591\u2588\u2592\u2592\u2588\u2591\u2591\u2588\u2592\u2592\u2588\u2591\u2591\u2588\u2592\u2592\u2588\u2591\u2591\u2588\u2592\u2592\u2588\n    \u2588\u2591\u2591\u2588\u2592\u2592\u2588\u2591\u2591\u2588\u2592\u2592\u2588\u2591\u2591\u2588\u2592\u2592\u2588\u2591\u2591\u2588\u2592\u2592\u2588\u2591\u2591\u2588\u2592\u2592\u2588\u2591\u2591\u2588\u2592\u2592\u2588\u2591\u2591\u2588\u2592\u2592\u2588\u2591\u2591\u2588\u2592\u2592\u2588\u2591\u2591\u2588\u2592\u2592\u2588\u2591\u2591\u2588\n    \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\n              \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557         \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n              \u2551 \u2605 HOTEL \u2605\u2551         \u2551 \u2593PACHINKO\u2593\u2551"
     },
     {
-      "id": "ramen_shop_alley",
-      "name": "Hidden Ramen Shop Alley",
-      "description": "A narrow alley leads to a small ramen shop with a simple wooden sign. Steam rises from the kitchen, and the rich aroma of tonkotsu broth fills the air. This must be the place!",
+      "id": "office_window",
+      "name": "Dark Office",
+      "description": "You've climbed through the window into a small, dark office. Moonlight streams through venetian blinds, casting shadows across scattered papers and a desk. The office door leads out to a hallway.",
       "exits": {
-        "west": "residential_street",
-        "north": "ramen_shop"
-      },
-      "objects": [],
-      "first_visit_description": null,
-      "dark": false
-    },
-    {
-      "id": "ramen_shop",
-      "name": "Ichiran Ramen Shop",
-      "description": "The small ramen shop has a counter with individual booths for privacy. The ramen master stands ready behind the counter, but he looks at you expectantly. A sign on the wall explains the ordering system.",
-      "exits": {
-        "south": "ramen_shop_alley"
+        "east": "fire_escape",
+        "north": "office_hallway"
       },
       "objects": [
-        "ramen_master",
-        "ordering_sign"
+        "scattered_papers"
       ],
       "first_visit_description": null,
-      "dark": false
+      "dark": false,
+      "ascii_art": "\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n\u2551\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2551\n\u2551\u2591\u2591\u2591\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2591\u2591\u2591\u2551\n\u2551\u2591\u2591\u2591\u2593\u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502\u2593\u2591\u2591\u2591\u2551\n\u2551\u2591\u2591\u2591\u2593\u2502\u2592\u2502\u2592\u2502\u2592\u2502\u2592\u2502\u2592\u2502\u2592\u2502\u2592\u2502\u2592\u2502\u2592\u2502\u2592\u2502\u2592\u2502\u2592\u2502\u2592\u2502\u2592\u2502\u2592\u2502\u2592\u2502\u2592\u2502\u2592\u2502\u2592\u2502\u2592\u2502\u2592\u2502\u2592\u2502\u2592\u2502\u2592\u2502\u2592\u2502\u2592\u2502\u2592\u2502\u2592\u2502\u2592\u2502\u2592\u2502\u2592\u2502\u2593\u2591\u2591\u2591\u2551\n\u2551\u2591\u2591\u2591\u2593\u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502\u2593\u2591\u2591\u2591\u2551\n\u2551\u2591\u2591\u2591\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2591\u2591\u2591\u2551\n\u2551\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2551\n\u2551\u2592\u2592\u2592\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2592\u2592\u2592\u2592\u2592\u2551\n\u2551\u2593\u2592\u2592\u2591\u2591\u2591\u2591\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2592\u2592\u2592\u2593\u2593\u2551\n\u2551\u2588\u2593\u2592\u2591\u2591\u2591\u2591\u2551 \u2219 \u2219 \u2219 \u2219 \u2219 \u2551\u2591\u2591\u2591\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2592\u2592\u2593\u2593\u2588\u2551\n\u2551\u2588\u2593\u2592\u2591\u2591\u2591\u2591\u2551 \u2219 \u2219 \u2219 \u2219 \u2219 \u2551\u2591\u2591\u2591\u2551 \u25a0"
     },
     {
-      "id": "train_tracks",
-      "name": "Elevated Train Tracks",
-      "description": "You stand beneath the elevated JR Yamanote Line tracks. In the distance, you can see the first hints of dawn breaking over Tokyo. The tracks are silent now, but soon the morning trains will begin running.",
+      "id": "office_hallway",
+      "name": "Office Hallway",
+      "description": "A sterile office hallway with flickering fluorescent lights. Doors line both sides, but most are locked. An elevator at the end appears to be out of order. Stairs lead down to the ground floor.",
       "exits": {
-        "south": "residential_street"
+        "south": "office_window",
+        "down": "ground_floor_lobby"
       },
       "objects": [],
       "first_visit_description": null,
-      "dark": false
+      "dark": false,
+      "ascii_art": "\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n\u2551\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2551\n\u2551\u2591\u2591\u2593\u2588\u2588\u2593\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2593\u2588\u2588\u2593\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2551\n\u2551\u2591\u2591\u2593\u2588\u2588\u2593\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2593\u2588\u2588\u2593\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2551\n\u2551\u2591\u2591\u2593\u2588\u2588\u2593\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2593\u2588\u2588\u2593\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2551\n\u2551\u2591\u2591\u2593\u2588\u2588\u2593\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2593\u2588\u2588\u2593\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2551\n\u2551\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2551\n\u2551\u2593\u2588\u2502\u2591\u2591\u2502\u2588\u2593\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2593\u2588\u2502\u2591\u2591\u2502\u2588\u2593\u2591\u2591\u2591\u2591\u2591\u2591\u2551\n\u2551\u2593\u2588\u2502  \u2502\u2588\u2593\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2593\u2588\u2502  \u2502\u2588\u2593\u2591\u2591\u2591\u2591\u2591\u2591\u2551\n\u2551\u2593\u2588\u2502\u2591\u2591\u2502\u2588\u2593\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2593\u2588\u2502\u2591\u2591\u2502\u2588\u2593\u2591\u2591\u2591\u2591\u2591\u2591\u2551\n\u2551\u2593\u2588\u2514\u2500\u2500\u2518\u2588\u2593\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2593\u2588\u2514\u2500\u2500\u2518\u2588\u2593\u2591\u2591\u2591\u2591\u2591\u2591\u2551\n\u2551\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2592\u2592\u2592\u2592\u2592\u2592\u2551\n\u2551\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591"
+    },
+    {
+      "id": "ground_floor_lobby",
+      "name": "Building Lobby",
+      "description": "The lobby of a small office building, dimly lit by emergency lighting. A security desk sits unmanned, and glass doors lead back out to the street. You can exit to the east.",
+      "exits": {
+        "up": "office_hallway",
+        "east": "narrow_alley"
+      },
+      "objects": [],
+      "first_visit_description": null,
+      "dark": false,
+      "ascii_art": "\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n\u2551\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2551\n\u2551\u2591\u2591\u2591                    \u2592\u2592\u2593 EMERGENCY \u2593\u2592\u2592                    \u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2551\n\u2551\u2591\u2591                     \u2592\u2592\u2593   LIGHTING  \u2593\u2592\u2592                   \u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2551\n\u2551                         \u2592\u2592\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2592\u2592                        \u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2551\n\u2551    \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2557                 \u2219 \u2219 \u2219                              \u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2551\n\u2551    \u2551      \u2551              Security Desk                         \u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2551\n\u2551    \u2551 DESK \u2551          \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557                    \u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2551\n\u2551    \u2551      \u2551          \u2551\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2551                    \u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2551\n\u2551    \u255a\u2550\u2550\u2550\u2550\u2550\u2550\u255d          \u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d                    \u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2551\n\u2551                                                                \u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2551\n\u2551  \u2591\u2591\u2591\u2591\u2591                                                    \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557  \u2551\n\u2551  \u2591\u2591\u2591\u2591\u2591                                                    \u2551 GLASS  \u2551  \u2551\n\u2551  \u2591\u2591\u2591\u2591\u2591                                                    \u2551 DOORS  \u2551  \u2551"
+    },
+    {
+      "id": "narrow_alley",
+      "name": "Narrow Alley",
+      "description": "A cramped alley between buildings, barely wide enough for one person. Pipes and cables run along the walls overhead. The alley opens up to the north, and you can return to the main street west.",
+      "exits": {
+        "west": "kabukicho_main",
+        "north": "small_plaza",
+        "east": "ground_floor_lobby"
+      },
+      "objects": [],
+      "first_visit_description": null,
+      "dark": false,
+      "ascii_art": "\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n\u2551\u2588\u2593\u2592\u2591                                                            \u2591\u2592\u2593\u2588\u2551\n\u2551\u2588\u2593\u2592\u2591  \u2554\u2550\u2550\u2550\u2557 \u250c\u2500\u2510 \u2554\u2550\u2550\u2550\u2557                              \u2554\u2550\u2550\u2550\u2557 \u250c\u2500\u2510  \u2591\u2592\u2593\u2588\u2551\n\u2551\u2588\u2593\u2592\u2591  \u2551\u2593\u2593\u2593\u2551 \u2502\u2592\u2502 \u2551\u2593\u2593\u2593\u2551                              \u2551\u2593\u2593\u2593\u2551 \u2502\u2592\u2502  \u2591\u2592\u2593\u2588\u2551\n\u2551\u2588\u2593\u2592\u2591  \u2551\u2593\u2593\u2593\u2551 \u2502\u2592\u2502 \u2551\u2593\u2593\u2593\u2551  \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550  \u2551\u2593\u2593\u2593\u2551 \u2502\u2592\u2502  \u2591\u2592\u2593\u2588\u2551\n\u2551\u2588\u2593\u2592\u2591  \u2551\u2593\u2593\u2593\u2551 \u2502\u2592\u2502 \u2551\u2593\u2593\u2593\u2551                              \u2551\u2593\u2593\u2593\u2551 \u2502\u2592\u2502  \u2591\u2592\u2593\u2588\u2551\n\u2551\u2588\u2593\u2592\u2591  \u2551\u2593\u2593\u2593\u2551 \u2514\u2500\u2518 \u2551\u2593\u2593\u2593\u2551                              \u2551\u2593\u2593\u2593\u2551 \u2514\u2500\u2518  \u2591\u2592\u2593\u2588\u2551\n\u2551\u2588\u2593\u2592\u2591  \u2551\u2593\u2593\u2593\u2551     \u2551\u2593\u2593\u2593\u2551                              \u2551\u2593\u2593\u2593\u2551       \u2591\u2592\u2593\u2588\u2551\n\u2551\u2588\u2593\u2592\u2591  \u2551\u2593\u2593\u2593\u2551     \u2551\u2593\u2593\u2593\u2551                              \u2551\u2593\u2593\u2593\u2551       \u2591\u2592\u2593\u2588\u2551\n\u2551\u2588\u2593\u2592\u2591  \u2551\u2593\u2593\u2593\u2551     \u2551\u2593\u2593\u2593\u2551          \u2219   \u2219   \u2219          \u2551\u2593\u2593\u2593\u2551       \u2591\u2592\u2593\u2588\u2551\n\u2551\u2588\u2593\u2592\u2591  \u2551\u2593\u2593\u2593\u2551     \u2551\u2593\u2593\u2593\u2551                              \u2551\u2593\u2593\u2593\u2551       \u2591\u2592\u2593\u2588\u2551\n\u2551\u2588\u2593\u2592\u2591  \u255a\u2550\u2550\u2550\u255d     \u255a\u2550\u2550\u2550\u255d                              \u255a\u2550\u2550\u2550\u255d       \u2591\u2592\u2593\u2588\u2551\n\u2551\u2588\u2593\u2592\u2591                                                            \u2591\u2592\u2593\u2588\u2551\n\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d"
+    },
+    {
+      "id": "small_plaza",
+      "name": "Small Plaza",
+      "description": "A tiny plaza tucked between buildings, with a few benches and a small fountain that's been turned off for the night. A ramen cart sits in the corner, but it's closed and locked. The plaza continues north.",
+      "exits": {
+        "south": "narrow_alley",
+        "north": "ramen_alley",
+        "east": "shrine_entrance"
+      },
+      "objects": [],
+      "first_visit_description": null,
+      "dark": false,
+      "ascii_art": "\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n\u2551 \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2591\u2591\u2592\u2592\u2593\u2593\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2591\u2591\u2592\u2592\u2593\u2593\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2591\u2591\u2592\u2592\u2593\u2593\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 \u2551\n\u2551 \u2588\u2580\u2580\u25a1\u2580\u2580\u25a1\u2580\u2580\u2588\u2591\u2591\u2591\u2591\u2592\u2592\u2593\u2593\u2588\u2580\u2580\u25a1\u2580\u2580\u25a1\u2580\u2580\u2588\u2591\u2591\u2591\u2591\u2592\u2592\u2593\u2593\u2588\u2580\u2580\u25a1\u2580\u2580\u25a1\u2580\u2580\u2588\u2591\u2591\u2591\u2591\u2592\u2592\u2593\u2593\u2588\u2580\u2580\u25a1\u2580\u2580\u25a1\u2580\u2580\u2588\u2588\u2588\u2588\u2588 \u2551\n\u2551 \u2588\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2588\u2591\u2591\u2591\u2591\u2592\u2592\u2593\u2593\u2588\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2588\u2591\u2591\u2591\u2591\u2592\u2592\u2593\u2593\u2588\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2588\u2591\u2591\u2591\u2591\u2592\u2592\u2593\u2593\u2588\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2588\u2588\u2588\u2588\u2588 \u2551\n\u2551 \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2592\u2592\u2593\u2593\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2592\u2592\u2593\u2593\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2592\u2592\u2593\u2593\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 \u2551\n\u2551                                                                       \u2551\n\u2551    \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510              \u2554\u2550\u2550\u2550\u2557                    \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510     \u2551\n\u2551    \u2502 RAMEN   \u2502      \u2219\u2219\u2219     \u2551 \u25c9 \u2551      \u2219\u2219\u2219           \u2502 [CLOSED] \u2502     \u2551\n\u2551    \u2502  CART   \u2502    \u2219\u2591\u2591\u2591\u2219     \u255a\u2550\u2550\u2550\u255d    \u2219\u2591\u2591\u2591\u2219           \u2502   CART   \u2502     \u2551\n\u2551    \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518      \u2219         \u2572 \u2571        \u2219           \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518     \u2551\n\u2551                               \u2571 \u2572                                     \u2551\n\u2551  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2510                    \u2550\u2550\u2550\u2550\u2550                    \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2510        \u2551\n\u2551  \u2502 BENCH\u2502                                             \u2502 BENCH\u2502        \u2551\n\u2551  \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2518                                             \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2518        \u2551"
+    },
+    {
+      "id": "shrine_entrance",
+      "name": "Shrine Entrance",
+      "description": "A small Shinto shrine squeezed between modern buildings, its red torii gate illuminated by a single lantern. Despite the urban chaos around it, the shrine feels peaceful and timeless. Stone steps lead up to the main shrine area.",
+      "exits": {
+        "west": "small_plaza",
+        "up": "shrine_grounds"
+      },
+      "objects": [],
+      "first_visit_description": null,
+      "dark": false,
+      "ascii_art": "\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2588\u2588\u2588\u2588\u2588\u2588\u2588\n    \u2588\u2588\u2592\u2592\u2592\u2592\u2592\u2592\u2588\u2588\u2591                                                    \u2591\u2588\u2588\u2592\u2592\u2592\u2592\u2592\u2588\u2588\n    \u2588\u2588\u2591\u2591\u2591\u2591\u2591\u2591\u2588\u2588\u2591                        \u25c9                          \u2591\u2588\u2588\u2591\u2591\u2591\u2591\u2591\u2591\u2588\u2588\n    \u2588\u2588\u25aa\u25aa\u25aa\u25aa\u25aa\u25aa\u2588\u2588\u2591                    \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557                       \u2591\u2588\u2588\u25aa\u25aa\u25aa\u25aa\u25aa\u25aa\u2588\u2588\n    \u2588\u2588\u2591\u2591\u2591\u2591\u2591\u2591\u2588\u2588\u2591                    \u2551 \u2591\u2591\u2591\u2591\u2591 \u2551                       \u2591\u2588\u2588\u2591\u2591\u2591\u2591\u2591\u2591\u2588\u2588\n    \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588                    \u2551  \u2593\u2588\u2593  \u2551                        \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\n                                   \u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d\n                              \u2219\u2219\u2219\u2219\u2219\u2219\u2219 \u2502 \u2502 \u2219\u2219\u2219\u2219\u2219\u2219\u2219\n                                  \u2591\u2591\u2591\u2502 \u2502\u2591\u2591\u2591\n                                 \u2591\u2591\u2591\u2591\u2502 \u2502\u2591\u2591\u2591\u2591\n                              \u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2502 \u2502\u2584\u2584\u2584\u2584\u2584\u2584\u2584\n                             \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\n                            \u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\n                           \u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591"
+    },
+    {
+      "id": "shrine_grounds",
+      "name": "Shrine Grounds",
+      "description": "The small shrine grounds are surprisingly serene. A wooden donation box sits before the main shrine building. An old priest sweeps the grounds despite the late hour, humming quietly to himself.",
+      "exits": {
+        "down": "shrine_entrance"
+      },
+      "objects": [
+        "donation_box",
+        "old_priest"
+      ],
+      "first_visit_description": null,
+      "dark": false,
+      "ascii_art": "\u2605 \u2219 \u00b7 \u2219   \u00b7  \u2605   \u2219 \u00b7  \u2219    \u2605\n    \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n    \u2551  \u25b2\u25b2\u25b2    \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557   \u25b2\u25b2\u25b2  \u2551\n    \u2551 \u2593\u2593\u2593\u2593    \u2551 \u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591 \u2551  \u2593\u2593\u2593\u2593  \u2551\n    \u2551\u2593\u2593\u2593\u2593\u2593    \u2551 \u2591 \u25c8   SHRINE   \u25c8 \u2591 \u2551 \u2593\u2593\u2593\u2593\u2593 \u2551\n    \u2551\u2593\u2593\u2593\u2593\u2593    \u2551 \u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591 \u2551 \u2593\u2593\u2593\u2593\u2593 \u2551\n    \u2551 \u2593\u2593\u2593\u2593    \u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d  \u2593\u2593\u2593\u2593  \u2551\n    \u2551  \u2593\u2593\u2593      \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510      \u2593\u2593\u2593   \u2551\n    \u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2502 DONATIONS   \u2502\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d\n         \u2591\u2591\u2591    \u2502 \u00a5 \u00a5 \u00a5 \u00a5 \u00a5  \u2502    \u2591\u2591\u2591\n         \u2591\u2592\u2592    \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518    \u2592\u2592\u2591\n         \u2592\u2593\u2588  \u25cb                  \u25cb  \u2588\u2593\u2592\n          \u2591\u2592   \u2219 \u00b7 \u2219  \u4eba  \u2219 \u00b7 \u2219 \u2219   \u2592\u2591\n            \u2591   \u00b7 \u2219 \u2591\u2591\u2591\u2591\u2591\u2591 \u2219 \u00b7  \u2219  \u2591"
+    },
+    {
+      "id": "ramen_alley",
+      "name": "Ramen Yokocho",
+      "description": "You've found the legendary Ramen Yokocho! This narrow alley is lined with tiny ramen stalls, each barely big enough for a few customers. Most are closed, but one at the end still has its lantern lit. The aroma of tonkotsu broth fills the air.",
+      "exits": {
+        "south": "small_plaza",
+        "east": "master_ramen_stall"
+      },
+      "objects": [],
+      "first_visit_description": null,
+      "dark": false,
+      "ascii_art": "\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n\u2551  \u2593\u2593\u2588\u2588\u2588\u2588\u2588\u2593\u2593     \u2593\u2593\u2588\u2588\u2588\u2588\u2588\u2593\u2593     \u2593\u2593\u2588\u2588\u2588\u2588\u2588\u2593\u2593     \u2593\u2593\u2588\u2588\u2588\u2588\u2588\u2593\u2593     \u2593\u2593\u2588\u2588\u2588\u2588\u2588\u2593\u2593  \u2551\n\u2551  \u2593\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2593     \u2593\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2593     \u2593\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2593     \u2593\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2593     \u2593\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2593  \u2551\n\u2551  \u2593\u2591 \u2554\u2550\u2550\u2557 \u2593     \u2593\u2591 \u2554\u2550\u2550\u2557 \u2593     \u2593\u2591 \u2554\u2550\u2550\u2557 \u2593     \u2593\u2591 \u2554\u2550\u2550\u2557 \u2593     \u2593\u2591 \u2554\u2550\u2550\u2557 \u2593  \u2551\n\u2551  \u2593\u2591 \u2551\u2588\u2588\u2551 \u2593     \u2593\u2591 \u2551\u2588\u2588\u2551 \u2593     \u2593\u2591 \u2551\u2588\u2588\u2551 \u2593     \u2593\u2591 \u2551\u2588\u2588\u2551 \u2593     \u2593\u2591 \u2551\u2592\u2592\u2551 \u2593  \u2551\n\u2551  \u2593\u2591 \u255a\u2550\u2550\u255d \u2593     \u2593\u2591 \u255a\u2550\u2550\u255d \u2593     \u2593\u2591 \u255a\u2550\u2550\u255d \u2593     \u2593\u2591 \u255a\u2550\u2550\u255d \u2593     \u2593\u2591 \u255a\u2592\u2592\u255d \u2593  \u2551\n\u2551  \u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593     \u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593     \u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593     \u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593     \u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2593  \u2551\n\u2551    \u2591\u2591\u2591\u2591\u2591         \u2591\u2591\u2591\u2591\u2591         \u2591\u2591\u2591\u2591\u2591         \u2591\u2591\u2591\u2591\u2591         \u2592\u2592\u2592\u2592\u2592    \u2551\n\u2551     \u2219\u2219\u2219           \u2219\u2219\u2219           \u2219\u2219\u2219           \u2219\u2219\u2219         \u25cf\u25cb\u25cf\u25cb\u25cf    \u2551\n\u2551 \u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591 \u2551\n\u2551 \u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592 \u2551\n\u2551 \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 \u2551\n\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d"
+    },
+    {
+      "id": "master_ramen_stall",
+      "name": "Master Takeshi's Ramen Stall",
+      "description": "The last open ramen stall in the alley, run by an elderly master who's been serving ramen here for decades. Steam rises from bubbling pots of broth. However, the master looks troubled - he's missing his special ingredient for the morning ramen.",
+      "exits": {
+        "west": "ramen_alley"
+      },
+      "objects": [
+        "master_takeshi",
+        "special_recipe"
+      ],
+      "first_visit_description": null,
+      "dark": false,
+      "ascii_art": "\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n\u2551                    \u2591\u2592\u2593\u2588 MASTER TAKESHI'S RAMEN \u2588\u2593\u2592\u2591                    \u2551\n\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d\n    \u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\n    \u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\n\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\n\u2588 \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510 \u2588\n\u2588 \u2502  \u2219\u2219\u2219 \u2219\u2219\u2219 \u2219\u2219\u2219     \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2557     \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2557     \u2219\u2219\u2219 \u2219\u2219\u2219 \u2219\u2219\u2219      \u2502 \u2588\n\u2588 \u2502     \u2591\u2591\u2591\u2591\u2591\u2591\u2591      \u2551 ~~~~ \u2551     \u2551 ~~~~ \u2551        \u2591\u2591\u2591\u2591\u2591\u2591\u2591         \u2502 \u2588\n\u2588 \u2502   \u2592\u2592[\u8001\u4eba]\u2592\u2592     \u2551~~~~~~\u2551     \u2551~~~~~~\u2551      \u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592       \u2502 \u2588\n\u2588 \u2502     \u2591\u2591\u2591\u2591\u2591\u2591\u2591      \u255a\u2550\u2550\u2550\u2550\u2550\u2550\u255d     \u255a\u2550\u2550\u2550\u2550\u2550\u2550\u255d        \u2591\u2591\u2591\u2591\u2591\u2591\u2591         \u2502 \u2588\n\u2588 \u2502 \u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6\u25c6 \u2502 \u2588\n\u2588 \u2502   \u2593\u2593\u2593   \u2593\u2593\u2593   \u2593\u2593\u2593   \u2593\u2593\u2593   \u2593\u2593\u2593   \u2593\u2593\u2593   \u2593\u2593\u2593   \u2593\u2593\u2593   \u2593\u2593\u2593     \u2502 \u2588\n\u2588 \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518 \u2588"
+    },
+    {
+      "id": "pachinko_plaza",
+      "name": "Pachinko Plaza",
+      "description": "A small plaza dominated by the flashing lights and cacophonous sounds of a 24-hour pachinko parlor. Steel balls clatter endlessly inside. A few dedicated players sit zombie-like at their machines despite the late hour.",
+      "exits": {
+        "south": "kabukicho_main",
+        "north": "hidden_courtyard",
+        "east": "pachinko_parlor"
+      },
+      "objects": [],
+      "first_visit_description": null,
+      "dark": false,
+      "ascii_art": "\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n\u2551                    \u2591\u2591\u2592\u2592\u2593\u2593 PACHINKO PLAZA \u2593\u2593\u2592\u2592\u2591\u2591                         \u2551\n\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d\n      \u2219   \u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591   \u2219\n    \u2591\u2592\u2593\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2593\u2592\u2591\n   \u2591\u2592\u2593\u2588 \u25ce \u25c9 \u25ce \u25c9 \u25ce \u25c9 \u25ce \u25c9 \u25ce \u25c9 \u25ce \u25c9 \u25ce \u25c9 \u25ce \u25c9 \u25ce \u25c9 \u25ce \u25c9 \u25ce \u25c9 \u25ce \u25c9 \u25ce \u2588\u2593\u2592\u2591\n  \u2591\u2592\u2593\u2588 \u250c\u2500\u2510 \u250c\u2500\u2510 \u250c\u2500\u2510 \u250c\u2500\u2510 \u250c\u2500\u2510 \u250c\u2500\u2510 \u250c\u2500\u2510 \u250c\u2500\u2510 \u250c\u2500\u2510 \u250c\u2500\u2510 \u250c\u2500\u2510 \u250c\u2500\u2510 \u250c\u2500\u2510 \u2588\u2593\u2592\u2591\n \u2591\u2592\u2593\u2588 \u2502\u25cb\u2502 \u2502\u25cf\u2502 \u2502\u25cb\u2502 \u2502\u25cf\u2502 \u2502\u25cb\u2502 \u2502\u25cf\u2502 \u2502\u25cb\u2502 \u2502\u25cf\u2502 \u2502\u25cb\u2502 \u2502\u25cf\u2502 \u2502\u25cb\u2502 \u2502\u25cf\u2502 \u2502\u25cb\u2502 \u2588\u2593\u2592\u2591\n\u2591\u2592\u2593\u2588 \u2591\u2514\u2500\u2518 \u2514\u2500\u2518 \u2514\u2500\u2518 \u2514\u2500\u2518 \u2514\u2500\u2518 \u2514\u2500\u2518 \u2514\u2500\u2518 \u2514\u2500\u2518 \u2514\u2500\u2518 \u2514\u2500\u2518 \u2514\u2500\u2518 \u2514\u2500\u2518 \u2514\u2500\u2518\u2591 \u2588\u2593\u2592\u2591\n\u2592\u2593\u2588 \u2591\u2591 \u25b2   \u25b2   \u25b2   \u25b2   \u25b2   \u25b2   \u25b2   \u25b2   \u25b2   \u25b2   \u25b2   \u25b2   \u25b2 \u2591\u2591 \u2588\u2593\u2592\n\u2593\u2588 \u2591\u2592 \u2551   \u2551   \u2551   \u2551   \u2551   \u2551   \u2551   \u2551   \u2551   \u2551   \u2551   \u2551   \u2551  \u2592\u2591 \u2588\u2593\n\u2588 \u2591\u2592\u2593 \u25d0   \u25d1   \u25d0   \u25d1   \u25d0   \u25d1   \u25d0   \u25d1   \u25d0   \u25d1   \u25d0   \u25d1   \u25d0  \u2593\u2592\u2591 \u2588\n\u2591\u2592\u2593\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2593\u2592\u2591\n  \u2591\u2592\u2593 \u2219 \u2219 \u2219 \u2219 \u2219 \u2219 \u2219 \u2219 \u2219 \u2219 \u2219 \u2219 \u2219 \u2219 \u2219 \u2219 \u2219 \u2219 \u2219 \u2219 \u2219 \u2219 \u2219 \u2219 \u2593\u2592\u2591"
+    },
+    {
+      "id": "pachinko_parlor",
+      "name": "Inside Pachinko Parlor",
+      "description": "The interior of the pachinko parlor is a sensory assault of flashing lights, electronic sounds, and cigarette smoke. Rows of machines stretch into the distance. Near the entrance, you notice a prize counter with various items.",
+      "exits": {
+        "west": "pachinko_plaza"
+      },
+      "objects": [
+        "prize_counter"
+      ],
+      "first_visit_description": null,
+      "dark": false,
+      "ascii_art": "\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n\u2551\u2591\u2591\u2591\u2593\u2588 PACHINKO \u2588\u2588\u2593\u2591\u2591\u2591\u2551\u2591\u2591\u2592\u2593 PARADISE \u2593\u2592\u2591\u2591\u2551\u2591\u2591\u2591\u2593\u2588 PALACE \u2588\u2588\u2593\u2591\u2591\u2591\u2551\n\u2560\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2563\n\u2551 \u2591\u2592\u2593\u2588 \u2591\u2592\u2593\u2588 \u2591\u2592\u2593\u2588 \u2591\u2592\u2593\u2588 \u2591\u2592\u2593\u2588 \u2591\u2592\u2593\u2588 \u2591\u2592\u2593\u2588 \u2591\u2592\u2593\u2588 \u2591\u2592\u2593\u2588 \u2591\u2592\u2593\u2588 \u2591\u2592\u2593\u2588 \u2591\u2592\u2593\u2588 \u2551\n\u2551 \u25c9\u25cf\u25c9\u25cf \u25c9\u25cf\u25c9\u25cf \u25c9\u25cf\u25c9\u25cf \u25c9\u25cf\u25c9\u25cf \u25c9\u25cf\u25c9\u25cf \u25c9\u25cf\u25c9\u25cf \u25c9\u25cf\u25c9\u25cf \u25c9\u25cf\u25c9\u25cf \u25c9\u25cf\u25c9\u25cf \u25c9\u25cf\u25c9\u25cf \u25c9\u25cf\u25c9\u25cf \u25c9\u25cf\u25c9\u25cf \u2551\n\u2551 \u2588\u2588\u2588\u2588 \u2588\u2588\u2588\u2588 \u2588\u2588\u2588\u2588 \u2588\u2588\u2588\u2588 \u2588\u2588\u2588\u2588 \u2588\u2588\u2588\u2588 \u2588\u2588\u2588\u2588 \u2588\u2588\u2588\u2588 \u2588\u2588\u2588\u2588 \u2588\u2588\u2588\u2588 \u2588\u2588\u2588\u2588 \u2588\u2588\u2588\u2588 \u2551\n\u2551 \u2591\u2592\u2593\u2588 \u2591\u2592\u2593\u2588 \u2591\u2592\u2593\u2588 \u2591\u2592\u2593\u2588 \u2591\u2592\u2593\u2588 \u2591\u2592\u2593\u2588 \u2591\u2592\u2593\u2588 \u2591\u2592\u2593\u2588 \u2591\u2592\u2593\u2588 \u2591\u2592\u2593\u2588 \u2591\u2592\u2593\u2588 \u2591\u2592\u2593\u2588 \u2551\n\u2551 \u25c9\u25cf\u25c9\u25cf \u25c9\u25cf\u25c9\u25cf \u25c9\u25cf\u25c9\u25cf \u25c9\u25cf\u25c9\u25cf \u25c9\u25cf\u25c9\u25cf \u25c9\u25cf\u25c9\u25cf \u25c9\u25cf\u25c9\u25cf \u25c9\u25cf\u25c9\u25cf \u25c9\u25cf\u25c9\u25cf \u25c9\u25cf\u25c9\u25cf \u25c9\u25cf\u25c9\u25cf \u25c9\u25cf\u25c9\u25cf \u2551\n\u2551 \u2588\u2588\u2588\u2588 \u2588\u2588\u2588\u2588 \u2588\u2588\u2588\u2588 \u2588\u2588\u2588\u2588 \u2588\u2588\u2588\u2588 \u2588\u2588\u2588\u2588 \u2588\u2588\u2588\u2588 \u2588\u2588\u2588\u2588 \u2588\u2588\u2588\u2588 \u2588\u2588\u2588\u2588 \u2588\u2588\u2588\u2588 \u2588\u2588\u2588\u2588 \u2551\n\u2551\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2592\u2551\n\u2551 PRIZE COUNTER                                              \u2219\u2219\u2219\u2219\u2219\u2219\u2219 \u2551\n\u2551\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557 \u2666\u2605\u2666 \u25c6\u25a0\u25c6 \u25cf\u25cb\u25cf \u25b2\u25bc\u25b2                          \u2591\u2591\u2591\u2591\u2591\u2591\u2591 \u2551\n\u2551\u2551 \u2660\u2663\u2665\u2666 \u2605\u2606\u2605\u2606 \u2551 Cigarette smoke drifts through neon haze \u2592\u2592\u2592\u2592\u2592\u2592\u2592 \u2551\n\u2551\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d                                              \u2593\u2593\u2593\u2593\u2593\u2593\u2593 \u2551"
+    },
+    {
+      "id": "hidden_courtyard",
+      "name": "Hidden Courtyard",
+      "description": "A secret courtyard hidden behind the buildings, accessible only through narrow passages. In the center stands an ancient vending machine that seems to glow with an otherworldly light. Local legends say it dispenses more than just drinks to those who know the right combination.",
+      "exits": {
+        "south": "pachinko_plaza",
+        "east": "back_alley"
+      },
+      "objects": [
+        "ancient_vending_machine"
+      ],
+      "first_visit_description": null,
+      "dark": false,
+      "ascii_art": "\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n\u2551 \u2588\u2580\u2580\u2580\u2588\u2588\u2588\u2588\u2588\u2580\u2580\u2580\u2588                                           \u2588\u2580\u2580\u2580\u2588\u2588\u2588\u2588\u2588\u2580\u2580\u2580\u2588 \u2551\n\u2551 \u2588 \u25aa \u2588\u2588\u2588\u2588\u2588 \u25aa \u2588                                           \u2588 \u25aa \u2588\u2588\u2588\u2588\u2588 \u25aa \u2588 \u2551\n\u2551 \u2588\u2584\u2584\u2584\u2588\u2588\u2588\u2588\u2588\u2584\u2584\u2584\u2588                                           \u2588\u2584\u2584\u2584\u2588\u2588\u2588\u2588\u2588\u2584\u2584\u2584\u2588 \u2551\n\u2551 \u2588\u2588\u2588\u2588\u2591\u2591\u2591\u2591\u2591\u2588\u2588\u2588\u2588                                           \u2588\u2588\u2588\u2588\u2591\u2591\u2591\u2591\u2591\u2588\u2588\u2588\u2588 \u2551\n\u2551 \u2588\u2588\u2588\u2591 \u2219 \u2219 \u2591\u2588\u2588\u2588              \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557              \u2588\u2588\u2588\u2591 \u2219 \u2219 \u2591\u2588\u2588\u2588 \u2551\n\u2551 \u2588\u2588\u2591  \u00b7 \u00b7  \u2591\u2588\u2588              \u2551 \u25c6 MYSTIQUE \u25c6  \u2551              \u2588\u2588\u2591  \u00b7 \u00b7  \u2591\u2588\u2588 \u2551\n\u2551 \u2588\u2591   \u2591\u2592\u2593   \u2591\u2588              \u2551 \u2591\u2592\u2593\u2588\u2588\u2588\u2588\u2588\u2593\u2592\u2591  \u2551              \u2588\u2591   \u2591\u2592\u2593   \u2591\u2588 \u2551\n\u2551 \u2591    \u2592\u2593\u2588    \u2591              \u2551 \u2592\u2593\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2593\u2592  \u2551              \u2591    \u2592\u2593\u2588    \u2591 \u2551\n\u2551      \u2593\u2588\u2588                   \u2551 \u2593\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2593  \u2551                   \u2588\u2588\u2593      \u2551\n\u2551  \u2219 \u00b7 \u2588\u2588\u2588 \u00b7 \u2219               \u2551 \u2588\u2588\u2588 \u25cb \u25cb \u2588\u2588\u2588  \u2551               \u2219 \u00b7 \u2588\u2588\u2588 \u00b7 \u2219  \u2551\n\u2551    \u2591\u2592\u2588\u2588\u2588\u2592\u2591                 \u2551 \u2588\u2588\u2588  \u2550\u2550\u2550  \u2588\u2588\u2588 \u2551                 \u2591\u2592\u2588\u2588\u2588\u2592\u2591    \u2551\n\u2551  \u2591\u2592\u2593\u2588\u2588\u2588\u2588\u2588\u2593\u2592\u2591               \u2551 \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2593 \u2551               \u2591\u2592\u2593\u2588\u2588\u2588\u2588\u2588\u2593\u2592\u2591  \u2551\n\u2551\u2591\u2592\u2593\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2593\u2592\u2591           \u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d           \u2591\u2592\u2593\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2593\u2592\u2591\u2551"
     }
   ],
   "objects": [
@@ -269,12 +286,12 @@
       "name": "neon sign",
       "adjectives": [
         "neon",
-        "massive",
-        "bright"
+        "bright",
+        "flickering"
       ],
-      "description": "A massive neon arch proclaiming 'Welcome to Kabukicho' in both Japanese and English.",
-      "examine_text": "The sign flickers occasionally, and you notice some Japanese text that translates to 'The city that never sleeps.'",
-      "location": "kabukicho_entrance",
+      "description": "A massive neon sign advertising 'Midnight Ramen - Best in Tokyo!' in flickering Japanese characters.",
+      "examine_text": "The sign flickers hypnotically, and you notice small text at the bottom: 'Secret ingredient: tears of joy from satisfied customers.'",
+      "location": "kabukicho_main",
       "takeable": false,
       "droppable": true,
       "readable": false,
@@ -295,15 +312,16 @@
       "hidden": false
     },
     {
-      "id": "wet_pavement",
-      "name": "wet pavement",
+      "id": "drunk_salaryman",
+      "name": "drunk salaryman",
       "adjectives": [
-        "wet",
-        "glistening"
+        "drunk",
+        "intoxicated",
+        "swaying"
       ],
-      "description": "The pavement glistens with moisture from the night air and reflects the neon lights above.",
-      "examine_text": null,
-      "location": "kabukicho_entrance",
+      "description": "A heavily intoxicated businessman in a rumpled suit, swaying dangerously near a lamppost.",
+      "examine_text": "He mumbles something about 'the magic coins' and points vaguely toward the station before nearly falling over.",
+      "location": "kabukicho_main",
       "takeable": false,
       "droppable": true,
       "readable": false,
@@ -319,21 +337,31 @@
       "is_lit": false,
       "wearable": false,
       "worn": false,
-      "actions": {},
+      "actions": {
+        "talk": {
+          "message": "The salaryman slurs: 'Psst... the vending machine... it wants... 500 yen coins... three of them... but not just any coins... special ones...' He then passes out standing up.",
+          "condition": null,
+          "fail_message": null,
+          "state_changes": {},
+          "consumes_object": false,
+          "reveals_object": null,
+          "moves_player": null
+        }
+      },
       "scenery": true,
       "hidden": false
     },
     {
-      "id": "station_clock",
+      "id": "digital_clock",
       "name": "digital clock",
       "adjectives": [
         "digital",
         "large",
-        "electronic"
+        "bright"
       ],
-      "description": "A large digital display showing the current time: 4:47 AM. First train in 1 hour 13 minutes.",
-      "examine_text": "The clock also displays a message: 'Service resumes at 5:00 AM. Have a safe journey!'",
-      "location": "shinjuku_station",
+      "description": "A large digital display showing the current time and countdown to the last train.",
+      "examine_text": "The clock shows you have about an hour before the last train. Plenty of time for ramen if you can find the right place.",
+      "location": "station_entrance",
       "takeable": false,
       "droppable": true,
       "readable": false,
@@ -354,129 +382,16 @@
       "hidden": false
     },
     {
-      "id": "locked_gates",
-      "name": "station gates",
-      "adjectives": [
-        "metal",
-        "security",
-        "heavy"
-      ],
-      "description": "Heavy metal security gates block access to the train platforms.",
-      "examine_text": null,
-      "location": "shinjuku_station",
-      "takeable": false,
-      "droppable": true,
-      "readable": false,
-      "read_text": null,
-      "openable": false,
-      "is_open": false,
-      "container": false,
-      "contains": [],
-      "lockable": true,
-      "locked": true,
-      "key_object": null,
-      "light_source": false,
-      "is_lit": false,
-      "wearable": false,
-      "worn": false,
-      "actions": {},
-      "scenery": true,
-      "hidden": false
-    },
-    {
-      "id": "drunken_salarymen",
-      "name": "drunken salarymen",
-      "adjectives": [
-        "drunken",
-        "loud",
-        "singing"
-      ],
-      "description": "Three businessmen in rumpled suits are singing karaoke loudly and blocking the path west.",
-      "examine_text": "They're completely drunk and seem fixated on their karaoke session. One keeps trying to hit a high note and failing spectacularly.",
-      "location": "central_plaza",
-      "takeable": false,
-      "droppable": true,
-      "readable": false,
-      "read_text": null,
-      "openable": false,
-      "is_open": false,
-      "container": false,
-      "contains": [],
-      "lockable": false,
-      "locked": false,
-      "key_object": null,
-      "light_source": false,
-      "is_lit": false,
-      "wearable": false,
-      "worn": false,
-      "actions": {
-        "talk": {
-          "message": "One salaryman hiccups and says, 'Hey buddy! You know any good karaoke songs? We can't remember the words to this one!' They seem to want help with their karaoke.",
-          "condition": "!flags.salarymen_distracted",
-          "fail_message": null,
-          "state_changes": {
-            "flags.talked_to_salarymen": true
-          },
-          "consumes_object": false,
-          "reveals_object": null,
-          "moves_player": null
-        },
-        "sing": {
-          "message": "You belt out a few lines of 'My Way' and the salarymen cheer! They stumble off to find another bar, clearing the path west.",
-          "condition": "flags.talked_to_salarymen && !flags.salarymen_distracted",
-          "fail_message": null,
-          "state_changes": {
-            "flags.salarymen_distracted": true
-          },
-          "consumes_object": false,
-          "reveals_object": null,
-          "moves_player": null
-        }
-      },
-      "scenery": true,
-      "hidden": false
-    },
-    {
-      "id": "karaoke_machine",
-      "name": "karaoke machine",
-      "adjectives": [
-        "portable",
-        "electronic"
-      ],
-      "description": "A portable karaoke machine with a microphone dangling from a cord.",
-      "examine_text": "The screen shows song titles scrolling by. The current song appears to be 'My Way' but the salarymen don't seem to know the words.",
-      "location": "central_plaza",
-      "takeable": false,
-      "droppable": true,
-      "readable": false,
-      "read_text": null,
-      "openable": false,
-      "is_open": false,
-      "container": false,
-      "contains": [],
-      "lockable": false,
-      "locked": false,
-      "key_object": null,
-      "light_source": false,
-      "is_lit": false,
-      "wearable": false,
-      "worn": false,
-      "actions": {},
-      "scenery": false,
-      "hidden": false
-    },
-    {
-      "id": "sentient_vending_machine",
+      "id": "mysterious_vending_machine",
       "name": "vending machine",
       "adjectives": [
-        "sentient",
-        "electronic",
+        "mysterious",
         "humming",
-        "strange"
+        "unusual"
       ],
-      "description": "This vending machine hums with an electronic melody and its display shows swirling patterns instead of products.",
-      "examine_text": "Unlike normal vending machines, this one seems almost alive. Its lights pulse rhythmically and the display shows what looks like digital eyes watching you.",
-      "location": "vending_machine_alley",
+      "description": "An ordinary-looking vending machine, but something about it seems different. It hums with an unusual frequency.",
+      "examine_text": "Looking closer, you notice a small slot that accepts exactly three 500 yen coins. There's a faded label: 'Special Delivery Service.'",
+      "location": "station_platform",
       "takeable": false,
       "droppable": true,
       "readable": false,
@@ -493,26 +408,15 @@
       "wearable": false,
       "worn": false,
       "actions": {
-        "talk": {
-          "message": "The machine's display flickers and shows text: 'HELLO HUMAN. I REQUIRE PAYMENT OF 100 YEN FOR INFORMATION. INSERT COINS TO CONTINUE.'",
-          "condition": null,
+        "use": {
+          "message": "You insert the three special 500 yen coins. The machine whirs to life and dispenses a small wrapped package with a note: 'Deliver to Master Takeshi for the finest ramen experience.' Inside is a small vial of golden liquid labeled 'Essence of Umami.'",
+          "condition": "has_three_coins",
           "fail_message": null,
           "state_changes": {
-            "flags.talked_to_machine": true
+            "has_special_ingredient": true
           },
           "consumes_object": false,
-          "reveals_object": null,
-          "moves_player": null
-        },
-        "insert": {
-          "message": "You insert the coins. The machine displays: 'GOLDEN GAI DOOR CODE: 2468. RAMEN SHOP REQUIRES BUSINESS CARD FOR ENTRY. HAVE PLEASANT EVENING, HUMAN.' A small item drops from the dispenser.",
-          "condition": "flags.talked_to_machine && inventory.includes('coins')",
-          "fail_message": null,
-          "state_changes": {
-            "flags.machine_paid": true
-          },
-          "consumes_object": false,
-          "reveals_object": "electronic_key",
+          "reveals_object": "umami_essence",
           "moves_player": null
         }
       },
@@ -520,15 +424,45 @@
       "hidden": false
     },
     {
-      "id": "coins",
-      "name": "coins",
+      "id": "umami_essence",
+      "name": "umami essence",
       "adjectives": [
-        "metal",
-        "japanese",
-        "hundred-yen"
+        "golden",
+        "shimmering",
+        "small"
       ],
-      "description": "A handful of 100-yen coins, enough for a vending machine purchase.",
-      "examine_text": "Five 100-yen coins. Perfect for vending machines or small purchases.",
+      "description": "A small vial of golden liquid that seems to shimmer with its own light.",
+      "examine_text": "The label reads 'Pure Essence of Umami - The Fifth Taste.' This must be what Master Takeshi needs for his special morning ramen.",
+      "location": "station_platform",
+      "takeable": true,
+      "droppable": true,
+      "readable": false,
+      "read_text": null,
+      "openable": false,
+      "is_open": false,
+      "container": false,
+      "contains": [],
+      "lockable": false,
+      "locked": false,
+      "key_object": null,
+      "light_source": false,
+      "is_lit": false,
+      "wearable": false,
+      "worn": false,
+      "actions": {},
+      "scenery": false,
+      "hidden": true
+    },
+    {
+      "id": "instant_ramen",
+      "name": "instant ramen",
+      "adjectives": [
+        "instant",
+        "cheap",
+        "cup"
+      ],
+      "description": "A cup of cheap instant ramen. Not what you're looking for, but it might be useful.",
+      "examine_text": "Standard convenience store ramen. The back has a promotion: 'Collect 3 for special prize!' There's a small 500 yen coin taped to the bottom.",
       "location": "convenience_store",
       "takeable": true,
       "droppable": true,
@@ -550,16 +484,16 @@
       "hidden": false
     },
     {
-      "id": "electronic_key",
-      "name": "electronic key",
+      "id": "energy_drink",
+      "name": "energy drink",
       "adjectives": [
-        "electronic",
-        "plastic",
-        "small"
+        "energy",
+        "japanese",
+        "strange"
       ],
-      "description": "A small plastic card with an electronic chip, dispensed by the sentient vending machine.",
-      "examine_text": "The key has 'STAFF ACCESS' printed on it in small letters.",
-      "location": "vending_machine_alley",
+      "description": "A can of Japanese energy drink with incomprehensible ingredients listed on the side.",
+      "examine_text": "The drink promises to 'restore vitality and clear thinking.' A 500 yen coin is attached as a promotional offer.",
+      "location": "convenience_store",
       "takeable": true,
       "droppable": true,
       "readable": false,
@@ -577,157 +511,19 @@
       "worn": false,
       "actions": {},
       "scenery": false,
-      "hidden": true
-    },
-    {
-      "id": "wooden_door",
-      "name": "wooden door",
-      "adjectives": [
-        "wooden",
-        "heavy"
-      ],
-      "description": "A heavy wooden door blocks the entrance to Golden Gai. An electronic lock requires a 4-digit code.",
-      "examine_text": null,
-      "location": "golden_gai_entrance",
-      "takeable": false,
-      "droppable": true,
-      "readable": false,
-      "read_text": null,
-      "openable": false,
-      "is_open": false,
-      "container": false,
-      "contains": [],
-      "lockable": true,
-      "locked": true,
-      "key_object": null,
-      "light_source": false,
-      "is_lit": false,
-      "wearable": false,
-      "worn": false,
-      "actions": {
-        "enter": {
-          "message": "You enter the code 2468 on the electronic lock. The door clicks open, granting you access to Golden Gai!",
-          "condition": "flags.machine_paid",
-          "fail_message": null,
-          "state_changes": {
-            "flags.golden_gai_open": true
-          },
-          "consumes_object": false,
-          "reveals_object": null,
-          "moves_player": "golden_gai_alley_1"
-        },
-        "unlock": {
-          "message": "You enter the code 2468 on the electronic lock. The door clicks open!",
-          "condition": "flags.machine_paid",
-          "fail_message": null,
-          "state_changes": {
-            "flags.golden_gai_open": true
-          },
-          "consumes_object": false,
-          "reveals_object": null,
-          "moves_player": null
-        }
-      },
-      "scenery": false,
       "hidden": false
     },
     {
-      "id": "electronic_lock",
-      "name": "electronic lock",
+      "id": "rusty_door",
+      "name": "rusty door",
       "adjectives": [
-        "electronic",
-        "digital"
-      ],
-      "description": "A digital keypad requiring a 4-digit code to unlock the door.",
-      "examine_text": "The lock has numbers 0-9 and a small screen that currently shows '----'. You need to enter the correct 4-digit code.",
-      "location": "golden_gai_entrance",
-      "takeable": false,
-      "droppable": true,
-      "readable": false,
-      "read_text": null,
-      "openable": false,
-      "is_open": false,
-      "container": false,
-      "contains": [],
-      "lockable": false,
-      "locked": false,
-      "key_object": null,
-      "light_source": false,
-      "is_lit": false,
-      "wearable": false,
-      "worn": false,
-      "actions": {},
-      "scenery": false,
-      "hidden": false
-    },
-    {
-      "id": "business_card",
-      "name": "business card",
-      "adjectives": [
-        "elegant",
-        "gold"
-      ],
-      "description": "A elegant business card from 'Champion Bar' with gold lettering.",
-      "examine_text": "The card feels expensive and has a small red stamp that looks official.",
-      "location": "tiny_bar",
-      "takeable": true,
-      "droppable": true,
-      "readable": true,
-      "read_text": "Champion Bar - Golden Gai. 'Present this card at Ichiran Ramen for late-night service.' There's a small stamp on the back.",
-      "openable": false,
-      "is_open": false,
-      "container": false,
-      "contains": [],
-      "lockable": false,
-      "locked": false,
-      "key_object": null,
-      "light_source": false,
-      "is_lit": false,
-      "wearable": false,
-      "worn": false,
-      "actions": {},
-      "scenery": false,
-      "hidden": false
-    },
-    {
-      "id": "notebook",
-      "name": "notebook",
-      "adjectives": [
-        "leather",
-        "bound"
-      ],
-      "description": "A leather-bound notebook left open on the bar counter.",
-      "examine_text": "The handwriting is neat and the pages are filled with musical notes and reminders.",
-      "location": "jazz_bar",
-      "takeable": true,
-      "droppable": true,
-      "readable": true,
-      "read_text": "The notebook contains jazz song titles and notes: 'Remember - the back door key is behind the staff entrance. Only use in emergencies. Code for Golden Gai: ask the vending machine.'",
-      "openable": false,
-      "is_open": false,
-      "container": false,
-      "contains": [],
-      "lockable": false,
-      "locked": false,
-      "key_object": null,
-      "light_source": false,
-      "is_lit": false,
-      "wearable": false,
-      "worn": false,
-      "actions": {},
-      "scenery": false,
-      "hidden": false
-    },
-    {
-      "id": "metal_door",
-      "name": "metal door",
-      "adjectives": [
+        "rusty",
         "metal",
         "heavy",
-        "staff"
+        "locked"
       ],
-      "description": "A heavy metal door marked 'STAFF ONLY' in both Japanese and English.",
-      "examine_text": null,
+      "description": "A heavy metal door marked 'Staff Only' with multiple locks.",
+      "examine_text": "The door has three different locks, but they all look like they use the same key. There's a small sign: 'Authorized Personnel Only - Master Key Required.'",
       "location": "back_alley",
       "takeable": false,
       "droppable": true,
@@ -739,46 +535,119 @@
       "contains": [],
       "lockable": true,
       "locked": true,
-      "key_object": "electronic_key",
+      "key_object": "master_key",
       "light_source": false,
       "is_lit": false,
       "wearable": false,
       "worn": false,
-      "actions": {
-        "unlock": {
-          "message": "You swipe the electronic key and the door clicks open, revealing a shortcut back to the residential area!",
-          "condition": "inventory.includes('electronic_key')",
-          "fail_message": null,
-          "state_changes": {
-            "flags.staff_door_open": true
-          },
-          "consumes_object": false,
-          "reveals_object": null,
-          "moves_player": null
-        },
-        "open": {
-          "message": "The door is already unlocked. You can go through it.",
-          "condition": "flags.staff_door_open",
-          "fail_message": null,
-          "state_changes": {},
-          "consumes_object": false,
-          "reveals_object": null,
-          "moves_player": "residential_street"
-        }
-      },
+      "actions": {},
       "scenery": false,
       "hidden": false
     },
     {
-      "id": "ramen_master",
-      "name": "ramen master",
+      "id": "scattered_papers",
+      "name": "scattered papers",
       "adjectives": [
-        "elderly",
-        "chef"
+        "scattered",
+        "various",
+        "office"
       ],
-      "description": "An elderly man in white chef's clothing stands ready to serve ramen, but he's waiting for something.",
-      "examine_text": "He has the focused concentration of a true craftsman, but keeps glancing at you expectantly.",
-      "location": "ramen_shop",
+      "description": "Various documents and papers scattered across the office desk.",
+      "examine_text": null,
+      "location": "office_window",
+      "takeable": false,
+      "droppable": true,
+      "readable": true,
+      "read_text": "Most papers are boring office memos, but one catches your eye: 'Security Protocol - Master key hidden in shrine donation box for emergency access. Remember: three coins unlock the ancient wisdom.'",
+      "openable": false,
+      "is_open": false,
+      "container": false,
+      "contains": [],
+      "lockable": false,
+      "locked": false,
+      "key_object": null,
+      "light_source": false,
+      "is_lit": false,
+      "wearable": false,
+      "worn": false,
+      "actions": {},
+      "scenery": false,
+      "hidden": false
+    },
+    {
+      "id": "donation_box",
+      "name": "donation box",
+      "adjectives": [
+        "wooden",
+        "traditional",
+        "shrine"
+      ],
+      "description": "A traditional wooden donation box at the shrine, with a small slot for coins.",
+      "examine_text": "The donation box is old and weathered. There's something rattling inside besides coins.",
+      "location": "shrine_grounds",
+      "takeable": false,
+      "droppable": true,
+      "readable": false,
+      "read_text": null,
+      "openable": true,
+      "is_open": false,
+      "container": true,
+      "contains": [
+        "master_key"
+      ],
+      "lockable": false,
+      "locked": false,
+      "key_object": null,
+      "light_source": false,
+      "is_lit": false,
+      "wearable": false,
+      "worn": false,
+      "actions": {},
+      "scenery": false,
+      "hidden": false
+    },
+    {
+      "id": "master_key",
+      "name": "master key",
+      "adjectives": [
+        "heavy",
+        "brass",
+        "ornate",
+        "master"
+      ],
+      "description": "A heavy brass key with an ornate design.",
+      "examine_text": "This key looks like it could open multiple locks. There's an engraving: 'Universal Access - Handle with Care.'",
+      "location": "donation_box",
+      "takeable": true,
+      "droppable": true,
+      "readable": false,
+      "read_text": null,
+      "openable": false,
+      "is_open": false,
+      "container": false,
+      "contains": [],
+      "lockable": false,
+      "locked": false,
+      "key_object": null,
+      "light_source": false,
+      "is_lit": false,
+      "wearable": false,
+      "worn": false,
+      "actions": {},
+      "scenery": false,
+      "hidden": false
+    },
+    {
+      "id": "old_priest",
+      "name": "old priest",
+      "adjectives": [
+        "old",
+        "elderly",
+        "wise"
+      ],
+      "description": "An elderly Shinto priest tending to the shrine despite the late hour.",
+      "examine_text": "The priest nods at you knowingly. 'The donation box serves many purposes,' he says cryptically.",
+      "location": "shrine_grounds",
       "takeable": false,
       "droppable": true,
       "readable": false,
@@ -796,42 +665,86 @@
       "worn": false,
       "actions": {
         "talk": {
-          "message": "The ramen master bows politely but says, 'I'm sorry, but we're closed to walk-ins at this hour. You need a business card from one of the Golden Gai establishments.'",
-          "condition": "!inventory.includes('business_card')",
+          "message": "The priest smiles: 'Young one, the shrine provides for those in need. Check the donation box - sometimes what goes around, comes around. And remember, the ancient machine requires offerings of equal value.'",
+          "condition": null,
+          "fail_message": null,
+          "state_changes": {},
+          "consumes_object": false,
+          "reveals_object": null,
+          "moves_player": null
+        }
+      },
+      "scenery": true,
+      "hidden": false
+    },
+    {
+      "id": "master_takeshi",
+      "name": "Master Takeshi",
+      "adjectives": [
+        "elderly",
+        "experienced",
+        "troubled",
+        "master"
+      ],
+      "description": "An elderly ramen master with decades of experience, but he looks troubled tonight.",
+      "examine_text": "Master Takeshi has kind eyes but worried expression. He keeps looking at his empty ingredient shelf.",
+      "location": "master_ramen_stall",
+      "takeable": false,
+      "droppable": true,
+      "readable": false,
+      "read_text": null,
+      "openable": false,
+      "is_open": false,
+      "container": false,
+      "contains": [],
+      "lockable": false,
+      "locked": false,
+      "key_object": null,
+      "light_source": false,
+      "is_lit": false,
+      "wearable": false,
+      "worn": false,
+      "actions": {
+        "talk": {
+          "message": "Master Takeshi sighs: 'Welcome, young one. I would love to serve you my famous morning ramen, but I'm missing my special ingredient - the essence of umami. Without it, my ramen is just ordinary noodles in broth.'",
+          "condition": null,
           "fail_message": null,
           "state_changes": {},
           "consumes_object": false,
           "reveals_object": null,
           "moves_player": null
         },
-        "show": {
-          "message": "The ramen master examines the business card and smiles. 'Ah, Champion Bar! Please, sit down. I'll prepare your morning ramen right away.' He serves you a perfect bowl of tonkotsu ramen with extra chashu. You feel much better!",
-          "condition": "inventory.includes('business_card')",
+        "give": {
+          "message": "Master Takeshi's eyes light up as you hand him the umami essence! 'Incredible! This is exactly what I needed!' He quickly prepares the most amazing bowl of ramen you've ever seen. 'This will cure any hangover and restore your spirit. You have found the true treasure of Kabukicho!'",
+          "condition": "has_special_ingredient",
           "fail_message": null,
           "state_changes": {
-            "flags.ramen_eaten": true
+            "won_game": true
           },
           "consumes_object": false,
           "reveals_object": null,
           "moves_player": null
         }
       },
-      "scenery": false,
+      "scenery": true,
       "hidden": false
     },
     {
-      "id": "ordering_sign",
-      "name": "ordering sign",
+      "id": "special_recipe",
+      "name": "recipe book",
       "adjectives": [
-        "informational"
+        "recipe",
+        "personal",
+        "worn",
+        "special"
       ],
-      "description": "A sign explaining the ramen shop's late-night policy.",
-      "examine_text": "The sign is written in both Japanese and English, clearly explaining the shop's policy.",
-      "location": "ramen_shop",
+      "description": "Master Takeshi's personal recipe book, worn from years of use.",
+      "examine_text": null,
+      "location": "master_ramen_stall",
       "takeable": false,
       "droppable": true,
       "readable": true,
-      "read_text": "LATE NIGHT SERVICE: Between 4AM-6AM, service is available only to customers with business cards from Golden Gai establishments. This ensures our regular customers can always find a warm meal after a night out.",
+      "read_text": "The book is filled with ramen recipes, but the page for 'Morning Cure Ramen' has a note: 'Secret ingredient required - essence of umami. Legend says the ancient vending machine holds the key, but it requires three special coins as offering.'",
       "openable": false,
       "is_open": false,
       "container": false,
@@ -844,6 +757,90 @@
       "wearable": false,
       "worn": false,
       "actions": {},
+      "scenery": false,
+      "hidden": false
+    },
+    {
+      "id": "ancient_vending_machine",
+      "name": "ancient vending machine",
+      "adjectives": [
+        "ancient",
+        "glowing",
+        "otherworldly",
+        "special"
+      ],
+      "description": "This vending machine looks far older than the others, with an otherworldly glow emanating from within.",
+      "examine_text": "The machine has strange symbols carved into its metal surface. There's a coin slot that specifically requires three 500 yen coins, and a note: 'Offerings of equal value unlock ancient wisdom.'",
+      "location": "hidden_courtyard",
+      "takeable": false,
+      "droppable": true,
+      "readable": false,
+      "read_text": null,
+      "openable": false,
+      "is_open": false,
+      "container": false,
+      "contains": [],
+      "lockable": false,
+      "locked": false,
+      "key_object": null,
+      "light_source": false,
+      "is_lit": false,
+      "wearable": false,
+      "worn": false,
+      "actions": {
+        "use": {
+          "message": "You insert the three 500 yen coins you collected. The ancient machine glows brighter and with a mystical hum, it dispenses a small package. Inside is a note directing you to the mysterious vending machine at the station platform, along with three special golden coins.",
+          "condition": "has_three_special_coins",
+          "fail_message": null,
+          "state_changes": {
+            "has_three_coins": true,
+            "ancient_machine_used": true
+          },
+          "consumes_object": false,
+          "reveals_object": null,
+          "moves_player": null
+        }
+      },
+      "scenery": false,
+      "hidden": false
+    },
+    {
+      "id": "prize_counter",
+      "name": "prize counter",
+      "adjectives": [
+        "prize",
+        "display",
+        "pachinko"
+      ],
+      "description": "A counter displaying various prizes that can be won with pachinko balls.",
+      "examine_text": "Among the usual prizes, you notice a special 500 yen coin marked 'Lucky Coin - Limited Edition.' It costs 100 pachinko balls, but the attendant is asleep.",
+      "location": "pachinko_parlor",
+      "takeable": false,
+      "droppable": true,
+      "readable": false,
+      "read_text": null,
+      "openable": false,
+      "is_open": false,
+      "container": false,
+      "contains": [],
+      "lockable": false,
+      "locked": false,
+      "key_object": null,
+      "light_source": false,
+      "is_lit": false,
+      "wearable": false,
+      "worn": false,
+      "actions": {
+        "take": {
+          "message": "You quietly take the lucky 500 yen coin while the attendant sleeps. Now you have all three special coins needed!",
+          "condition": null,
+          "fail_message": null,
+          "state_changes": {},
+          "consumes_object": false,
+          "reveals_object": null,
+          "moves_player": null
+        }
+      },
       "scenery": false,
       "hidden": false
     }
@@ -988,30 +985,25 @@
       "requires_indirect": false,
       "prepositions": [],
       "default_message": "Nothing happens."
-    },
-    {
-      "verb": "sing",
-      "aliases": [
-        "perform",
-        "karaoke"
-      ],
-      "requires_object": false,
-      "requires_indirect": false,
-      "prepositions": [],
-      "default_message": "You hum a tune but nothing special happens."
     }
   ],
   "initial_state": {
-    "current_room": "kabukicho_entrance",
+    "current_room": "kabukicho_main",
     "inventory": [],
-    "flags": {}
+    "flags": {
+      "has_three_coins": false,
+      "has_special_ingredient": false,
+      "won_game": false,
+      "ancient_machine_used": false,
+      "has_three_special_coins": false
+    }
   },
   "win_condition": {
     "type": "flag_set",
     "room": null,
     "object": null,
-    "flag": "ramen_eaten",
+    "flag": "won_game",
     "conditions": null,
-    "win_message": "Congratulations! You've successfully navigated the neon maze of Kabukicho and found the perfect bowl of morning ramen. The rich tonkotsu broth warms your soul and clears your hangover just as the first train of the day begins to rumble overhead. You're ready to face whatever Tokyo throws at you next. You have escaped Kabukicho victorious!"
+    "win_message": "Congratulations! You've successfully completed your late-night ramen quest in Kabukicho! Master Takeshi's legendary morning ramen has cured your hangover and restored your spirit. As you slurp the perfect noodles, you realize you've not only found the best ramen in Tokyo, but you've also discovered the magic that exists in the hidden corners of the city. The trains can wait - this moment is perfect."
   }
 }

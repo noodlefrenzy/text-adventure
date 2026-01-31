@@ -34,6 +34,7 @@ class TurnResult:
     game_over: bool = False
     won: bool = False
     error: bool = False  # True if command failed to execute
+    new_room: str | None = None  # Room ID if player moved to a new room this turn
 
 
 class GameEngine:
@@ -314,7 +315,7 @@ class GameEngine:
 
         # Move to new room
         self.state.current_room = target_room
-        return TurnResult(message=self.describe_current_room())
+        return TurnResult(message=self.describe_current_room(), new_room=target_room)
 
     def _describe_inventory(self) -> str:
         """Describe the player's inventory."""

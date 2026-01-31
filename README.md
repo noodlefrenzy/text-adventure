@@ -11,8 +11,10 @@ Generate rich, puzzle-filled adventures with AI, then play them yourself or watc
   - Interactive objects with examine text
   - Puzzles with locked doors, keys, and containers
   - Win conditions that feel satisfying to achieve
+  - Optional ASCII art generation for each room
 
 - **Play Games**: Classic Zork-style parser for human gameplay
+  - Full-screen curses UI with ASCII art display
   - Full Infocom-style command parsing (PUT THE BRASS KEY IN THE WOODEN BOX)
   - Adjective-based disambiguation (TAKE BRASS KEY vs SILVER KEY)
   - All standard verbs: TAKE, DROP, EXAMINE, OPEN, CLOSE, UNLOCK, READ, TALK, etc.
@@ -71,6 +73,9 @@ text-adventure generate --theme "pirate ship" --rooms 10
 
 # Save to specific file
 text-adventure generate --theme "haunted lighthouse" -o lighthouse.json
+
+# Generate with ASCII art for each room
+text-adventure generate --theme "cyberpunk megacity" --ascii-art
 ```
 
 ### Play a Game
@@ -81,6 +86,9 @@ text-adventure play game.json
 
 # Play with debug output (shows game state)
 text-adventure play game.json --debug
+
+# Play with full-screen curses UI (displays ASCII art)
+text-adventure play game.json --curses
 ```
 
 ### Watch AI Play
@@ -94,6 +102,9 @@ text-adventure ai-play game.json --delay 1.0 --verbose
 
 # Limit turns
 text-adventure ai-play game.json --max-turns 50
+
+# Watch with full-screen curses UI
+text-adventure ai-play game.json --curses
 ```
 
 ### Validate a Game
@@ -114,6 +125,7 @@ Options:
   -r, --rooms INTEGER        Number of rooms (3-20) [default: 8]
   -o, --output PATH          Output file path [default: auto-generated]
   --temperature FLOAT        Creativity level (0.0-1.0) [default: 0.7]
+  -a, --ascii-art            Generate ASCII art for each room
 ```
 
 ### `play`
@@ -126,6 +138,7 @@ Arguments:
 
 Options:
   -d, --debug               Show debug information after each turn
+  -c, --curses              Use full-screen curses UI with ASCII art display
 ```
 
 ### `ai-play`
@@ -138,8 +151,9 @@ Arguments:
 
 Options:
   -m, --max-turns INTEGER    Maximum turns before stopping [default: 100]
-  -d, --delay FLOAT          Delay between turns in seconds [default: 0.5]
+  --delay FLOAT              Delay between turns in seconds [default: 0.5]
   -v, --verbose              Show detailed game output
+  -c, --curses               Use full-screen curses UI with ASCII art display
 ```
 
 ### `validate`
